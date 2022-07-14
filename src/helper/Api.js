@@ -104,8 +104,7 @@ export const usePublicApi = (url, options) => {
 			method: method,
 			data: data,
 			headers: {'content-type': 'application/x-www-form-urlencoded'}
-	}
-
+    };
   }
 
   // use axios
@@ -120,12 +119,6 @@ export const usePublicApi = (url, options) => {
     .catch(function (error) {
 
 			if (error.response) {
-
-				if (error.response.status == 406) {
-					// store token in cookie
-					setCookie(authenticatedCookie, authenticatedSign, 7200);
-					app.$router.go({name: 'admin.index'});
-				}
         
         // error tapi muncul response dari server
         if (typeof options.catch === 'function'){

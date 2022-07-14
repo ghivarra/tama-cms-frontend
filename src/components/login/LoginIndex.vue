@@ -17,7 +17,8 @@ import GlobalPreloader from '../GlobalPreloader.vue';
 
 // load library
 import { defineAsyncComponent, markRaw } from 'vue';
-import { imageURL } from '../../helper/Global';
+import { imageURL, setCookie } from '../../helper/Global';
+import { usePublicApi } from '../../helper/Api';
 
 // export
 export default {
@@ -34,6 +35,22 @@ export default {
         return import(`./${this.$router.currentRoute.value.meta.view}.vue`);
       }))
     }
+  },
+  beforeCreate: function() {
+
+    let app = this;
+
+    usePublicApi('autentikasi/cek-akses', {
+      app: app,
+      method: 'get',
+      success: function(response) {
+        if (response.data.loggedIn == true) {
+          setCookie(process.env.VUE_APP_AUTH_KEY, process.env.VUE_APP_AUTH_PASS, 7200);
+          app.$router.push({ name: 'admin.index' })
+        }
+      }
+    });
+
   },
   mounted: function() {
     let app = this;
@@ -57,7 +74,7 @@ export default {
   background-position: right;
 
   &-form {
-    max-width: 500px;
+    max-width: 450px;
   }
 
   &-icon {

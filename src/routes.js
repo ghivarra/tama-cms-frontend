@@ -1,6 +1,7 @@
 import HelloWorld from './components/HelloWorld.vue';
 import LoginIndex from './components/login/LoginIndex.vue';
-import { loggedInGuard } from './routes-guard.js';
+import AdminIndex from './components/admin/AdminIndex.vue';
+import { loggedInGuard, loggedOutGuard } from './routes-guard.js';
 
 export default [
 	
@@ -31,12 +32,12 @@ export default [
 
 	// ADMIN PAGE
 	{ 
-//		name: 'admin.index', 
-//		path: '/' + process.env.VUE_APP_ADMIN_PAGE, 
-//		component: AdminIndex, 
-//		meta: {
-//			mainComponent: 'AdminDasbor'
-//		},
-//		beforeEnter: [loggedOutGuard]
+		name: 'admin.index', 
+		path: '/' + process.env.VUE_APP_ADMIN_PAGE, 
+		component: AdminIndex, 
+		meta: {
+			view: 'AdminDasbor'
+		},
+		beforeEnter: [loggedOutGuard]
 	}
 ];

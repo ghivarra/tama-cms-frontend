@@ -7,8 +7,8 @@
       <img class="login-logo block mx-auto mb-6 smartphone:mb-4" v-bind:src="logo">
 
       <div class="form-group mb-8">
-        <label for="username" class="block cursor-pointer text-gray-500 tracking-wide text-sm font-bold">Username</label>
-        <input id="username" type="text" class="block w-full border-b-2 p-2 pl-0 transition-all outline-0 hover:border-gss focus:border-gss" v-model="data.username">
+        <label for="email" class="block cursor-pointer text-gray-500 tracking-wide text-sm font-bold">Email</label>
+        <input id="email" type="email" class="block w-full border-b-2 p-2 pl-0 transition-all outline-0 hover:border-gss focus:border-gss" v-model="data.email">
       </div>
 
       <div class="form-group mb-10">
@@ -72,7 +72,7 @@ export default {
       appVer: `${process.env.VUE_APP_NAME} v${process.env.VUE_APP_VERSION}`,
       seePassword: false,
       data: {
-        username: '',
+        email: '',
         password: ''
       }
     }
@@ -84,7 +84,7 @@ export default {
       this.preloadStatus = true;
 
       let formData = new FormData();
-      formData.append('username', this.data.username);
+      formData.append('email', this.data.email);
       formData.append('password', this.data.password);
 
       let app = this;
