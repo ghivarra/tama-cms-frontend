@@ -30,6 +30,17 @@ export default [
 		}
 	},
 
+	// LOGIN UBAH PASSWORD
+	{ 
+		name: 'login.change.password', 
+		path: `/${process.env.VUE_APP_LOGIN_PAGE}/ubah-password`, 
+		component: LoginIndex, 
+		beforeEnter: [loggedInGuard],
+		meta: {
+			view: 'LoginChangePassword'
+		}
+	},
+
 	// ADMIN PAGE
 	{ 
 		name: 'admin.index', 

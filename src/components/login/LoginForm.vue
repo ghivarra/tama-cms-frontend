@@ -61,6 +61,10 @@ export default {
     logo: {
       type: String,
       required: true
+    },
+    changePreloadStatus: {
+      type: Function,
+      required: true
     }
   },
   components: {
@@ -81,7 +85,7 @@ export default {
     login: function(e) {
 
       e.preventDefault();
-      this.preloadStatus = true;
+      this.changePreloadStatus();
 
       let formData = new FormData();
       formData.append('email', this.data.email);
@@ -123,7 +127,7 @@ export default {
           });
         },
         final: function() {
-          app.preloadStatus = !app.preloadStatus;
+          app.changePreloadStatus();
         }
       });
     }

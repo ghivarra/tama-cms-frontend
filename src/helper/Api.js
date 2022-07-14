@@ -124,6 +124,12 @@ export const usePublicApi = (url, options) => {
         if (typeof options.catch === 'function'){
           options.catch(error);
         }
+
+        if (error.response.status == 406) {
+          // store token in cookie
+          setCookie(authenticatedCookie, authenticatedSign, 7200);
+          app.$router.go({name: 'admin.index'});
+        }
         
       } else if (error.request) {
         // erorr antara error server atau koneksi bermasalah

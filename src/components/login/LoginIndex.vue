@@ -5,7 +5,7 @@
   </Transition>
 
   <main class="login h-screen w-full flex justify-center items-center">
-    <component v-bind:is="currentComponent" v-bind:logo="logo"></component>
+    <component v-bind:is="currentComponent" v-bind:logo="logo" v-bind:changePreloadStatus="changePreloadStatus"></component>
   </main>
 
 </template>
@@ -17,7 +17,7 @@ import GlobalPreloader from '../GlobalPreloader.vue';
 
 // load library
 import { defineAsyncComponent, markRaw } from 'vue';
-import { imageURL, setCookie } from '../../helper/Global';
+import { imageURL } from '../../helper/Global';
 import { usePublicApi } from '../../helper/Api';
 
 // export
@@ -36,19 +36,18 @@ export default {
       }))
     }
   },
+  methods: {
+    changePreloadStatus: function() {
+      return this.preloadStatus = !this.preloadStatus;
+    }
+  },
   beforeCreate: function() {
 
     let app = this;
 
     usePublicApi('autentikasi/cek-akses', {
       app: app,
-      method: 'get',
-      success: function(response) {
-        if (response.data.loggedIn == true) {
-          setCookie(process.env.VUE_APP_AUTH_KEY, process.env.VUE_APP_AUTH_PASS, 7200);
-          app.$router.push({ name: 'admin.index' })
-        }
-      }
+      method: 'get'
     });
 
   },
