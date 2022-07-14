@@ -10,11 +10,22 @@ export default [
 	// LOGIN PAGE
 	{ 
 		name: 'login.index', 
-		path: '/' + process.env.VUE_APP_LOGIN_PAGE, 
+		path: `/${process.env.VUE_APP_LOGIN_PAGE}`, 
 		component: LoginIndex, 
 		beforeEnter: [loggedInGuard],
 		meta: {
 			view: 'LoginForm'
+		}
+	},
+
+	// LOGIN FORGOT PASSWORD
+	{ 
+		name: 'login.forgot.password', 
+		path: `/${process.env.VUE_APP_LOGIN_PAGE}/lupa-password`, 
+		component: LoginIndex, 
+		beforeEnter: [loggedInGuard],
+		meta: {
+			view: 'LoginForgotPassword'
 		}
 	},
 

@@ -25,13 +25,13 @@
             <font-awesome icon="fa-regular fa-eye" class="login-icon text-gray-400"></font-awesome>
           </button>
 
-          
-
         </div>
+
+        <router-link v-bind:to="{ name: 'login.forgot.password' }" class="text-gss">Lupa Password?</router-link>
 
       </div>
 
-      <button type="submit" class="block w-full text-center py-2 bg-gss text-white rounded-md mb-8 transition hover:bg-gss-dark">
+      <button type="submit" class="block w-full text-center py-2 px-4 bg-gss text-white rounded-md mb-8 transition hover:bg-gss-dark">
         <font-awesome icon="fa-solid fa-right-to-bracket" class="text-white mr-1"></font-awesome>
         Login
       </button>
@@ -49,7 +49,6 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // load functions
-import { imageURL } from '../../helper/Global';
 import { auth } from '../../helper/Api';
 import { swalError } from '../../helper/Error';
 
@@ -58,12 +57,18 @@ import Swal from 'sweetalert2';
 
 export default {
   name: 'login-form',
+  props: {
+    logo: {
+      type: String,
+      required: true
+    }
+  },
   components: {
     'font-awesome': FontAwesomeIcon
   },
   data: function() {
     return {
-      logo: imageURL('assets/informasi/logo.png?v=1.0&width=150&height=150'),
+      
       appVer: `${process.env.VUE_APP_NAME} v${process.env.VUE_APP_VERSION}`,
       seePassword: false,
       data: {

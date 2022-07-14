@@ -1,28 +1,13 @@
 <template>
     <div id="appBody" class="text-neutral-800">
-      <router-view></router-view>
+      <router-view v-bind:key="$route.fullPath"></router-view>
     </div>
 </template>
 
 <script>
 
-import { imageURL } from './helper/Global';
-
 export default {
-  name: 'App',
-  data: function() {
-    return {
-      preloadStatus: true,
-      bgLogin: `url('${require('./assets/image/login-background.svg')}')`,
-      logo: imageURL('assets/kanal/logo/logo_wahananews_min.png?v=1.1.0'),
-      appVer: `${process.env.VUE_APP_NAME} v${process.env.VUE_APP_VERSION}`,
-      seePassword: false,
-      data: {
-        username: '',
-        password: ''
-      }
-    }
-  },
+  name: 'App'
 }
 
 </script>
@@ -33,6 +18,21 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 
 html, body { font-size: 18px; font-family: 'Rubik', sans-serif; }
+
+.h {
+
+  &1 {
+    font-size: 1.5rem;
+  }
+
+  &2 {
+    font-size: 1.25rem;
+  }
+
+  &3 {
+    font-size: 1.1rem;
+  }
+}
 
 .v-enter-active, .v-leave-active {
   transition: opacity 0.5s ease;
@@ -82,16 +82,6 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
-}
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
 }
 
 </style>

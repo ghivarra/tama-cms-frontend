@@ -5,7 +5,7 @@
   </Transition>
 
   <main class="login h-screen w-full flex justify-center items-center">
-    <component v-bind:is="currentComponent"></component>
+    <component v-bind:is="currentComponent" v-bind:logo="logo"></component>
   </main>
 
 </template>
@@ -17,6 +17,7 @@ import GlobalPreloader from '../GlobalPreloader.vue';
 
 // load library
 import { defineAsyncComponent, markRaw } from 'vue';
+import { imageURL } from '../../helper/Global';
 
 // export
 export default {
@@ -27,20 +28,20 @@ export default {
   data: function() {
     return {
       preloadStatus: true,
+      logo: imageURL('assets/informasi/logo.png?v=1.0&width=150&height=150'),
       bgLogin: `url('${require('../../assets/image/login-background.svg')}')`,
       currentComponent: markRaw(defineAsyncComponent(() => {
         return import(`./${this.$router.currentRoute.value.meta.view}.vue`);
       }))
     }
   },
-  created: function() {
-
+  mounted: function() {
     let app = this;
 
-    setTimeout(function() {
+    setTimeout(() => {
       app.preloadStatus = !app.preloadStatus;
     }, 250);
-
+    
   }
 }
 
@@ -56,7 +57,7 @@ export default {
   background-position: right;
 
   &-form {
-    max-width: 400px;
+    max-width: 500px;
   }
 
   &-icon {
