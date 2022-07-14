@@ -6,14 +6,12 @@
 
 <script>
 
-import { baseURL } from '../helper/Global';
-
 export default {
   name: 'global-preloader',
   props: ['preloadStatus'],
   computed: {
     preloader: function() {
-      return baseURL('assets/image/wahana-preloader.gif?v=1.0');
+      return require('../assets/image/preloader.gif');
     }
   }
 }

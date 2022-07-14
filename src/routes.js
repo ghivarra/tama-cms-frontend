@@ -1,5 +1,5 @@
 import HelloWorld from './components/HelloWorld.vue';
-import LoginIndex from './components/LoginIndex.vue';
+import LoginIndex from './components/login/LoginIndex.vue';
 import { loggedInGuard } from './routes-guard.js';
 
 export default [
@@ -8,7 +8,15 @@ export default [
 	{ name: 'homepage', path: undefined, component: HelloWorld },
 
 	// LOGIN PAGE
-	{ name: 'login.index', path: '/' + process.env.VUE_APP_LOGIN_PAGE, component: LoginIndex, beforeEnter: [loggedInGuard] },
+	{ 
+		name: 'login.index', 
+		path: '/' + process.env.VUE_APP_LOGIN_PAGE, 
+		component: LoginIndex, 
+		beforeEnter: [loggedInGuard],
+		meta: {
+			view: 'LoginForm'
+		}
+	},
 
 	// ADMIN PAGE
 	{ 
