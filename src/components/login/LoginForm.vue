@@ -1,21 +1,22 @@
 <template>
 
-  <form v-on:submit="login" class="login-form shadow-md bg-white px-10 pb-8 pt-10 rounded-0 w-full h-screen flex justify-center items-center smartphone:rounded-md smartphone:h-auto smartphone:block smartphone:pt-4 smartphone:pb-6">
+  <form v-on:submit="login" class="login-form shadow-md bg-white p-8 px-10 rounded-0 w-full h-screen flex justify-center items-center smartphone:rounded-md smartphone:h-auto smartphone:block">
 
     <section class="w-full">
 
-      <img class="login-logo block mx-auto mb-6 smartphone:mb-4" v-bind:src="logo">
+      <img v-if="logoLoaded" class="login-logo block mx-auto mb-8" v-bind:src="logo">
+      <div v-else class="login-logo block mx-auto mb-6 smartphone:mb-4 skeleton-loader"></div>
 
       <div class="form-group mb-8">
         <label for="email" class="block cursor-pointer text-gray-500 tracking-wide text-sm font-bold">Email</label>
-        <input id="email" type="email" class="block w-full border-b-2 p-2 pl-0 transition-all outline-0 hover:border-gss focus:border-gss" v-model="data.email">
+        <input v-model="data.email" id="email" type="email" class="block w-full border-b-2 p-2 pl-0 transition-all outline-0 hover:border-gss focus:border-gss"  required>
       </div>
 
       <div class="form-group mb-10">
         <label for="password" class="block cursor-pointer text-gray-500 tracking-wide text-sm font-bold">Password</label>
 
         <div class="input-group relative mb-3">
-          <input id="password" v-bind:type="passwordInputType" class="block w-full border-b-2 p-2 pl-0 transition outline-0 hover:border-gss focus:border-gss" v-model="data.password">
+          <input v-model="data.password" id="password" v-bind:type="passwordInputType" class="block w-full border-b-2 p-2 pl-0 transition outline-0 hover:border-gss focus:border-gss"  required>
 
           <button v-if="seePassword" v-on:click="seePassword = !seePassword" type="button" class="absolute top-2 right-2">
             <font-awesome icon="fa-regular fa-eye-slash" class="login-icon text-gray-400"></font-awesome>
@@ -46,7 +47,7 @@
 
 <script>
 
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // load functions
 import { auth } from '../../helper/Api';
@@ -58,8 +59,16 @@ import Swal from 'sweetalert2';
 export default {
   name: 'login-form',
   props: {
+    website: {
+      type: Object,
+      required: true
+    },
     logo: {
       type: String,
+      required: true
+    },
+    logoLoaded: {
+      type: Boolean,
       required: true
     },
     changePreloadStatus: {
@@ -103,7 +112,7 @@ export default {
             title: data.title,
             text: data.message,
             icon: data.status,
-            timer: 2000,
+            timer: 1500,
             timerProgressBar: true,
             allowOutsideClick: false,
             showConfirmButton: false,
@@ -125,8 +134,7 @@ export default {
             message: data.message,
             confirmButtonText: 'OK'
           });
-        },
-        final: function() {
+
           app.changePreloadStatus();
         }
       });

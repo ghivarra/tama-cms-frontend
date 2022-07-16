@@ -1,5 +1,6 @@
 import { swalError } from './Error';
 import { setCookie } from './Global';
+import Axios from 'axios';
 
 const authenticatedCookie = process.env.VUE_APP_AUTH_KEY;
 const authenticatedSign = process.env.VUE_APP_AUTH_PASS;
@@ -10,10 +11,10 @@ export const auth = (url, options) => {
   let data = options.data;
 
   // set configuration
-  app.axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+  Axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
   // post login data
-  app.axios.post(url, data, {
+  Axios.post(url, data, {
     headers: {'content-type': 'application/x-www-form-urlencoded'},
     withCredentials: true
   })
@@ -33,7 +34,7 @@ export const auth = (url, options) => {
 				if (error.response.status == 406) {
 					// store token in cookie
 					setCookie(authenticatedCookie, authenticatedSign, 7200);
-					app.$router.go({name: 'admin.index'});
+					app.$router.push({name: 'admin.index'});
 				}
 
 				// error tapi muncul response dari server
@@ -84,8 +85,13 @@ export const usePublicApi = (url, options) => {
 	let data   = options.data;
   let method = (options.method == undefined) ? 'get' : options.method;
 
+  if (Axios == undefined)
+  {
+    console.log(url) ;
+  }
+
   // set configuration
-  app.axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+  Axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
   // config
   let axiosConfig = {};
@@ -108,7 +114,7 @@ export const usePublicApi = (url, options) => {
   }
 
   // use axios
-  app.axios.request(url, axiosConfig)
+  Axios.request(url, axiosConfig)
     .then(function (response) {
 
       if (typeof options.success === 'function'){
@@ -128,7 +134,7 @@ export const usePublicApi = (url, options) => {
         if (error.response.status == 406) {
           // store token in cookie
           setCookie(authenticatedCookie, authenticatedSign, 7200);
-          app.$router.go({name: 'admin.index'});
+          app.$router.push({name: 'admin.index'});
         }
         
       } else if (error.request) {
@@ -177,7 +183,7 @@ export const usePrivateApi = (url, options) => {
   setCookie(authenticatedCookie, authenticatedSign, 7200);
 
   // set configuration
-  app.axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+  Axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
   // config
   let axiosConfig = {};
@@ -201,7 +207,7 @@ export const usePrivateApi = (url, options) => {
   }
 
   // use axios
-  app.axios.request(url, axiosConfig)
+  Axios.request(url, axiosConfig)
     .then(function (response) {
 
       if (typeof options.success === 'function'){
@@ -217,7 +223,7 @@ export const usePrivateApi = (url, options) => {
 
 					// store token in cookie
 					setCookie(authenticatedCookie, authenticatedSign, 0);
-					app.$router.go({name: 'login.index'});
+					app.$router.push({name: 'login.index'});
 
 				}
         

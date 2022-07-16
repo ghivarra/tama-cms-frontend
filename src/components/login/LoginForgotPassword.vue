@@ -41,10 +41,6 @@ import Swal from 'sweetalert2';
 export default {
   name: 'login-forgot-password',
   props: {
-    logo: {
-      type: String,
-      required: true
-    },
     changePreloadStatus: {
       type: Function,
       required: true

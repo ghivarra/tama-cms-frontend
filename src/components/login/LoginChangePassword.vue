@@ -75,10 +75,6 @@ export default {
     'font-awesome': FontAwesomeIcon
   },
   props: {
-    logo: {
-      type: String,
-      required: true
-    },
     changePreloadStatus: {
       type: Function,
       required: true

@@ -15,7 +15,8 @@ export default [
 		component: LoginIndex, 
 		beforeEnter: [loggedInGuard],
 		meta: {
-			view: 'LoginForm'
+			view: 'LoginForm',
+			title: 'Pintu Masuk'
 		}
 	},
 
@@ -26,7 +27,8 @@ export default [
 		component: LoginIndex, 
 		beforeEnter: [loggedInGuard],
 		meta: {
-			view: 'LoginForgotPassword'
+			view: 'LoginForgotPassword',
+			title: 'Lupa Password'
 		}
 	},
 
@@ -37,7 +39,8 @@ export default [
 		component: LoginIndex, 
 		beforeEnter: [loggedInGuard],
 		meta: {
-			view: 'LoginChangePassword'
+			view: 'LoginChangePassword',
+			title: 'Ubah Password'
 		}
 	},
 
@@ -47,7 +50,8 @@ export default [
 		path: '/' + process.env.VUE_APP_ADMIN_PAGE, 
 		component: AdminIndex, 
 		meta: {
-			view: 'AdminDasbor'
+			view: 'AdminDasbor',
+			title: 'Dasbor'
 		},
 		beforeEnter: [loggedOutGuard]
 	}
