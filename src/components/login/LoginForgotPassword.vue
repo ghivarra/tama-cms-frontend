@@ -40,12 +40,7 @@ import Swal from 'sweetalert2';
 
 export default {
   name: 'login-forgot-password',
-  props: {
-    changePreloadStatus: {
-      type: Function,
-      required: true
-    }
-  },
+  inject: ['changePreloadStatus'],
   data: function() {
     return {
       email: ''

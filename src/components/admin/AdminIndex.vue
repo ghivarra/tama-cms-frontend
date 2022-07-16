@@ -1,16 +1,12 @@
 <template>
 
-  <Transition>
-    <global-preloader v-bind:preloadStatus="preloadStatus"></global-preloader>
-  </Transition>
-
   <div v-on:click="checkMainMenu" class="admin block smartphone:flex">
 
     <!-- SIDEBAR -->
-    <aside class="admin-sidebar w-sidebar w-full h-screen bg-gss shadow-md z-5 relative">
+    <aside class="admin-sidebar w-sidebar h-screen bg-gss shadow-md z-5 relative">
       
       <header class="bg-white p-4 pt-3">
-        <img v-if="logoLoaded" v-bind:src="logo" v-bind:alt="websiteInfo.pgn_nama" class="logo w-full mx-auto">
+        <img v-if="logoLoaded" v-bind:src="logo" v-bind:alt="website.pgn_nama" class="logo w-full mx-auto">
         <div v-else class="logo skeleton-loader w-full mx-auto"></div>
       </header>
 
@@ -57,101 +53,59 @@
 
 <script>
 
-// load components
-import GlobalPreloader from '../GlobalPreloader.vue';
+  // load library
+  import { setCookie, imageURL } from '../../helper/Global';
+  import { usePrivateApi } from '../../helper/Api';
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+  import { computed } from 'vue';
+  import Swal from 'sweetalert2';
 
-// load library
-import { setCookie, imageURL } from '../../helper/Global';
-import { usePrivateApi, usePublicApi } from '../../helper/Api';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import Swal from 'sweetalert2';
-
-export default {
-  name: 'admin-index',
-  components: {
-    'global-preloader': GlobalPreloader,
-    'font-awesome': FontAwesomeIcon
-  },
-  data: function() {
-    return {
-      logo: '',
-      logoLoaded: false,
-      title: this.$router.currentRoute.value.meta.title,
-      websiteInfo: {},
-      preloadStatus: true,
-
-      // data
-      adminInfo: {},
-      showMainMenu: false
-    }
-  },
-  methods: {
-    changePreloadStatus: function() {
-      return this.preloadStatus = !this.preloadStatus;
+  export default {
+    name: 'admin-index',
+    components: {
+      'font-awesome': FontAwesomeIcon
     },
-    logout: function() {
+    inject: [
+      'changePreloadStatus',
+      'preloadStatus',
+      'website'
+    ],
+    data: function() {
+      return {
+        logo: '',
+        logoLoaded: false,
+        title: this.$router.currentRoute.value.meta.title,
 
-      let app = this;
-
-      Swal.fire({
-        title: 'Peringatan',
-        icon: 'warning',
-        text: 'Apakah anda yakin akan keluar dari aplikasi?',
-        showCancelButton: true,
-        showConfirmButton: true,
-        confirmButtonText: 'Ya, Keluar Sekarang',
-        cancelButtonText: 'Batal'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          usePrivateApi('sertifikasi/logout', {
-            app: app,
-            method: 'get',
-            success: function() {
-              setCookie(process.env.VUE_APP_AUTH_KEY, process.env.VUE_APP_AUTH_SIGN, 0);
-              app.$router.push({ name: 'login.index' });    
-            }
-          });
+        // data
+        admin: {},
+        showMainMenu: false
+      }
+    },
+    watch: {
+      website: function(data) {
+        this.updateMeta(data);
+        this.updateLogo(data);
+      }
+    },
+    provide: function() {
+      return {
+        admin: computed(() => {
+          return this.admin;
+        })
+      }
+    },
+    methods: {
+      updateLogo: function(data) {
+        this.logo = imageURL(`assets/informasi/logo-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_icon}&width=120&height=120`)
+        this.logoLoaded = true;
+      },
+      updateMeta: function(data) {
+        if (data.pgn_nama == undefined) {
+          return false;
         }
-      });
-    },
-    checkMainMenu: function(e) {
-      if (e.target.hasAttribute('data-dropdown'))
-      {
-        return false;
-      } else if (this.showMainMenu) {
-        this.showMainMenu = false;
-      }
-    }
-  },
-  computed: {
-    getProfilePic: function(size) {
 
-      console.log(size);
-
-      size = (size == undefined) ? '80' : size.toString();
-
-      if (this.adminInfo.length < 1 || this.adminInfo.adm_foto == null) {
-        return imageURL(`assets/photo/admin/placeholder.jpg?v=1.0&width=${size}&height=${size}`);
-      }
-
-      return imageURL(`assets/photo/admin/${this.adminInfo.adm_foto.length}?v=1.0&width=${size}&height=${size}`);
-    }
-  },
-  created: function() {
-    let app = this;
-
-    usePublicApi('website', {
-      app: app,
-      method: 'get',
-      success: function(res) {
-        let data = res.data.data;
-        app.websiteInfo = data;
-        app.logo = imageURL(`assets/informasi/logo-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_logo}&width=72&height=72`);
-        app.logoLoaded = true;
-
-        // set header
         let head = document.head;
-        head.querySelector('title').innerText = `${app.$router.currentRoute.value.meta.title} - ${data.pgn_nama} | ${data.pgn_tagline}`;
+        head.querySelector('title').innerText = `${this.$router.currentRoute.value.meta.title} - ${data.pgn_nama} | ${data.pgn_tagline}`;
         head.querySelector('link[rel=icon]').setAttribute('href', imageURL(`assets/informasi/icon-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_icon}&width=32&height=32`));
 
         // create meta description
@@ -159,46 +113,99 @@ export default {
         meta.setAttribute('name', 'description');
         meta.setAttribute('content', data.pgn_deskripsi);
         head.appendChild(meta);
+      },
+      logout: function() {
 
-        // change preload
-        app.changePreloadStatus();
-      }
-    });
+        let app = this;
 
-    // admin info
-    usePrivateApi('sertifikasi/admin-info', {
-      app: app,
-      method: 'get',
-      success: function(res) {
-        let data = res.data.data;
-        app.adminInfo = data;
-        console.log(app.getProfilePic(100));
+        Swal.fire({
+          title: 'Peringatan',
+          icon: 'warning',
+          text: 'Apakah anda yakin akan keluar dari aplikasi?',
+          showCancelButton: true,
+          showConfirmButton: true,
+          confirmButtonText: 'Ya, Keluar Sekarang',
+          cancelButtonText: 'Batal'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            usePrivateApi('sertifikasi/logout', {
+              app: app,
+              method: 'get',
+              success: function() {
+                setCookie(process.env.VUE_APP_AUTH_KEY, process.env.VUE_APP_AUTH_SIGN, 0);
+                app.$router.push({ name: 'login.index' });    
+              }
+            });
+          }
+        });
+      },
+      checkMainMenu: function(e) {
+        if (e.target.hasAttribute('data-dropdown'))
+        {
+          return false;
+        } else if (this.showMainMenu) {
+          this.showMainMenu = false;
+        }
+      },
+      getProfilePic: function(size) {
+
+        size = (size == undefined) ? '80' : size.toString();
+
+        if (this.admin.length < 1 || this.admin.adm_foto == null) {
+          return imageURL(`assets/photo/admin/placeholder.jpg?v=1.0&width=${size}&height=${size}`);
+        }
+
+        return imageURL(`assets/photo/admin/${this.admin.adm_foto.length}?v=1.0&width=${size}&height=${size}`);
       }
-    })
+    },
+    created: function() {
+      let app = this;
+
+      // update
+      if (this.website.pgn_slug != undefined) {
+        this.updateLogo(this.website);
+        this.updateMeta(this.website);
+      }
+
+      // admin info
+      usePrivateApi('sertifikasi/admin-info', {
+        app: app,
+        method: 'get',
+        success: function(res) {
+          let data = res.data.data;
+          app.admin = data;
+        },
+        final: function() {
+          if (app.preloadStatus) {
+            app.changePreloadStatus();
+          }
+        }
+      });
+
+    }
   }
-}
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 
-.admin {
+  .admin {
 
-  &-sidebar {
+    &-sidebar {
 
-    .logo {
-      max-width: 72px;
+      .logo {
+        max-width: 72px;
 
-      &.skeleton-loader {
-        height: 24px;
+        &.skeleton-loader {
+          height: 24px;
+        }
       }
     }
-  }
 
-  &-inner {
-    min-height: 100vh;
+    &-inner {
+      min-height: 100vh;
+    }
   }
-}
 
 </style>

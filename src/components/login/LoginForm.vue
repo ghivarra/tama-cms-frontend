@@ -70,12 +70,9 @@ export default {
     logoLoaded: {
       type: Boolean,
       required: true
-    },
-    changePreloadStatus: {
-      type: Function,
-      required: true
     }
   },
+  inject: ['changePreloadStatus'],
   components: {
     'font-awesome': FontAwesomeIcon
   },

@@ -1,26 +1,18 @@
 <template>
 
-  <Transition>
-    <global-preloader v-bind:preloadStatus="preloadStatus"></global-preloader>
-  </Transition>
-
   <main class="login h-screen w-full flex justify-center items-center">
     <KeepAlive>
       <component 
         v-bind:is="currentComponent" 
         v-bind:logo="logo"
         v-bind:logoLoaded="logoLoaded" 
-        v-bind:website="website"
-        v-bind:changePreloadStatus="changePreloadStatus"></component>
+        v-bind:website="website"></component>
     </KeepAlive>
   </main>
 
 </template>
 
 <script>
-
-  // load components
-  import GlobalPreloader from '../GlobalPreloader.vue';
 
   // load library
   import { defineAsyncComponent, markRaw } from 'vue';
@@ -30,13 +22,9 @@
   // export
   export default {
     name: 'login-index',
-    components: {
-      'global-preloader': GlobalPreloader
-    },
-    inject: ['website'],
+    inject: ['website', 'preloadStatus', 'changePreloadStatus'],
     data: function() {
       return {
-        preloadStatus: true,
         logo: '',
         logoLoaded: false,
         bgLogin: `url('${require('../../assets/image/login-background.svg')}')`,
@@ -52,9 +40,6 @@
       }
     },
     methods: {
-      changePreloadStatus: function() {
-        return this.preloadStatus = !this.preloadStatus;
-      },
       updateLogo: function(data) {
         this.logo = imageURL(`assets/informasi/icon-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_icon}&width=120&height=120`)
         this.logoLoaded = true;
@@ -75,25 +60,23 @@
         head.appendChild(meta);
       }
     },
-    beforeCreate: function() {
+    created: function() {
       let app = this;
-
       usePublicApi('autentikasi/cek-akses', {
         app: app,
-        method: 'get'
+        method: 'get',
+        success: function() {
+          if (app.preloadStatus) {
+            app.changePreloadStatus();
+          }
+        }
       });
     },
     mounted: function() {
-      let app = this;
-
       if (this.website.pgn_nama != undefined) {
         this.updateMeta(this.website);
         this.updateLogo(this.website);
       }
-
-      setTimeout(() => {
-        app.preloadStatus = !app.preloadStatus;
-      }, 250); 
     }
   }
 

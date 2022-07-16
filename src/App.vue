@@ -1,26 +1,49 @@
 <template>
-    <div id="appBody" class="text-gray-700">
+
+  <Transition>
+    <global-preloader v-bind:preloadStatus="preloadStatus"></global-preloader>
+  </Transition>
+
+  <div id="appBody" class="text-gray-700">
       <router-view v-bind:key="$route.fullPath"></router-view>
-    </div>
+  </div>
+
 </template>
 
 <script>
 
+  // load components
+  import GlobalPreloader from './components/GlobalPreloader.vue';
+
+  // load library
   import { computed } from 'vue';
   import { usePublicApi } from './helper/Api';
 
   export default {
     name: 'App',
+    components: {
+      'global-preloader': GlobalPreloader
+    },
     data: function() {
       return {
-        websiteInfo: {}
+        websiteInfo: {},
+        preloadStatus: true
+      }
+    },
+    methods: {
+      changePreloadStatus: function() {
+        return this.preloadStatus = !this.preloadStatus;
       }
     },
     provide: function() {
       return {
         website: computed(() => {
           return this.websiteInfo;
-        })
+        }),
+        preloadStatus: computed(() => {
+          return this.preloadStatus
+        }),
+        changePreloadStatus: this.changePreloadStatus,
       }
     },
     created: function() {
