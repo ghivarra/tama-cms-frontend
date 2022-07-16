@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	.btn {
+		@apply text-center py-2 px-4 rounded-md transition-colors;
+	}
+	.dropdown-item {
+		@apply w-full text-left text-gray-700 block px-4 py-2 text-sm transition-colors cursor-pointer hover:bg-gss-light hover:text-white;
+	}
+	.menu-item {
+		@apply w-full rounded-md px-4 py-2 mb-2 text-lg text-white transition-colors cursor-pointer hover:bg-white hover:text-dark;
+	}
+}

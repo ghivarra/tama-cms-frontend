@@ -17,13 +17,15 @@ module.exports = {
         'inner': 'calc(100% - 280px)'
       },
       fontSize: {
-        'xs': '14px'
+        'sm': '14px',
+        'lg': '18px'
       },
       colors: {
+        'dark': '#374151',
         'gss': {
-          'light': '#2f405d',
-          DEFAULT: '#1e293b',
-          'dark': '#161e2b'
+          'light': '#5C7BAD',
+          DEFAULT: '#48638e',
+          'dark': '#3f567c'
         },
         'success': {
           'light': '#DCFCE7',
@@ -41,7 +43,8 @@ module.exports = {
           'dark': '#dc2626'
         },
         'secondary': '#e2e8f0',
-        'special': '#ff6600'
+        'special': '#ff6600',
+        'muted': '#9ca3af'
       },
     },
   },

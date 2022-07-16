@@ -32,7 +32,7 @@
 
       </div>
 
-      <button type="submit" class="block w-full text-center py-2 px-4 bg-gss text-white rounded-md mb-8 transition hover:bg-gss-dark">
+      <button type="submit" class="block w-full btn text-white mb-8 bg-gss hover:bg-gss-dark">
         <font-awesome icon="fa-solid fa-right-to-bracket" class="text-white mr-1"></font-awesome>
         Login
       </button>

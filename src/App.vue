@@ -4,7 +4,7 @@
     <global-preloader v-bind:preloadStatus="preloadStatus"></global-preloader>
   </Transition>
 
-  <div id="appBody" class="text-gray-700">
+  <div id="appBody" class="text-dark">
       <router-view v-bind:key="$route.fullPath"></router-view>
   </div>
 
@@ -66,19 +66,23 @@
   /* import font  */
   @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 
-  html, body { font-size: 18px; font-family: 'Rubik', sans-serif; }
+  html, body { font-size: 16px; font-family: 'Rubik', sans-serif; }
 
   .h {
 
     &1 {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
     }
 
     &2 {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
     }
 
     &3 {
+      font-size: 1.25rem;
+    }
+
+    &4 {
       font-size: 1.1rem;
     }
   }
@@ -115,10 +119,34 @@
     }
   }
 
+  .slide-fade-down-enter {
+
+    &-active {
+      transition: all 0.3s ease-out;
+    }
+
+    &-from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+  }
+
+  .slide-fade-down-leave {
+
+    &-active {
+      transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+    }
+
+    &-to {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+  }
+
   .skeleton-loader {
     position: relative;
     overflow: hidden;
-    background-color: #DDDBDD;
+    background-color: #d1d5db;
 
     &::after {
       position: absolute;

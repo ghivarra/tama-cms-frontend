@@ -1,37 +1,68 @@
 <template>
 
-  <div v-on:click="checkMainMenu" class="admin block smartphone:flex">
+  <div v-on:click="checkMainMenu" class="admin block bg-slate-200 smartphone:flex">
 
     <!-- SIDEBAR -->
-    <aside class="admin-sidebar w-sidebar h-screen bg-gss shadow-md z-5 relative">
+    <aside class="admin-sidebar w-sidebar h-screen bg-gss-dark shadow-md z-5 relative">
       
-      <header class="bg-white p-4 pt-3">
+      <header class="bg-white p-4">
         <img v-if="logoLoaded" v-bind:src="logo" v-bind:alt="website.pgn_nama" class="logo w-full mx-auto">
         <div v-else class="logo skeleton-loader w-full mx-auto"></div>
       </header>
 
+      <!-- LOAD MENU -->
+      <admin-template-menu></admin-template-menu>
+
     </aside>
 
     <!-- INNER -->
-    <div class="admin-inner w-inner h-full bg-slate-100">
+    <div class="admin-inner w-inner h-full">
 
       <!-- INNER HEADER -->
       <header class="w-full p-3 flex items-center justify-between px-8">
-        <h1 class="h2 font-bold">{{ title }}</h1>
+        <h1 class="h1 font-bold">{{ title }}</h1>
         <section class="dropdown relative inline-block">
 
           <div>
-            <button v-on:click="showMainMenu = !showMainMenu" type="button" data-dropdown="true" class="block py-2 px-4 bg-white rounded-full shadow-sm">FOTO DAN MENU</button>
+            <button v-on:click="showMainMenu = !showMainMenu" type="button" data-dropdown="true" class="flex py-2 px-4 bg-white rounded-full shadow-sm items-center">
+              
+              <figure class="m-0 p-0 mr-4">
+                <img v-if="adminLoaded" v-bind:src="getProfilePic(35)" class="rounded-full border" v-bind:alt="admin.adm_nama">
+                <div v-else class="profil-foto skeleton-loader rounded-full"></div>
+              </figure>
+
+              <div class="mr-4">
+
+                <p v-if="adminLoaded" class="profil-nama text-left mb-0 text-sm truncate ...">{{ admin.adm_nama }}</p>
+                <p v-else class="profil-nama skeleton-loader"></p>
+
+                <p v-if="adminLoaded" class="profil-role text-left mb-0 text-sm truncate ... text-muted">{{ admin.adm_role }}</p>
+                <p v-else class="profil-role skeleton-loader"></p>
+
+              </div>
+
+              <font-awesome v-if="showMainMenu" icon="fa-solid fa-chevron-up"></font-awesome>
+              <font-awesome v-else icon="fa-solid fa-chevron-down"></font-awesome>
+
+            </button>
           </div>
 
-          <Transition name="slide-fade-right">
+          <Transition name="slide-fade-down">
 
             <div v-if="showMainMenu" class="origin-top-right absolute right-0 mt-2 py-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
               <div class="py-1" role="none">
-                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                <a href="#" class="text-gray-700 block px-4 py-2 text-sm transition-colors hover:bg-gss-light hover:text-white" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
-                <a href="#" class="text-gray-700 block px-4 py-2 text-sm transition-colors hover:bg-gss-light hover:text-white" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
-                <a href="#" class="text-gray-700 block px-4 py-2 text-sm transition-colors hover:bg-gss-light hover:text-white" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+
+                <a href="#" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
+                <a href="#" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
+                <a href="#" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+
+                <hr class="my-2">
+
+                <button v-on:click="logout" type="button" class="dropdown-item">
+                  <font-awesome icon="fa-solid fa-right-from-bracket" class="mr-1"></font-awesome>
+                  Keluar
+                </button>
+
               </div>
             </div>
 
@@ -40,11 +71,8 @@
         </section>
       </header>
 
-      <div class="p-10">
-        <button v-on:click="logout" type="button" class="text-center py-2 px-4 bg-error text-white rounded-md mb-8 transition hover:bg-error-dark">
-          <font-awesome icon="fa-solid fa-right-to-bracket mr-2"></font-awesome>
-          Logout Ahhh
-        </button>
+      <div class="px-8 py-4">
+        KONTEN nu long pisan KONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisan
       </div>
     </div>
 
@@ -53,17 +81,23 @@
 
 <script>
 
-  // load library
+  // load functions
   import { setCookie, imageURL } from '../../helper/Global';
   import { usePrivateApi } from '../../helper/Api';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import { computed } from 'vue';
+
+  // load library
   import Swal from 'sweetalert2';
+
+  // load components
+  import AdminTemplateMenu from './template/AdminMenu.vue';
 
   export default {
     name: 'admin-index',
     components: {
-      'font-awesome': FontAwesomeIcon
+      'font-awesome': FontAwesomeIcon,
+      'admin-template-menu': AdminTemplateMenu
     },
     inject: [
       'changePreloadStatus',
@@ -78,6 +112,9 @@
 
         // data
         admin: {},
+        adminLoaded: false,
+
+        // menu
         showMainMenu: false
       }
     },
@@ -128,18 +165,45 @@
           cancelButtonText: 'Batal'
         }).then((result) => {
           if (result.isConfirmed) {
+
+            app.changePreloadStatus();
+
             usePrivateApi('sertifikasi/logout', {
               app: app,
               method: 'get',
               success: function() {
                 setCookie(process.env.VUE_APP_AUTH_KEY, process.env.VUE_APP_AUTH_SIGN, 0);
                 app.$router.push({ name: 'login.index' });    
+              },
+              catch: function() {
+                app.changePreloadStatus();
               }
             });
           }
         });
       },
       checkMainMenu: function(e) {
+
+        let path = e.composedPath();
+
+        if (path.length > 0)
+        {
+          let broke;
+
+          for (var i = 0; i < path.length; i++) {
+            if (path[i].hasAttribute('data-dropdown')) {
+              broke = true;
+              break;
+            } else if (path[i] == document.querySelector('html')) {
+              break;
+            }
+          }
+
+          if (broke) {
+            return broke;
+          }
+        }
+
         if (e.target.hasAttribute('data-dropdown'))
         {
           return false;
@@ -174,6 +238,7 @@
         success: function(res) {
           let data = res.data.data;
           app.admin = data;
+          app.adminLoaded = true;
         },
         final: function() {
           if (app.preloadStatus) {
@@ -195,7 +260,7 @@
     &-sidebar {
 
       .logo {
-        max-width: 72px;
+        max-width: 120px;
 
         &.skeleton-loader {
           height: 24px;
@@ -205,6 +270,32 @@
 
     &-inner {
       min-height: 100vh;
+
+      .profil {
+
+        &-foto.skeleton-loader {
+          width: 35px;
+          height: 35px;
+        }
+
+        &-nama {
+          width: 120px;
+          
+          &.skeleton-loader {
+            margin-bottom: 7px;
+            height: 14px;
+          }
+        }
+
+        &-role {
+
+          &.skeleton-loader {
+            width: 75px;
+            height: 14px;
+          }
+        }
+      }
+
     }
   }
 

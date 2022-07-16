@@ -45,11 +45,11 @@
 
         <div class="flex">
 
-          <router-link v-bind:to="{ name: 'login.index' }" class="block mr-2 w-full text-center px-4 py-2 rounded-md bg-gray-400 text-white hover:bg-gray-500 transition-colors">
+          <router-link v-bind:to="{ name: 'login.index' }" class="block mr-2 w-full btn bg-gray-400 text-white hover:bg-gray-500">
             Batal
           </router-link>
 
-          <button type="submit" class="block ml-2 w-full text-center px-4 py-2 rounded-md bg-gss text-white hover:bg-gss-dark transition-colors">
+          <button type="submit" class="block ml-2 w-full btn bg-gss text-white hover:bg-gss-dark">
             Simpan
           </button>
 
