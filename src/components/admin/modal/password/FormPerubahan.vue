@@ -4,7 +4,7 @@
     <div class="form-group mb-4">
       <label for="passwordLama" class="block font-bold mb-2">Password Lama</label>
       <div class="input-group relative">
-        <input ref="passwordLama" type="password" id="passwordLama" class="form-control focus:border-gss" required>
+        <input v-model="password.old" ref="passwordLama" type="password" id="passwordLama" class="form-control focus:border-gss" required>
 
         <div v-if="showPassword.old" v-on:click="seePassword('passwordLama', 'old')" class="cursor-pointer">
           <font-awesome icon="fa-regular fa-eye-slash" class="text-gray-400 absolute right-4 bottom-3 seepass-btn"></font-awesome>
@@ -20,7 +20,7 @@
     <div class="form-group mb-4">
       <label for="passwordBaru" class="block font-bold mb-2">Password Baru</label>
       <div class="input-group relative">
-        <input ref="passwordBaru" type="password" id="passwordBaru" class="form-control focus:border-gss" required>
+        <input v-model="password.new" ref="passwordBaru" type="password" id="passwordBaru" class="form-control focus:border-gss" required>
 
         <div v-if="showPassword.new" v-on:click="seePassword('passwordBaru', 'new')" class="cursor-pointer">
           <font-awesome icon="fa-regular fa-eye-slash" class="text-gray-400 absolute right-4 bottom-3 seepass-btn"></font-awesome>
@@ -36,7 +36,7 @@
     <div class="form-group mb-8">
       <label for="passwordConf" class="block font-bold mb-2">Konfirmasi Password Baru</label>
       <div class="input-group relative">
-        <input ref="passwordConf" type="password" id="passwordConf" class="form-control focus:border-gss" required>
+        <input v-model="password.conf" ref="passwordConf" type="password" id="passwordConf" class="form-control focus:border-gss" required>
 
         <div v-if="showPassword.conf" v-on:click="seePassword('passwordConf', 'conf')" class="cursor-pointer">
           <font-awesome icon="fa-regular fa-eye-slash" class="text-gray-400 absolute right-4 bottom-3 seepass-btn"></font-awesome>
@@ -58,13 +58,24 @@
 
 <script>
 
+  // Load Functions
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+  import { usePrivateApi } from '../../../../helper/Api';
+
+  // Load library
+  import Swal from 'sweetalert2';
 
   export default {
     name: 'form-perubahan',
     components: {
       'font-awesome': FontAwesomeIcon
     },
+    inject: [
+      'changePreloadStatus'
+    ],
+    props: [
+      'nextStep'
+    ],
     data: function() {
       return {
         password: {
@@ -89,7 +100,68 @@
       },
       checkPassword: function(e) {
         e.preventDefault();
-        alert('submit');
+
+        // use private api
+        let app = this;
+        app.changePreloadStatus();
+
+        if (app.password.new !== app.password.conf) {
+          Swal.fire('Peringatan', 'Password Baru harus sesuai dengan Konfirmasi Password', 'warning');
+          return false;
+        } else if (app.password.old === app.password.new) {
+          Swal.fire('Peringatan', 'Password baru tidak boleh sama dengan password lama', 'warning'); 
+          return false;
+        }
+
+        // compile post data
+        let postData = new FormData();
+        postData.append('password_lama', app.password.old);
+        postData.append('password_baru', app.password.new);
+        postData.append('password_konf', app.password.conf);
+
+        usePrivateApi('sertifikasi/akun/rubah-password', {
+          app: app,
+          method: 'post',
+          data: postData,
+          success: function(res) {
+            let data = res.data;
+            Swal.fire({
+              icon: data.status,
+              title: data.title,
+              text: data.message
+            }).then(() => {
+              app.nextStep();
+            });
+          },
+          catch: function(error) {
+
+            if (error.response.data != undefined) {
+
+              let data = error.response.data;
+              Swal.fire({
+                icon: data.status,
+                title: data.title,
+                html: data.message
+              });
+
+            } else {
+
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal Menyimpan Perubahan',
+                text: 'Server sedang sibuk silahkan coba lagi'
+              }).then(() => {
+                if (process.env.NODE_ENV != 'development') {
+                  console.clear();
+                }
+              });
+
+            }
+          },
+          final: function() {
+            app.changePreloadStatus();
+          }
+        });
       }
     }
   }

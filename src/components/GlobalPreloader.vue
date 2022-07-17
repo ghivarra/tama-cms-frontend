@@ -1,5 +1,5 @@
 <template>
-  <div v-if="preloadStatus" id="preloader" class="flex justify-center items-center h-screen w-screen fixed z-50 top-0 left-0 bg-white opacity-80">
+  <div v-if="preloadStatus" id="preloader" class="flex justify-center items-center h-screen w-screen fixed top-0 left-0 bg-white opacity-80">
     <img v-bind:src="preloader">
   </div>
 </template>
@@ -19,6 +19,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+  #preloader {
+    z-index: 250;
+  }
 
 .v-enter-active,
 .v-leave-active {

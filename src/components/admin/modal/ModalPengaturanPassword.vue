@@ -29,10 +29,8 @@
             </section>
 
             <section class="indicator-form">
-              <component v-bind:is="activeComponent" v-bind:key="activeComponentID"></component>
+              <component v-bind:is="activeComponent" v-bind:key="activeComponentID" v-bind:nextStep="nextStep"></component>
             </section>
-
-            <button v-on:click="nextStep" type="button" class="btn">NEXT</button>
 
           </div>
 
@@ -54,7 +52,7 @@
 
   // data default
   const defaultActiveComponent = markRaw(defineAsyncComponent(() => {
-    return import(`./password/FormPerubahan.vue`);
+    return import(`./password/FormOtp.vue`);
   }));
   const defaultActiveComponentID = 1;
 
