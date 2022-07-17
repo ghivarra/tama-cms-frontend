@@ -19,14 +19,14 @@
 		@apply fixed top-0 left-0 h-screen w-screen px-10 z-50 overflow-auto;
 	}
 	.modal-dialog {
-		height: calc(100% + 6rem);
+		@apply flex w-full items-start py-12;
 	}
 	.modal-backdrop {
 		@apply h-full w-full absolute top-0 left-0 z-10 bg-neutral-900 opacity-40;
 	}
 	.modal-content {
 		max-width: 600px;
-		@apply mx-auto top-20 relative bg-white rounded-md z-20 overflow-hidden;
+		@apply mx-auto relative mt-10 bg-white rounded-md z-20 overflow-hidden w-full;
 	}
 	.modal-content-header {
 		@apply bg-white border-b px-6 py-4;
@@ -36,5 +36,38 @@
 	}
 	.modal-content-footer {
 		@apply px-6 py-4 border-t;
+	}
+
+	/* indicators  */
+	.indicator-item {
+		@apply flex items-center mb-3 transition-colors;
+	}
+
+	.indicator-line {
+		@apply bg-gray-600 transition-colors;
+	}
+
+	.indicator-dot {
+		@apply rounded-full bg-gray-600 transition-colors;
+	}
+
+	.indicator-title {
+		@apply text-center;
+	}
+
+	.indicator-item.active .indicator-line, .indicator-item.active .indicator-dot {
+		@apply bg-blue-500;
+	}
+
+	.indicator-item.active .indicator-title {
+		@apply text-blue-500;
+	}
+
+	.indicator-item.done .indicator-line, .indicator-item.done .indicator-dot {
+		@apply bg-green-500;
+	}
+
+	.indicator-item.done .indicator-title {
+		@apply text-green-500;
 	}
 }

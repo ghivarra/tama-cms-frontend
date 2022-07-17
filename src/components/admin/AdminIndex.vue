@@ -54,9 +54,9 @@
 
                 <button v-on:click="modalTogglePengaturanAkun" type="button" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-0">
                   <font-awesome icon="fa-solid fa-user-gear" class="mr-1"></font-awesome>
-                  Informasi Akun
+                  Pengaturan Akun
                 </button>
-                <button type="button" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-1">
+                <button v-on:click="modalTogglePengaturanPassword" type="button" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-1">
                   <font-awesome icon="fa-solid fa-key" class="mr-1"></font-awesome>
                   Ubah Password
                 </button>
@@ -83,14 +83,14 @@
 
     <!-- MODALS -->
     <modal-pengaturan-akun v-bind:show="modals.showPengaturanAkun" v-bind:toggle="modalTogglePengaturanAkun"></modal-pengaturan-akun>
-
+    <modal-pengaturan-password v-bind:show="modals.showPengaturanPassword" v-bind:toggle="modalTogglePengaturanPassword"></modal-pengaturan-password>
   </div>
 </template>
 
 <script>
 
   // load functions
-  import { setCookie, imageURL } from '../../helper/Global';
+  import { setCookie, imageURL, createModal } from '../../helper/Global';
   import { usePrivateApi } from '../../helper/Api';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import { computed } from 'vue';
@@ -101,13 +101,15 @@
   // load components
   import AdminTemplateMenu from './template/AdminMenu.vue';
   import ModalPengaturanAkun from './modal/ModalPengaturanAkun.vue';
+  import ModalPengaturanPassword from './modal/ModalPengaturanPassword.vue';
 
   export default {
     name: 'admin-index',
     components: {
       'font-awesome': FontAwesomeIcon,
       'admin-template-menu': AdminTemplateMenu,
-      'modal-pengaturan-akun': ModalPengaturanAkun
+      'modal-pengaturan-akun': ModalPengaturanAkun,
+      'modal-pengaturan-password': ModalPengaturanPassword
     },
     inject: [
       'changePreloadStatus',
@@ -139,9 +141,10 @@
         // menu
         showMainMenu: false,
 
-        // modals
+        // modals           
         modals: {
-          showPengaturanAkun: false
+          showPengaturanAkun: false,
+          showPengaturanPassword: false
         }
       }
     },
@@ -259,19 +262,13 @@
         return imageURL(`assets/photo/admin/${this.admin.adm_foto}?v=1.0&width=${size}&height=${size}`);
       },
       modalTogglePengaturanAkun: function() {
-        let body = document.querySelector('body');
-        if (!this.modals.showPengaturanAkun) {
-          let backdrop = document.createElement('div');
-          backdrop.classList.add('modal-backdrop');
-          body.appendChild(backdrop);
-          body.classList.add('modal-open');
-        } else {
-          body.classList.remove('modal-open');
-          document.querySelector('.modal-backdrop').remove();
-        }
-
+        createModal(this, 'showPengaturanAkun');
         this.modals.showPengaturanAkun = !this.modals.showPengaturanAkun;
-      }
+      },
+      modalTogglePengaturanPassword: function() {
+        createModal(this, 'showPengaturanPassword');
+        this.modals.showPengaturanPassword = !this.modals.showPengaturanPassword;
+      },
     },
     created: function() {
       // update
@@ -284,7 +281,7 @@
       this.updateDataAdmin();
     },
     mounted: function() {
-      this.modalTogglePengaturanAkun();
+      this.modalTogglePengaturanPassword();
     }
   }
 

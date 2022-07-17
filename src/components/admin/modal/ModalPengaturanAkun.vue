@@ -4,8 +4,11 @@
       <!-- MODAL CONTENT -->
       <div class="modal-dialog">
         <div class="modal-content">
-          <header class="modal-content-header">
-            <h2 class="modal-dialog-title h3 font-bold">Informasi Akun</h2>
+          <header class="modal-content-header flex justify-between items-center">
+            <h2 class="h3 font-bold">Akun</h2>
+            <button v-on:click="toggle" type="button" class="text-red-500 hover:text-red-600 transition-colors">
+              <font-awesome icon="fa-solid fa-xmark" class="h3"></font-awesome>
+            </button>
           </header>
 
           <div class="modal-content-body">
