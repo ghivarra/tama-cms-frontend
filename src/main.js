@@ -8,7 +8,7 @@ import './main.css'
 // importing font awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { faMagnifyingGlass, faAlignLeft, faXmark, faRightToBracket, faRightFromBracket, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faAlignLeft, faXmark, faRightToBracket, faRightFromBracket, faChevronDown, faChevronUp, faUserGear, faKey, faImage } from '@fortawesome/free-solid-svg-icons';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -23,4 +23,4 @@ app.mount('#app-gsslit');
 app.config.unwrapInjectedRef = true;
 
 // add fontawesome
-library.add(faEye, faEyeSlash, faMagnifyingGlass, faAlignLeft, faXmark, faRightToBracket, faRightFromBracket, faChevronDown, faChevronUp);
+library.add(faEye, faEyeSlash, faMagnifyingGlass, faAlignLeft, faXmark, faRightToBracket, faRightFromBracket, faChevronDown, faChevronUp, faUserGear, faKey, faImage);

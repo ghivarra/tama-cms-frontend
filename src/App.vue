@@ -143,6 +143,30 @@
     }
   }
 
+  .slide-fade-up-enter {
+
+    &-active {
+      transition: all 0.3s ease-out;
+    }
+
+    &-from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+  }
+
+  .slide-fade-up-leave {
+
+    &-active {
+      transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+    }
+
+    &-to {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+  }
+
   .skeleton-loader {
     position: relative;
     overflow: hidden;

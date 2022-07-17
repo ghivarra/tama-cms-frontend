@@ -6,10 +6,35 @@
 	.btn {
 		@apply text-center py-2 px-4 rounded-md transition-colors;
 	}
+	.form-control {
+		@apply block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-gss focus:outline-none;
+	}
 	.dropdown-item {
 		@apply w-full text-left text-gray-700 block px-4 py-2 text-sm transition-colors cursor-pointer hover:bg-gss-light hover:text-white;
 	}
 	.menu-item {
 		@apply w-full rounded-md px-4 py-2 mb-2 text-lg text-white transition-colors cursor-pointer hover:bg-white hover:text-dark;
+	}
+	.modal {
+		@apply fixed top-0 left-0 h-screen w-screen px-10 z-50 overflow-auto;
+	}
+	.modal-dialog {
+		height: calc(100% + 6rem);
+	}
+	.modal-backdrop {
+		@apply h-full w-full absolute top-0 left-0 z-10 bg-neutral-900 opacity-40;
+	}
+	.modal-content {
+		max-width: 600px;
+		@apply mx-auto top-20 relative bg-white rounded-md z-20 overflow-hidden;
+	}
+	.modal-content-header {
+		@apply bg-white border-b px-6 py-4;
+	}
+	.modal-content-body {
+		@apply p-6;
+	}
+	.modal-content-footer {
+		@apply px-6 py-4 border-t;
 	}
 }

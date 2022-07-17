@@ -1,6 +1,6 @@
 <template>
 
-  <div v-on:click="checkMainMenu" class="admin block bg-slate-200 smartphone:flex">
+  <div v-on:click="checkDropdown" class="admin block bg-slate-200 smartphone:flex">
 
     <!-- SIDEBAR -->
     <aside class="admin-sidebar w-sidebar h-screen bg-gss-dark shadow-md z-5 relative">
@@ -27,7 +27,7 @@
             <button v-on:click="showMainMenu = !showMainMenu" type="button" data-dropdown="true" class="flex py-2 px-4 bg-white rounded-full shadow-sm items-center">
               
               <figure class="m-0 p-0 mr-4">
-                <img v-if="adminLoaded" v-bind:src="getProfilePic(35)" class="rounded-full border" v-bind:alt="admin.adm_nama">
+                <img v-if="adminLoaded" v-bind:src="getProfilePicture(35)" class="rounded-full border" v-bind:alt="admin.adm_nama">
                 <div v-else class="profil-foto skeleton-loader rounded-full"></div>
               </figure>
 
@@ -36,7 +36,7 @@
                 <p v-if="adminLoaded" class="profil-nama text-left mb-0 text-sm truncate ...">{{ admin.adm_nama }}</p>
                 <p v-else class="profil-nama skeleton-loader"></p>
 
-                <p v-if="adminLoaded" class="profil-role text-left mb-0 text-sm truncate ... text-muted">{{ admin.adm_role }}</p>
+                <p v-if="adminLoaded" class="profil-role text-left mb-0 text-sm truncate ... text-muted">{{ admin.rol_nama }}</p>
                 <p v-else class="profil-role skeleton-loader"></p>
 
               </div>
@@ -47,14 +47,19 @@
             </button>
           </div>
 
-          <Transition name="slide-fade-down">
+          <Transition name="slide-fade-down"><!-- DROPDOWN -->
 
             <div v-if="showMainMenu" class="origin-top-right absolute right-0 mt-2 py-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
               <div class="py-1" role="none">
 
-                <a href="#" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
-                <a href="#" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
-                <a href="#" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+                <button v-on:click="modalTogglePengaturanAkun" type="button" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-0">
+                  <font-awesome icon="fa-solid fa-user-gear" class="mr-1"></font-awesome>
+                  Informasi Akun
+                </button>
+                <button type="button" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-1">
+                  <font-awesome icon="fa-solid fa-key" class="mr-1"></font-awesome>
+                  Ubah Password
+                </button>
 
                 <hr class="my-2">
 
@@ -76,6 +81,9 @@
       </div>
     </div>
 
+    <!-- MODALS -->
+    <modal-pengaturan-akun v-bind:show="modals.showPengaturanAkun" v-bind:toggle="modalTogglePengaturanAkun"></modal-pengaturan-akun>
+
   </div>
 </template>
 
@@ -92,18 +100,32 @@
 
   // load components
   import AdminTemplateMenu from './template/AdminMenu.vue';
+  import ModalPengaturanAkun from './modal/ModalPengaturanAkun.vue';
 
   export default {
     name: 'admin-index',
     components: {
       'font-awesome': FontAwesomeIcon,
-      'admin-template-menu': AdminTemplateMenu
+      'admin-template-menu': AdminTemplateMenu,
+      'modal-pengaturan-akun': ModalPengaturanAkun
     },
     inject: [
       'changePreloadStatus',
       'preloadStatus',
       'website'
     ],
+    provide: function() {
+      return {
+        admin: computed(() => {
+          return this.admin;
+        }),
+        adminLoaded: computed(() => {
+          return this.adminLoaded;
+        }),
+        updateDataAdmin: this.updateDataAdmin,
+        getProfilePicture: this.getProfilePicture,
+      }
+    },
     data: function() {
       return {
         logo: '',
@@ -115,7 +137,12 @@
         adminLoaded: false,
 
         // menu
-        showMainMenu: false
+        showMainMenu: false,
+
+        // modals
+        modals: {
+          showPengaturanAkun: false
+        }
       }
     },
     watch: {
@@ -124,14 +151,24 @@
         this.updateLogo(data);
       }
     },
-    provide: function() {
-      return {
-        admin: computed(() => {
-          return this.admin;
-        })
-      }
-    },
     methods: {
+      updateDataAdmin: function() {
+        let app = this;
+        usePrivateApi('sertifikasi/admin-info', {
+          app: app,
+          method: 'get',
+          success: function(res) {
+            let data = res.data.data;
+            app.admin = data;
+            app.adminLoaded = true;
+          },
+          final: function() {
+            if (app.preloadStatus) {
+              app.changePreloadStatus();
+            }
+          }
+        });
+      },
       updateLogo: function(data) {
         this.logo = imageURL(`assets/informasi/logo-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_icon}&width=120&height=120`)
         this.logoLoaded = true;
@@ -182,7 +219,7 @@
           }
         });
       },
-      checkMainMenu: function(e) {
+      checkDropdown: function(e) {
 
         let path = e.composedPath();
 
@@ -211,7 +248,7 @@
           this.showMainMenu = false;
         }
       },
-      getProfilePic: function(size) {
+      getProfilePicture: function(size) {
 
         size = (size == undefined) ? '80' : size.toString();
 
@@ -219,12 +256,24 @@
           return imageURL(`assets/photo/admin/placeholder.jpg?v=1.0&width=${size}&height=${size}`);
         }
 
-        return imageURL(`assets/photo/admin/${this.admin.adm_foto.length}?v=1.0&width=${size}&height=${size}`);
+        return imageURL(`assets/photo/admin/${this.admin.adm_foto}?v=1.0&width=${size}&height=${size}`);
+      },
+      modalTogglePengaturanAkun: function() {
+        let body = document.querySelector('body');
+        if (!this.modals.showPengaturanAkun) {
+          let backdrop = document.createElement('div');
+          backdrop.classList.add('modal-backdrop');
+          body.appendChild(backdrop);
+          body.classList.add('modal-open');
+        } else {
+          body.classList.remove('modal-open');
+          document.querySelector('.modal-backdrop').remove();
+        }
+
+        this.modals.showPengaturanAkun = !this.modals.showPengaturanAkun;
       }
     },
     created: function() {
-      let app = this;
-
       // update
       if (this.website.pgn_slug != undefined) {
         this.updateLogo(this.website);
@@ -232,21 +281,10 @@
       }
 
       // admin info
-      usePrivateApi('sertifikasi/admin-info', {
-        app: app,
-        method: 'get',
-        success: function(res) {
-          let data = res.data.data;
-          app.admin = data;
-          app.adminLoaded = true;
-        },
-        final: function() {
-          if (app.preloadStatus) {
-            app.changePreloadStatus();
-          }
-        }
-      });
-
+      this.updateDataAdmin();
+    },
+    mounted: function() {
+      this.modalTogglePengaturanAkun();
     }
   }
 
@@ -254,6 +292,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+
+  @import '../../../node_modules/datatables.net-dt/css/jquery.dataTables.min.css';
 
   .admin {
 
@@ -273,9 +313,14 @@
 
       .profil {
 
-        &-foto.skeleton-loader {
-          width: 35px;
-          height: 35px;
+        &-foto {
+          object-fit: cover;
+          object-position: center;
+
+          &.skeleton-loader {
+            width: 35px;
+            height: 35px;
+          }
         }
 
         &-nama {
@@ -297,6 +342,12 @@
       }
 
     }
+  }
+
+  .modal-open {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
   }
 
 </style>
