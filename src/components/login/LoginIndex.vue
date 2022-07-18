@@ -37,6 +37,12 @@
       website: function(data) {
         this.updateMeta(data);
         this.updateLogo(data);
+      },
+      $route: function(newRoutes) {
+        this.updateMeta(this.website);
+        this.currentComponent = markRaw(defineAsyncComponent(() => {
+          return import(`./${newRoutes.meta.view}.vue`);
+        }));
       }
     },
     methods: {

@@ -23,7 +23,7 @@
 
         <div v-show="menu.childStatus">
           
-          <router-link v-bind:to=" `/${adminPage}/${child.men_link}` " v-for="child in menu.men_child" v-bind:key="child.men_id" v-on:click="child.status = !child.status" v-bind:class="`submenu-item ${child.status}`">
+          <router-link v-bind:to=" `/${adminPage}/${child.men_link}` " v-for="child in menu.men_child" v-bind:key="child.men_id" v-bind:class="`submenu-item ${child.status}`">
             <font-awesome icon="fa-regular fa-circle" class="icon mr-3"></font-awesome>
             {{ child.men_nama }}
           </router-link>
@@ -48,84 +48,21 @@
 <script>
 
   // load functions
-  import { usePrivateApi } from '../../../helper/Api';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-  // load library
-  import Swal from 'sweetalert2';
 
   export default {
     name: 'admin-template-menu',
+    props: [
+      'menus',
+      'menuLoaded'
+    ],
     components: {
       'font-awesome': FontAwesomeIcon
     },
     data: function() {
       return {
-        adminPage: process.env.VUE_APP_ADMIN_PAGE,
-        menus: [],
-        menuLoaded: false
+        adminPage: process.env.VUE_APP_ADMIN_PAGE
       }
-    },
-    created: function() {
-      let app = this;
-
-      usePrivateApi('sertifikasi/menu-list', {
-        app: app,
-        method: 'get',
-        success: function(res) {
-          let data = res.data.data;
-          let path = app.$router.currentRoute.value.path;
-
-          Array.prototype.forEach.call(data, function(item, i){
-
-            data[i]['status'] = (path == `/${process.env.VUE_APP_ADMIN_PAGE}/${item.men_link}`) ? 'active' : 'inactive';
-            data[i]['childStatus'] = false;
-
-            if (item.men_child.length > 0) {
-
-              Array.prototype.forEach.call(item.men_child, function(val, n){
-
-                if (path == `/${process.env.VUE_APP_ADMIN_PAGE}/${val.men_link}`) {
-                  data[i].men_child[n]['status'] = 'active';
-                  data[i]['childStatus'] = true;
-                  data[i]['status'] =  'active';
-                } else {
-                  data[i].men_child[n]['status'] = 'inactive';
-                }
-
-              });
-            }
-
-          });
-
-          app.menus = data;
-          app.menuLoaded = true;
-        },
-        catch: function(error) {
-          if (error.response.data != undefined) {
-
-            let data = error.response.data;
-            Swal.fire({
-              icon: data.status,
-              title: data.title,
-              html: data.message
-            });
-
-          } else {
-
-            Swal.fire({
-              icon: 'error',
-              title: 'Gagal Menarik Data Menu',
-              text: 'Server sedang sibuk silahkan coba lagi'
-            }).then(() => {
-              if (process.env.NODE_ENV != 'development') {
-                console.clear();
-              }
-            });
-
-          }
-        },
-      });
     }
   }
 

@@ -74,12 +74,7 @@ export default {
   components: {
     'font-awesome': FontAwesomeIcon
   },
-  props: {
-    changePreloadStatus: {
-      type: Function,
-      required: true
-    }
-  },
+  inject: ['changePreloadStatus'],
   data: function() {
     return {
       seePassword: false,

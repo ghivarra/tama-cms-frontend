@@ -11,7 +11,7 @@
       </header>
 
       <!-- LOAD MENU -->
-      <admin-template-menu></admin-template-menu>
+      <admin-template-menu v-bind:menus="menus" v-bind:menuLoaded="menuLoaded"></admin-template-menu>
 
     </aside>
 
@@ -141,6 +141,10 @@
         // menu
         showMainMenu: false,
 
+        // sidebar menu
+        menus: [],
+        menuLoaded: false,
+
         // modals           
         modals: {
           showPengaturanAkun: false,
@@ -152,6 +156,15 @@
       website: function(data) {
         this.updateMeta(data);
         this.updateLogo(data);
+      },
+      $route: function(newRoutes) {
+        this.updateMeta(this.website);
+        this.updateDataAdmin();
+        this.updateMenuData(this.menus, newRoutes.path, this);
+
+//        this.currentComponent = markRaw(defineAsyncComponent(() => {
+//          return import(`./${newRoutes.meta.view}.vue`);
+//        }));
       }
     },
     methods: {
@@ -190,6 +203,35 @@
         meta.setAttribute('name', 'description');
         meta.setAttribute('content', data.pgn_deskripsi);
         head.appendChild(meta);
+      },
+      updateMenuData: function(data, path, app) {
+        Array.prototype.forEach.call(data, function(item, i){
+
+          data[i]['status'] = (path == `/${process.env.VUE_APP_ADMIN_PAGE}/${item.men_link}`) ? 'active' : 'inactive';
+          data[i]['childStatus'] = false;
+
+          if (item.men_child.length > 0) {
+
+            Array.prototype.forEach.call(item.men_child, function(val, n){
+
+              if (path == `/${process.env.VUE_APP_ADMIN_PAGE}/${val.men_link}`) {
+                data[i].men_child[n]['status'] = 'active';
+                data[i]['childStatus'] = true;
+                data[i]['status'] =  'active';
+              } else {
+                data[i].men_child[n]['status'] = 'inactive';
+              }
+
+            });
+          }
+
+        });
+
+        app.menus = data;
+        app.menuLoaded = true;
+
+        // return
+        return data;
       },
       logout: function() {
 
@@ -276,6 +318,40 @@
         this.updateLogo(this.website);
         this.updateMeta(this.website);
       }
+
+      let app = this;
+
+      usePrivateApi('sertifikasi/menu-list', {
+        app: app,
+        method: 'get',
+        success: function(res) {
+          app.updateMenuData(res.data.data, app.$route.path, app);
+        },
+        catch: function(error) {
+          if (error.response.data != undefined) {
+
+            let data = error.response.data;
+            Swal.fire({
+              icon: data.status,
+              title: data.title,
+              html: data.message
+            });
+
+          } else {
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal Menarik Data Menu',
+              text: 'Server sedang sibuk silahkan coba lagi'
+            }).then(() => {
+              if (process.env.NODE_ENV != 'development') {
+                console.clear();
+              }
+            });
+
+          }
+        },
+      });
 
       // admin info
       this.updateDataAdmin();
