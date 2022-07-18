@@ -1,5 +1,5 @@
 <template>
-  <div v-if="preloadStatus" id="preloader" class="flex justify-center items-center h-screen w-screen fixed top-0 left-0 bg-white opacity-80">
+  <div v-show="preloadStatus" id="preloader" class="flex justify-center items-center h-screen w-screen fixed top-0 left-0 bg-white opacity-80">
     <img v-bind:src="preloader">
   </div>
 </template>

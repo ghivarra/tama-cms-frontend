@@ -47,12 +47,72 @@ export default [
 	// ADMIN PAGE
 	{ 
 		name: 'admin.index', 
-		path: '/' + process.env.VUE_APP_ADMIN_PAGE, 
+		path: `/${process.env.VUE_APP_ADMIN_PAGE}/dasbor`, 
 		component: AdminIndex, 
 		meta: {
 			view: 'AdminDasbor',
 			title: 'Dasbor'
 		},
 		beforeEnter: [loggedOutGuard]
-	}
+	},
+
+	// ADMIN MODUL
+	{ 
+		name: 'admin.modul', 
+		path: `/${process.env.VUE_APP_ADMIN_PAGE}/modul`, 
+		component: AdminIndex, 
+		meta: {
+			view: 'AdminDasbor',
+			title: 'Modul'
+		},
+		beforeEnter: [loggedOutGuard]
+	},
+
+	// ADMIN ROLE
+	{ 
+		name: 'admin.role', 
+		path: `/${process.env.VUE_APP_ADMIN_PAGE}/role`, 
+		component: AdminIndex, 
+		meta: {
+			view: 'AdminDasbor',
+			title: 'Role'
+		},
+		beforeEnter: [loggedOutGuard]
+	},
+
+	// ADMIN AKUN
+	{ 
+		name: 'admin.akun', 
+		path: `/${process.env.VUE_APP_ADMIN_PAGE}/akun`, 
+		component: AdminIndex, 
+		meta: {
+			view: 'AdminDasbor',
+			title: 'Akun'
+		},
+		beforeEnter: [loggedOutGuard]
+	},
+
+	// ADMIN MENU
+	{ 
+		name: 'admin.menu', 
+		path: `/${process.env.VUE_APP_ADMIN_PAGE}/menu`, 
+		component: AdminIndex, 
+		meta: {
+			view: 'AdminDasbor',
+			title: 'Menu'
+		},
+		beforeEnter: [loggedOutGuard]
+	},
+
+	// ADMIN WEBSITE
+	{ 
+		name: 'admin.website', 
+		path: `/${process.env.VUE_APP_ADMIN_PAGE}/website`, 
+		component: AdminIndex, 
+		meta: {
+			view: 'AdminDasbor',
+			title: 'Role'
+		},
+		beforeEnter: [loggedOutGuard]
+	},
 ];

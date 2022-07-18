@@ -118,25 +118,6 @@
           }
         }
       },
-      previousStep: function() {
-        let app = this;
-        let prev;
-        for (var i = 0; i < app.indicators.length; i++) {
-          if (app.indicators[i].status == 'active') {
-            prev = i - 1;
-            app.indicators[i].status = 'inactive';
-
-            if (app.indicators[prev] != undefined) {
-              app.indicators[prev].status = 'active';
-              app.activeComponent = markRaw(defineAsyncComponent(() => {
-                return import(`./password/${app.indicators[prev].component}.vue`);
-              }));
-              app.activeComponentID = app.indicators[prev].step;
-              break;
-            }
-          }
-        }
-      },
       extraToggle: function() {
         
         // defaulted

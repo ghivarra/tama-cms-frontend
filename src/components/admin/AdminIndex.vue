@@ -279,9 +279,6 @@
 
       // admin info
       this.updateDataAdmin();
-    },
-    mounted: function() {
-      
     }
   }
 

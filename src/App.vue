@@ -5,7 +5,7 @@
   </Transition>
 
   <div id="appBody" class="text-dark">
-      <router-view v-bind:key="$route.fullPath"></router-view>
+      <router-view></router-view>
   </div>
 
 </template>
