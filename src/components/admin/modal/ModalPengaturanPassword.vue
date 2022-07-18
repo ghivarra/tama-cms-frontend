@@ -32,6 +32,8 @@
               <component v-bind:is="activeComponent" v-bind:key="activeComponentID" v-bind:nextStep="nextStep"></component>
             </section>
 
+            <div role="alert" class="bg-warning-light text-info text-center px-6 py-4 rounded-md shadow-sm">Jangan menutup jendela perubahan password sebelum langkah perubahan selesai</div>
+
           </div>
 
         </div><!-- /modal-content -->
@@ -43,16 +45,12 @@
 <script>
 
   // load functions
-  //import { usePrivateApi } from '../../../helper/Api';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import { markRaw, defineAsyncComponent } from 'vue';
 
-  // load library
-  //import Swal from 'sweetalert2';
-
   // data default
   const defaultActiveComponent = markRaw(defineAsyncComponent(() => {
-    return import(`./password/FormOtp.vue`);
+    return import(`./password/FormPerubahan.vue`);
   }));
   const defaultActiveComponentID = 1;
 

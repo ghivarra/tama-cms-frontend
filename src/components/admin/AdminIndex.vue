@@ -281,7 +281,7 @@
       this.updateDataAdmin();
     },
     mounted: function() {
-      this.modalTogglePengaturanPassword();
+      
     }
   }
 

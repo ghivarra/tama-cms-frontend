@@ -1,5 +1,5 @@
 <template>
-  <form v-on:submit="checkPassword" class="pt-6">
+  <form v-on:submit="checkPassword" class="pb-10 tablet:pt-10">
 
     <div class="form-group mb-4">
       <label for="passwordLama" class="block font-bold mb-2">Password Lama</label>
@@ -49,8 +49,8 @@
       </div>
     </div>
 
-    <div class="text-right">
-      <button type="submit" class="btn bg-success hover:bg-success-dark text-white">Lanjut</button>
+    <div class="text-center">
+      <button type="submit" class="btn bg-success hover:bg-success-dark text-white">Simpan</button>
     </div>
 
   </form>
