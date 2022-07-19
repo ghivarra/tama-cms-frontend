@@ -68,13 +68,6 @@ export default {
             text: res.data.message
           });
         },
-        catch: function(error) {
-          Swal.fire({
-            icon: error.response.data.status,
-            title: error.response.data.title,
-            text: error.response.data.message
-          });
-        },
         final: function() {
           app.changePreloadStatus();
         }

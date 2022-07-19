@@ -51,7 +51,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // load functions
 import { auth } from '../../helper/Api';
-import { swalError } from '../../helper/Error';
 
 // load library
 import Swal from 'sweetalert2';
@@ -120,18 +119,7 @@ export default {
           });
 
         },
-        catch: function(error) {
-          // error tapi muncul response dari server
-          let data = error.response.data;
-
-          // load swalError
-          swalError({
-            title: data.title,
-            icon: data.status,
-            message: data.message,
-            confirmButtonText: 'OK'
-          });
-
+        final: function() {
           app.changePreloadStatus();
         }
       });

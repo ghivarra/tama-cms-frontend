@@ -110,8 +110,8 @@ export default [
 		path: `/${process.env.VUE_APP_ADMIN_PAGE}/website`, 
 		component: AdminIndex, 
 		meta: {
-			view: 'AdminDasbor',
-			title: 'Role'
+			view: 'AdminWebsite',
+			title: 'Info Website'
 		},
 		beforeEnter: [loggedOutGuard]
 	},

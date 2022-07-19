@@ -4,9 +4,9 @@
 
 <script>
 
-export default {
-  name: 'default-component'
-}
+  export default {
+    name: 'default-component'
+  }
 
 </script>
 

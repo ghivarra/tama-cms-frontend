@@ -144,37 +144,12 @@
             }).then(() => {
               app.updateDataAdmin();
             });
-          },
-          catch: function(error) {
-
-            if (error.response.data != undefined) {
-
-              let data = error.response.data;
-              Swal.fire({
-                icon: data.status,
-                title: data.title,
-                html: data.message
-              });
-
-            } else {
-
-              Swal.fire({
-                icon: 'error',
-                title: 'Gagal Menyimpan Perubahan',
-                text: 'Server sedang sibuk silahkan coba lagi'
-              }).then(() => {
-                if (process.env.NODE_ENV != 'development') {
-                  console.clear();
-                }
-              });
-
-            }
           }
         });
       }
     },
     created: function() {
-      if (this.admin.adm_nama != undefined) {
+      if (this.adminLoaded) {
         this.data.nama = this.admin.adm_nama;
       }
     }

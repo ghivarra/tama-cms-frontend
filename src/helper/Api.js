@@ -1,6 +1,7 @@
 import { swalError } from './Error';
 import { setCookie } from './Global';
 import Axios from 'axios';
+import Swal from 'sweetalert2';
 
 const authenticatedCookie = process.env.VUE_APP_AUTH_KEY;
 const authenticatedSign = process.env.VUE_APP_AUTH_PASS;
@@ -36,6 +37,29 @@ export const auth = (url, options) => {
 					setCookie(authenticatedCookie, authenticatedSign, 7200);
 					app.$router.push({name: 'admin.index'});
 				}
+
+        if (error.response.data != undefined) {
+
+          let data = error.response.data;
+          Swal.fire({
+            icon: data.status,
+            title: data.title,
+            html: data.message
+          });
+
+        } else {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal Menyimpan Perubahan',
+            text: 'Server sedang sibuk silahkan coba lagi'
+          }).then(() => {
+            if (process.env.NODE_ENV != 'development') {
+              console.clear();
+            }
+          });
+
+        }
 
 				// error tapi muncul response dari server
         if (typeof options.catch === 'function'){
@@ -125,16 +149,38 @@ export const usePublicApi = (url, options) => {
     .catch(function (error) {
 
 			if (error.response) {
-        
-        // error tapi muncul response dari server
-        if (typeof options.catch === 'function'){
-          options.catch(error);
-        }
 
         if (error.response.status == 406) {
           // store token in cookie
           setCookie(authenticatedCookie, authenticatedSign, 7200);
           app.$router.push({name: 'admin.index'});
+        }
+
+        // error tapi muncul response dari server
+        if (typeof options.catch === 'function'){
+          options.catch(error);
+        }
+
+        if (error.response.data != undefined) {
+
+          let data = error.response.data;
+          Swal.fire({
+            icon: data.status,
+            title: data.title,
+            html: data.message
+          });
+
+        } else {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal Menyimpan Perubahan',
+            text: 'Server sedang sibuk silahkan coba lagi'
+          }).then(() => {
+            if (process.env.NODE_ENV != 'development') {
+              console.clear();
+            }
+          });
         }
         
       } else if (error.request) {
@@ -226,6 +272,28 @@ export const usePrivateApi = (url, options) => {
 					app.$router.push({name: 'login.index'});
 
 				}
+
+        if (error.response.data != undefined) {
+
+          let data = error.response.data;
+          Swal.fire({
+            icon: data.status,
+            title: data.title,
+            html: data.message
+          });
+
+        } else {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal Menyimpan Perubahan',
+            text: 'Server sedang sibuk silahkan coba lagi'
+          }).then(() => {
+            if (process.env.NODE_ENV != 'development') {
+              console.clear();
+            }
+          });
+        }
         
         // error tapi muncul response dari server
         if (typeof options.catch === 'function'){

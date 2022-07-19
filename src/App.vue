@@ -27,12 +27,25 @@
     data: function() {
       return {
         websiteInfo: {},
+        websiteLoaded: false,
         preloadStatus: true
       }
     },
     methods: {
       changePreloadStatus: function() {
         return this.preloadStatus = !this.preloadStatus;
+      },
+      updateWebsiteData: function() {
+        let app = this;
+
+        usePublicApi('website', {
+          app: app,
+          method: 'get',
+          success: function(res) {
+            app.websiteInfo = res.data.data;
+            app.websiteLoaded = true;
+          }
+        });
       }
     },
     provide: function() {
@@ -44,18 +57,16 @@
           return this.preloadStatus
         }),
         changePreloadStatus: this.changePreloadStatus,
+        updateWebsiteData: this.updateWebsiteData,
+
+        // status
+        websiteLoaded: computed(() => {
+          return this.websiteLoaded;
+        }),
       }
     },
     created: function() {
-      let app = this;
-
-      usePublicApi('website', {
-        app: app,
-        method: 'get',
-        success: function(res) {
-          app.websiteInfo = res.data.data;
-        }
-      });
+      this.updateWebsiteData();
     }
   }
 

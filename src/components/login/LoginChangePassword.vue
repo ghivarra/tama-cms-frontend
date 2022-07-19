@@ -13,7 +13,7 @@
           <label for="password" class="block cursor-pointer text-gray-500 tracking-wide text-sm font-bold">Password</label>
 
           <div class="input-group relative mb-3">
-            <input id="password" v-bind:type="passwordInputType" class="block w-full border-b-2 p-2 pl-0 transition outline-0 hover:border-gss focus:border-gss" v-model="data.password">
+            <input id="password" v-bind:type="passwordInputType" class="block w-full border-b-2 p-2 pl-0 transition outline-0 focus:outline focus:outline-offset-1 focus:outline-gss" v-model="data.password">
 
             <button v-if="seePassword" v-on:click="seePassword = !seePassword" type="button" class="absolute top-2 right-2">
               <font-awesome icon="fa-regular fa-eye-slash" class="login-icon text-gray-400"></font-awesome>
@@ -121,21 +121,6 @@ export default {
             text: res.data.message
           }).then(() => {
             app.$router.push({ name: 'login.index' });
-          });
-
-        },
-        catch: function(error) {
-
-          if (error.response.status == 403) {
-            app.$router.push({ name: 'login.change.password' });
-          }
-
-          let res = error.response;
-
-          Swal.fire({
-            icon: res.data.status,
-            title: res.data.title,
-            html: res.data.message
           });
 
         },

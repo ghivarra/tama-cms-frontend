@@ -3,7 +3,7 @@
   <div v-on:click="checkDropdown" class="admin block bg-slate-200 smartphone:flex">
 
     <!-- SIDEBAR -->
-    <aside class="admin-sidebar w-sidebar h-screen bg-gss-dark shadow-md z-5 relative">
+    <aside class="admin-sidebar w-sidebar h-screen bg-gss-dark shadow-md z-5 relative sticky top-0 left-0">
       
       <header class="bg-white p-4">
         <img v-if="logoLoaded" v-bind:src="logo" v-bind:alt="website.pgn_nama" class="logo w-full mx-auto">
@@ -76,9 +76,9 @@
         </section>
       </header>
 
-      <div class="px-8 py-4">
-        KONTEN nu long pisan KONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisanKONTEN nu long pisan
-      </div>
+      <!-- COMPONENT -->
+      <component v-bind:is="currentComponent" v-bind:key="$route.path"></component>
+
     </div>
 
     <!-- MODALS -->
@@ -93,7 +93,7 @@
   import { setCookie, imageURL, createModal } from '../../helper/Global';
   import { usePrivateApi } from '../../helper/Api';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-  import { computed } from 'vue';
+  import { computed, markRaw, defineAsyncComponent } from 'vue';
 
   // load library
   import Swal from 'sweetalert2';
@@ -114,7 +114,8 @@
     inject: [
       'changePreloadStatus',
       'preloadStatus',
-      'website'
+      'website',
+      'websiteLoaded'
     ],
     provide: function() {
       return {
@@ -126,13 +127,17 @@
         }),
         updateDataAdmin: this.updateDataAdmin,
         getProfilePicture: this.getProfilePicture,
+
+        // website data
+        getIcon: this.getIcon,
+        getLogo: this.getLogo,
       }
     },
     data: function() {
       return {
         logo: '',
         logoLoaded: false,
-        title: this.$router.currentRoute.value.meta.title,
+        title: this.$route.meta.title,
 
         // data
         admin: {},
@@ -149,7 +154,12 @@
         modals: {
           showPengaturanAkun: false,
           showPengaturanPassword: false
-        }
+        },
+
+        // view
+        currentComponent: markRaw(defineAsyncComponent(() => {
+          return import(`./${this.$route.meta.view}.vue`);
+        }))
       }
     },
     watch: {
@@ -161,10 +171,11 @@
         this.updateMeta(this.website);
         this.updateDataAdmin();
         this.updateMenuData(this.menus, newRoutes.path, this);
+        this.title = newRoutes.meta.title;
 
-//        this.currentComponent = markRaw(defineAsyncComponent(() => {
-//          return import(`./${newRoutes.meta.view}.vue`);
-//        }));
+        this.currentComponent = markRaw(defineAsyncComponent(() => {
+          return import(`./${newRoutes.meta.view}.vue`);
+        }));
       }
     },
     methods: {
@@ -186,7 +197,7 @@
         });
       },
       updateLogo: function(data) {
-        this.logo = imageURL(`assets/informasi/logo-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_icon}&width=120&height=120`)
+        this.logo = imageURL(`assets/informasi/logo-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_logo}&width=120&height=120`);
         this.logoLoaded = true;
       },
       updateMeta: function(data) {
@@ -311,10 +322,18 @@
         createModal(this, 'showPengaturanPassword');
         this.modals.showPengaturanPassword = !this.modals.showPengaturanPassword;
       },
+      getLogo: function(size) {
+        let data = this.website;
+        return imageURL(`assets/informasi/logo-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_logo}&width=${size}`);
+      },
+      getIcon: function(size) {
+        let data = this.website;
+        return imageURL(`assets/informasi/icon-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_icon}&width=${size}`);
+      }
     },
     created: function() {
       // update
-      if (this.website.pgn_slug != undefined) {
+      if (this.websiteLoaded) {
         this.updateLogo(this.website);
         this.updateMeta(this.website);
       }
