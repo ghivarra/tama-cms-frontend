@@ -367,7 +367,6 @@
                 console.clear();
               }
             });
-
           }
         },
       });
@@ -383,6 +382,15 @@
 <style lang="scss">
 
   @import '../../../node_modules/datatables.net-dt/css/jquery.dataTables.min.css';
+  @import '../../../node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
+
+  #table_length, #table_filter, #table_paginate {
+    display: none !important;
+  }
+
+  table.dataTable thead th, table.dataTable thead td {
+    border-bottom: none !important;
+  }
 
   .admin {
 
