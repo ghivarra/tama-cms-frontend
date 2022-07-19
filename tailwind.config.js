@@ -10,7 +10,7 @@ module.exports = {
         'smartphone': '450px',
         'tablet': '640px',
         'laptop': '1024px',
-        'desktop': '1280px',
+        'desktop': '1200px',
       },
       width: {
         'sidebar': '280px',
@@ -29,8 +29,8 @@ module.exports = {
         },
         'success': {
           'light': '#DCFCE7',
-          DEFAULT: '#22C55E',
-          'dark': '#16a34a'
+          DEFAULT: '#16a34a',
+          'dark': '#15803d'
         },
         'warning': {
           'light': '#fef9c3',

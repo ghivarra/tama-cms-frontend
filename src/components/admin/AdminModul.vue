@@ -1,14 +1,14 @@
 <template>
   <main role="main" class="px-8 py-6">
     
-    <header class="block mb-8 smartphone:flex smartphone:items-center smartphone:justify-between">
+    <header class="block mb-8 flex items-center justify-between">
       
-      <button type="button" class="btn mb-6 block text-white shadow-md bg-success hover:bg-success-dark smartphone:mb-0">
-        <font-awesome icon="fa-solid fa-plus" class="mr-1"></font-awesome>
-        Tambah Modul
+      <button type="button" class="btn block text-white shadow-md bg-success hover:bg-success-dark smartphone:mx-0 smartphone:mb-0">
+        <font-awesome icon="fa-solid fa-plus" class="smartphone:mr-2"></font-awesome>
+        <span class="hidden smartphone:inline-block">Tambah</span>
       </button>
 
-      <section class="table-navigator flex items-center">
+      <section class="table-navigator justify-center flex items-center">
         
         <button disabled v-on:click="previousPage" ref="navPrev" type="button" class="btn nav rounded-full shadow-md text-dark bg-white hover:bg-gss-light hover:text-white focus:bg-gss-dark focus:text-white disabled:bg-gray-200 disabled:text-dark">
           <font-awesome icon="fa-solid fa-chevron-left"></font-awesome>
@@ -257,7 +257,7 @@
   .table-navigator {
 
     .page {
-      width: 100px;
+      width: 80px;
     }
 
     .nav {
@@ -279,7 +279,7 @@
   table.dataTable {
 
     width: 100% !important;
-    min-width: 1000px;
+    min-width: 900px;
 
     .admin-table-number, .admin-table-search-label {
       text-align: center;

@@ -19,26 +19,31 @@
 		@apply w-full rounded-md px-4 py-2 mb-2 text-lg text-white transition-colors cursor-pointer hover:bg-white hover:text-dark;
 	}
 	.modal {
-		@apply fixed top-0 left-0 h-screen w-screen px-6 z-50 overflow-auto;
+		@apply fixed top-0 left-0 h-screen w-screen z-50 overflow-auto sm:px-6;
 	}
 	.modal-dialog {
-		@apply flex w-full items-start py-12;
+		@apply flex w-full items-start sm:py-12;
 	}
 	.modal-backdrop {
-		@apply h-full w-full absolute top-0 left-0 z-10 bg-neutral-900 opacity-40;
+		@apply h-full w-full absolute top-0 left-0 z-40 bg-neutral-900 opacity-40;
 	}
 	.modal-content {
-		max-width: 600px;
-		@apply mx-auto relative mt-10 bg-white rounded-md z-20 overflow-hidden w-full;
+		max-width: 650px;
+		@apply h-screen relative bg-white z-20 overflow-hidden w-full sm:mx-auto sm:h-auto sm:mt-10 sm:rounded-md;
 	}
 	.modal-content-header {
 		@apply bg-white border-b px-6 py-4;
 	}
 	.modal-content-body {
-		@apply p-6;
+		height: calc(100vh - 136px);
+		@apply p-6 overflow-auto sm:h-auto;
+	}
+	.modal-content-body.no-footer {
+		height: calc(100vh - 63px);
+		@apply sm:h-auto;
 	}
 	.modal-content-footer {
-		@apply px-6 py-4 border-t;
+		@apply sticky bg-white w-full bottom-0 left-0 px-6 py-4 border-t sm:relative;
 	}
 
 	/* indicators  */

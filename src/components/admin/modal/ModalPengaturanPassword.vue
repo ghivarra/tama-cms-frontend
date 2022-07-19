@@ -11,9 +11,9 @@
             </button>
           </header>
 
-          <div class="modal-content-body">
+          <div class="modal-content-body no-footer">
             
-            <section class="indicator hidden tablet:flex justify-center items-start pt-4">
+            <section class="indicator flex justify-center items-start pt-4 mb-8">
               
               <div v-for="indicator in indicators" v-bind:key="indicator.step">
                 <div v-bind:class=" `indicator-item ${indicator.status}` ">
@@ -147,18 +147,38 @@
   .indicator {
 
     &-dot {
-      width: 30px;
-      height: 30px;
+      width: 20px;
+      height: 20px;
     }
 
     &-line {
-      width: 55px;
+      width: 40px;
       height: 4px;
     }
 
     &-title {
-      width: 140px;
-      padding: 0 20px;
+      width: 100px;
+      padding: 0 10px;
+    }
+  }
+
+  @media (min-width: 650px) {
+    .indicator {
+
+      &-dot {
+        width: 30px;
+        height: 30px;
+      }
+
+      &-line {
+        width: 55px;
+        height: 4px;
+      }
+
+      &-title {
+        width: 140px;
+        padding: 0 20px;
+      }
     }
   }
 

@@ -1,37 +1,56 @@
 <template>
 
-  <div v-on:click="checkDropdown" class="admin block bg-slate-200 smartphone:flex">
+  <div v-on:click="checkDropdown" id="admin" class="admin block bg-slate-200 smartphone:flex">
+
+    <!-- BACKDROP -->
+    <div v-show="sidebarShown" v-on:click="sidebarToggle" class="fixed top-0 left-0 bg-neutral-900 opacity-50 z-20 h-screen w-screen desktop:hidden"></div>
 
     <!-- SIDEBAR -->
-    <aside class="admin-sidebar w-sidebar h-screen bg-gss-dark shadow-md z-5 relative sticky top-0 left-0">
+    <aside ref="sidebar" class="admin-sidebar -translate-x-full w-full z-30 h-screen bg-gss-dark shadow-md z-5 fixed top-0 left-0 transition-all smartphone:w-sidebar tablet:w-1/2 laptop:w-1/3 desktop:sticky desktop:w-sidebar desktop:translate-x-0">
       
-      <header class="bg-white p-4">
-        <img v-if="logoLoaded" v-bind:src="logo" v-bind:alt="website.pgn_nama" class="logo w-full mx-auto">
-        <div v-else class="logo skeleton-loader w-full mx-auto"></div>
-      </header>
+      <header class="bg-white items-center flex justify-between py-4 pr-4 pl-8 desktop:block">
+
+        <img v-if="logoLoaded" v-bind:src="logo" v-bind:alt="website.pgn_nama" class="logo w-full mx-auto hidden desktop:block">
+        <div v-else class="logo skeleton-loader w-full mx-auto hidden desktop:block"></div>
+
+        <h1 class="font-bold block desktop:hidden">
+          MENU
+        </h1>
+
+        <button v-on:click="sidebarToggle" type="button" class="block text-red-500 desktop:hidden">
+          <font-awesome icon="fa-solid fa-xmark" class="h1"></font-awesome>
+        </button>
+
+      </header>>
 
       <!-- LOAD MENU -->
-      <admin-template-menu v-bind:menus="menus" v-bind:menuLoaded="menuLoaded"></admin-template-menu>
+      <admin-template-menu v-bind:menus="menus" v-bind:menuLoaded="menuLoaded" v-bind:sidebarToggle="sidebarToggle"></admin-template-menu>
 
     </aside>
 
     <!-- INNER -->
-    <div class="admin-inner w-inner h-full">
+    <div class="admin-inner w-full h-full desktop:w-inner">
 
       <!-- INNER HEADER -->
       <header class="w-full p-3 flex items-center justify-between px-8">
-        <h1 class="h1 font-bold">{{ title }}</h1>
+
+        <button v-on:click="sidebarToggle" type="button" class="btn p-2 px-4 block bg-white rounded-full shadow-sm desktop:hidden h3">
+          <font-awesome icon="fa-solid fa-bars"></font-awesome>
+        </button>
+
+        <h1 class="h1 font-bold hidden desktop:block">{{ title }}</h1>
+
         <section class="dropdown relative inline-block">
 
           <div>
-            <button v-on:click="showMainMenu = !showMainMenu" type="button" data-dropdown="true" class="flex py-2 px-4 bg-white rounded-full shadow-sm items-center">
+            <button v-on:click="showMainMenu = !showMainMenu" type="button" data-dropdown="true" class="flex p-2 tablet:px-4 bg-white rounded-full shadow-sm items-center">
               
-              <figure class="m-0 p-0 mr-4">
+              <figure class="m-0 p-0 tablet:mr-4">
                 <img v-if="adminLoaded" v-bind:src="getProfilePicture(35)" class="rounded-full border" v-bind:alt="admin.adm_nama">
                 <div v-else class="profil-foto skeleton-loader rounded-full"></div>
               </figure>
 
-              <div class="mr-4">
+              <div class="mr-4 hidden tablet:block">
 
                 <p v-if="adminLoaded" class="profil-nama text-left mb-0 text-sm truncate ...">{{ admin.adm_nama }}</p>
                 <p v-else class="profil-nama skeleton-loader"></p>
@@ -41,15 +60,17 @@
 
               </div>
 
-              <font-awesome v-if="showMainMenu" icon="fa-solid fa-chevron-up"></font-awesome>
-              <font-awesome v-else icon="fa-solid fa-chevron-down"></font-awesome>
+              <div class="hidden tablet:block">
+                <font-awesome v-if="showMainMenu" icon="fa-solid fa-chevron-up"></font-awesome>
+                <font-awesome v-else icon="fa-solid fa-chevron-down"></font-awesome>
+              </div>
 
             </button>
           </div>
 
           <Transition name="slide-fade-down"><!-- DROPDOWN -->
 
-            <div v-if="showMainMenu" class="origin-top-right absolute right-0 mt-2 py-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+            <div v-if="showMainMenu" class="origin-top-right absolute right-0 mt-2 py-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
               <div class="py-1" role="none">
 
                 <button v-on:click="modalTogglePengaturanAkun" type="button" class="dropdown-item" role="menuitem" tabindex="-1" id="menu-item-0">
@@ -75,6 +96,9 @@
 
         </section>
       </header>
+
+      <!-- ALTERNATIVE TITLE -->
+      <h1 class="h1 font-bold block desktop:hidden px-8">{{ title }}</h1>
 
       <!-- COMPONENT -->
       <component v-bind:is="currentComponent" v-bind:key="$route.path"></component>
@@ -145,6 +169,7 @@
 
         // menu
         showMainMenu: false,
+        sidebarShown: false,
 
         // sidebar menu
         menus: [],
@@ -329,6 +354,17 @@
       getIcon: function(size) {
         let data = this.website;
         return imageURL(`assets/informasi/icon-${data.pgn_slug}.png?v=${data.pgn_versi_web}.${data.pgn_versi_icon}&width=${size}`);
+      },
+
+      // VIEW ONLY
+      sidebarToggle: function() {
+        if (this.$refs.sidebar.classList.contains('-translate-x-full')) {
+          this.$refs.sidebar.classList.remove('-translate-x-full');
+          this.sidebarShown = true;
+        } else {
+          this.$refs.sidebar.classList.add('-translate-x-full');
+          this.sidebarShown = false;
+        }
       }
     },
     created: function() {
@@ -393,6 +429,10 @@
   }
 
   .admin {
+
+    .main-component-wrapper {
+      min-height: calc(100vh - 82px);
+    }
 
     &-sidebar {
 

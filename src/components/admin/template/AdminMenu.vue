@@ -1,13 +1,13 @@
 <template>
 
-  <nav class="p-6 px-4 menu">
+  <nav class="pb-6 pt-0 px-4 desktop:pt-6 menu">
 
     <ul v-if="menuLoaded">
 
       <li v-for="menu in menus" v-bind:key="menu.men_id">
 
         <div >
-          <router-link v-if="menu.men_link != null" v-bind:to=" `/${adminPage}/${menu.men_link}` " v-bind:class="`menu-item ${menu.status}`">
+          <router-link v-if="menu.men_link != null" v-on:click="sidebarToggle" v-bind:to=" `/${adminPage}/${menu.men_link}` " v-bind:class="`menu-item ${menu.status}`">
             <font-awesome v-bind:icon="menu.men_icon" class="mr-3 icon"></font-awesome>
             <span>{{ menu.men_nama }}</span>
           </router-link>
@@ -23,7 +23,7 @@
 
         <div v-show="menu.childStatus">
           
-          <router-link v-bind:to=" `/${adminPage}/${child.men_link}` " v-for="child in menu.men_child" v-bind:key="child.men_id" v-bind:class="`submenu-item ${child.status}`">
+          <router-link v-on:click="sidebarToggle" v-bind:to=" `/${adminPage}/${child.men_link}` " v-for="child in menu.men_child" v-bind:key="child.men_id" v-bind:class="`submenu-item ${child.status}`">
             <font-awesome icon="fa-regular fa-circle" class="icon mr-3"></font-awesome>
             {{ child.men_nama }}
           </router-link>
@@ -54,7 +54,8 @@
     name: 'admin-template-menu',
     props: [
       'menus',
-      'menuLoaded'
+      'menuLoaded',
+      'sidebarToggle'
     ],
     components: {
       'font-awesome': FontAwesomeIcon
