@@ -15,7 +15,7 @@
 
       <div class="form-group mb-6 px-6">
         <label for="deskripsi" class="font-bold block mb-3">Deskripsi</label>
-        <textarea v-model="data.deskripsi" id="deskripsi" type="text" class="form-control py-3 focus:border-gss" rows="3"></textarea>
+        <textarea v-model="data.deskripsi" id="deskripsi" type="text" class="form-control py-3 focus:border-gss" rows="3" required></textarea>
       </div> 
 
       <div class="form-group mb-6 px-6">
@@ -45,15 +45,18 @@
 
 <script>
 
+  // load functions
+  import { usePrivateApi } from '../../helper/Api';
+
+  // load library
+  import Swal from 'sweetalert2';
+
   export default {
     name: 'admin-website',
-    inject: ['website', 'websiteLoaded', 'getLogo', 'getIcon'],
+    inject: ['website', 'websiteLoaded', 'updateWebsiteData', 'getLogo', 'getIcon'],
     watch: {
       website: function(web) {
         this.updateRawData(web);
-      },
-      data: function(newData) {
-        console.log(newData);
       }
     },
     data: function() {
@@ -92,6 +95,18 @@
         postData.append('deskripsi', app.data.deskripsi);
         postData.append('logo', app.data.logo);
         postData.append('icon', app.data.icon);
+
+        usePrivateApi('sertifikasi/website/update', {
+          app: app,
+          method: 'post',
+          data: postData,
+          success: function(res) {
+            let data = res.data;
+            Swal.fire(data.title, data.message, data.status).then(() => {
+              app.updateWebsiteData();
+            });
+          }
+        });
       }
     },
     created: function() {

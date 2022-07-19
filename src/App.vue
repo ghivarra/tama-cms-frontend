@@ -44,6 +44,9 @@
           success: function(res) {
             app.websiteInfo = res.data.data;
             app.websiteLoaded = true;
+
+            // update favicon
+            document.getElementById('favicon').setAttribute('href', `/favicon.ico?v=${app.websiteInfo.pgn_versi_web}.${app.websiteInfo.pgn_versi_icon}`);
           }
         });
       }
