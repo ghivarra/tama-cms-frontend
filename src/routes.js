@@ -62,7 +62,7 @@ export default [
 		path: `/${process.env.VUE_APP_ADMIN_PAGE}/modul`, 
 		component: AdminIndex, 
 		meta: {
-			view: 'AdminDasbor',
+			view: 'AdminModul',
 			title: 'Modul'
 		},
 		beforeEnter: [loggedOutGuard]
