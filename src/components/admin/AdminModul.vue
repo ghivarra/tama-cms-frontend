@@ -71,43 +71,43 @@
           <thead class="border-none bg-gss-dark text-white">
 
             <tr>
-              <th class="text-center p-3" colspan="2">Kolom Pencarian:</th>
-              <th class="p-3">
+              <th class="text-center py-4 pl-4 pr-2" colspan="2">Kolom Pencarian:</th>
+              <th class="py-4 px-2">
                 <input type="search" data-field="2" class="form-control davion-table-search">
               </th>
-              <th class="p-3">
+              <th class="py-4 px-2">
                 <input type="search" data-field="3" class="form-control davion-table-search">
               </th>
-              <th class="p-3">
+              <th class="py-4 pl-2 pr-4">
                 <input type="search" data-toggle="datepicker" data-field="4" class="form-control davion-table-search">
               </th>
             </tr>
 
             <tr>
-              <th></th>
-              <th class="text-center p-3">No.</th>
-              <th class="p-3">Nama Modul</th>
-              <th class="p-3">Status</th>
-              <th class="p-3">Waktu Pembuatan</th>
+              <th class="text-center py-4 pl-4 pr-2"></th>
+              <th class="text-center py-4 px-2">No.</th>
+              <th class="py-4 px-2">Nama Modul</th>
+              <th class="py-4 px-2">Status</th>
+              <th class="py-4 pl-2 pr-4">Waktu Pembuatan</th>
             </tr>
           </thead>
 
           <tbody class="bg-white">
             
             <tr v-for="(skeleton, n) in skeletons" v-bind:key="n" class="border-b w-full">
-              <td class="py-4 px-3 text-center">
+              <td class="py-4 pl-4 pr-2 text-center">
                 <div class="skeleton-loader rounded-full mx-auto" style="width: 16px; height: 16px;"></div>
               </td>
-              <td class="py-4 px-3 text-center">
+              <td class="py-4 px-2 text-center">
                 <div class="skeleton-loader rounded-full mx-auto" style="width: 16px; height: 16px;"></div>
               </td>
-              <td class="py-4 px-3">
+              <td class="py-4 px-2">
                 <div class="skeleton-loader w-full" style="height: 16px;"></div>
               </td>
-              <td class="py-4 px-3">
+              <td class="py-4 px-2">
                 <div class="skeleton-loader w-full" style="height: 16px;"></div>
               </td>
-              <td class="py-4 px-3">
+              <td class="py-4 pl-2 pr-4">
                 <div class="skeleton-loader w-full" style="height: 16px;"></div>
               </td>
             </tr>
@@ -116,11 +116,11 @@
 
           <tfoot class="border-none bg-gss-dark text-white">
             <tr>
-              <th></th>
-              <th class="text-center p-3">No.</th>
-              <th class="p-3">Nama Modul</th>
-              <th class="p-3">Status</th>
-              <th class="p-3">Waktu Pembuatan</th>
+              <th class="py-4 pl-4 pr-2"></th>
+              <th class="text-center py-4 px-2">No.</th>
+              <th class="py-4 px-2">Nama Modul</th>
+              <th class="py-4 px-2">Status</th>
+              <th class="py-4 pl-2 pr-4">Waktu Pembuatan</th>
             </tr>
           </tfoot>
 
