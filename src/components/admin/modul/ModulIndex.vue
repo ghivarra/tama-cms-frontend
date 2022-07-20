@@ -39,7 +39,7 @@
               <input disabled v-on:input="dtSearch" type="search" data-field="3" class="form-control admin-table-search">
             </th>
             <th class="py-4 pl-2 pr-4">
-              <date-picker v-model="dateSrc" v-bind:enableTimePicker="false" v-bind:autoApply="true" v-bind:closeOnScroll="true" inputClassName="text-dark font-normal" format="dd-MM-yyyy" locale="id-ID" selectText="Pilih" cancelText="Batal" placeholder="Pilih Tanggal"></date-picker>
+              <date-picker v-model="dateSrc" v-bind:modelType="dateSrcFormat" v-bind:enableTimePicker="false" v-bind:autoApply="true" v-bind:closeOnScroll="true" v-bind:format="dateSrcFormat" inputClassName="text-dark font-normal" locale="id-ID" selectText="Pilih" cancelText="Batal" placeholder="Pilih Tanggal"></date-picker>
             </th>
           </tr>
 
@@ -130,6 +130,7 @@
         timeout: undefined,
         dateSrc: '',
         dateSrcField: 4,
+        dateSrcFormat: 'dd-MM-yyyy',
 
         // modal data
         detailStatus: false,
