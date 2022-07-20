@@ -92,7 +92,7 @@
     methods: {
       checkToggle: function(e) {
         if (e.target == this.$refs.modal || e.target == this.$refs.modalDialog) {
-          this.toggle();
+          this.extraToggle();
         }
       },
       getCurrentStep: function() {

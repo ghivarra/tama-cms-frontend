@@ -85,7 +85,7 @@
   </main>
 
   <!-- LOAD MODALS -->
-  <modul-modal v-bind:show="detailStatus" v-bind:toggle="detailToggle"></modul-modal>
+  <modul-modal v-bind:show="detailStatus" v-bind:toggle="detailToggle" v-bind:data="datatableCurrentData" v-bind:instance="detailKey"></modul-modal>
 
 </template>
 
@@ -94,6 +94,7 @@
   // load functions
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import { imageURL, createModal } from '../../../helper/Global';
+  import { DateTime } from 'luxon';
 
   // load components
   import ModulModal from './ModulModal.vue';
@@ -119,7 +120,8 @@
         skeletons: [1, 2, 3, 4, 5, 6, 7, 8],
         datatable: false,
         datatableCurrentPage: 1,
-        datatableMaxPage: null,
+        datatableCurrentData: {},
+        datatableMaxPage: 0,
 
         // src data
         timeout: undefined,
@@ -127,7 +129,8 @@
         dateSrcField: 4,
 
         // modal data
-        detailStatus: false
+        detailStatus: false,
+        detailKey: 0
       }
     },
     watch: {
@@ -196,6 +199,7 @@
       // I use jquery so it will be easier LUL, for some delegation event like this jquery is KING!
       $('#table').on('click', '.control-btn', function(e){
         e.preventDefault();
+        app.detailKey = $(this).attr('data-key');
         app.detailToggle();
       });
 
@@ -221,11 +225,18 @@
             if (data.length > 0) {
               Array.prototype.forEach.call(data, function(item, i){
                 var color = (item.mod_status == 'aktif') ? 'text-success-calm bg-success-light' : 'text-error-calm bg-error-light';
+                data[i].status = item.mod_status;
                 data[i].mod_status = `<span class="${color} alert font-bold">${item.mod_status}</span>`; 
 
                 // add aksi button
-                data[i].aksi = `<button type="button" class="btn py-2 px-3 control-btn text-sm bg-primary hover:bg-primary-dark text-white" data-target="${i}">${icon}Detail</button>`;
+                data[i].aksi = `<button type="button" class="btn py-2 px-3 control-btn text-sm bg-primary hover:bg-primary-dark text-white" data-key="${i}">${icon}Detail</button>`;
+
+                // set tanggal
+                let date = DateTime.fromSeconds(item.date_create).setLocale("id").toLocaleString(DateTime.DATE_FULL);
+                let time = DateTime.fromSeconds(item.date_create).setLocale("id").toLocaleString(DateTime.TIME_24_SIMPLE);
+                data[i].mod_created_at = `${date} - ${time}`;
               });
+
             }
 
             // put to vue instance
@@ -285,71 +296,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 
-  .table-navigator {
 
-    .page {
-      width: 80px;
-    }
-
-    .nav {
-      max-width: 40px;
-    }
-
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    /* Firefox */
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
-  }
-
-  table.dataTable {
-    width: 100% !important;
-    min-width: 900px;
-
-    .admin-table-number, .admin-table-search-label {
-      text-align: center;
-    }
-
-    .admin-table-time {
-      max-width: 150px;
-    }
-
-    .admin-table-control {
-      max-width: 130px;
-    }
-
-    .admin-table-status {
-      max-width: 80px;
-    }
-
-    .dt-fixed-left {
-      position: sticky;
-      left: 0;
-    }
-
-    thead {
-
-      th, td {
-        padding: 14px 12px;
-      }
-    }
-
-    tbody {
-
-      th, td {
-        padding: 14px 12px;
-        border-bottom: 1px solid #e5e7eb;
-      }
-    }
-  }
-
-  .dataTables_wrapper.no-footer .dataTables_scrollBody {
-    border-bottom: none;
-  }
 
 </style>

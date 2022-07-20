@@ -40,15 +40,15 @@ module.exports = {
           'dark': '#15803d'
         },
         'warning': {
-          'light': '#fef9c3',
-          DEFAULT: '#facc15',
-          'dark': '#EAB308'
+          'light': '#fef3c7',
+          DEFAULT: '#f59e0b',
+          'dark': '#d97706'
         },
         'error': {
           'light': '#fee2e2',
           DEFAULT: '#dc2626',
           'calm': '#ef4444',
-          'dark': '#dc2626'
+          'dark': '#b91c1c'
         },
         'secondary': '#e2e8f0',
         'special': '#ff6600',

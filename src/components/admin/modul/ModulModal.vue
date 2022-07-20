@@ -1,30 +1,31 @@
 <template>
   <Transition name="slide-fade-up">
-    <form ref="modal" v-if="show" v-on:submit="updateProfile" v-on:click="checkToggle" class="modal pengaturan">
+    <section ref="modal" v-if="show" v-on:submit="updateProfile" v-on:click="checkToggle" class="modal pengaturan">
 
       <!-- MODAL CONTENT -->
       <div ref="modalDialog" class="modal-dialog">
         <div class="modal-content">
-          <header class="modal-content-header flex justify-between items-center">
-            <h2 class="h3 font-bold">Modul</h2>
-            <button v-on:click="toggle" type="button" class="text-red-500 hover:text-red-600 transition-colors">
+          <header class="modal-content-header bg-gss-dark text-white flex justify-between items-center tablet:bg-white tablet:text-dark">
+            <h2 class="h3 font-bold">Detail Modul</h2>
+            <button v-on:click="extraToggle" type="button" class="text-red-500 hover:text-red-600 transition-colors">
               <font-awesome icon="fa-solid fa-xmark" class="h3"></font-awesome>
             </button>
           </header>
 
           <div class="modal-content-body">
-            
-            PLIS MUNCUL BRAY
+
+            <!-- LOAD COMPONENT -->
+            <component v-bind:is="currentModalComponent" v-bind:editData="editData" v-bind:data="modul"></component>
 
           </div>
 
           <footer class="modal-content-footer flex justify-end">
-            <button v-on:click="toggle" type="button" class="btn text-white bg-gray-500 hover:bg-gray-600 w-full mr-2 tablet:w-auto">Tutup</button>
+            <button v-on:click="extraToggle" type="button" class="btn text-white bg-gray-500 hover:bg-gray-600 w-full mr-2 tablet:w-auto">Tutup</button>
           </footer>
 
         </div><!-- /modal-content -->
       </div><!-- /modal-dialog -->
-    </form>
+    </section>
   </Transition>
 </template>
 
@@ -32,25 +33,44 @@
 
   // load functions
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+  import { markRaw, defineAsyncComponent } from 'vue';
 
   export default {
     name: 'modul-modal',
-    props: ['show', 'toggle'],
+    props: ['show', 'toggle', 'data', 'instance'],
     components: {
       'font-awesome': FontAwesomeIcon
+    },
+    data: function() {
+      return {
+        currentModalComponent: markRaw(defineAsyncComponent(() => {
+          return import(`./ModulModalDefault.vue`);
+        }))
+      }
+    },
+    computed: {
+      modul: function() {
+        return this.data[this.instance];
+      }
     },
     methods: {
       checkToggle: function(e) {
         if (e.target == this.$refs.modal || e.target == this.$refs.modalDialog) {
-          this.toggle();
+          this.extraToggle();
         }
+      },
+      extraToggle: function() {
+        this.currentModalComponent = markRaw(defineAsyncComponent(() => {
+          return import(`./ModulModalDefault.vue`);
+        }));
+        this.toggle();
+      },
+      editData: function() {
+        this.currentModalComponent = markRaw(defineAsyncComponent(() => {
+          return import(`./ModulModalEdit.vue`);
+        }))
       }
     }
   }
 
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-
-</style>
