@@ -45,12 +45,6 @@
   // load library
   import Swal from 'sweetalert2';
 
-  // eslint-disable-next-line no-unused-vars
-  import $ from 'jquery';
-
-  // import only library
-  import 'datatables.net-dt';
-
   export default {
     name: 'modul-modal-edit',
     props: ['data', 'toggle'],

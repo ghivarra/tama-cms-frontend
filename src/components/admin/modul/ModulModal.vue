@@ -1,6 +1,6 @@
 <template>
   <Transition name="slide-fade-up">
-    <section ref="modal" v-if="show" v-on:submit="updateProfile" v-on:click="checkToggle" class="modal pengaturan">
+    <section ref="modal" v-if="show" v-on:click="checkToggle" class="modal pengaturan">
 
       <!-- MODAL CONTENT -->
       <div ref="modalDialog" class="modal-dialog">

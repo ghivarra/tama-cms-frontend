@@ -3,7 +3,7 @@
     
     <header class="block mb-8 flex items-center justify-between">
       
-      <button type="button" class="btn block text-white shadow-md bg-success hover:bg-success-dark smartphone:mx-0 smartphone:mb-0">
+      <button v-on:click="createToggle" type="button" class="btn block text-white shadow-md bg-success hover:bg-success-dark smartphone:mx-0 smartphone:mb-0">
         <font-awesome icon="fa-solid fa-plus" class="smartphone:mr-2"></font-awesome>
         <span class="hidden smartphone:inline-block">Tambah</span>
       </button>
@@ -86,6 +86,7 @@
 
   <!-- LOAD MODALS -->
   <modul-modal v-bind:show="detailStatus" v-bind:toggle="detailToggle" v-bind:data="datatableCurrentData" v-bind:instance="detailKey"></modul-modal>
+  <modul-create v-bind:show="createStatus" v-bind:toggle="createToggle"></modul-create>
 
 </template>
 
@@ -98,6 +99,7 @@
 
   // load components
   import ModulModal from './ModulModal.vue';
+  import ModulCreate from './ModulCreate.vue';
 
   // load library
   import $ from 'jquery';
@@ -112,7 +114,8 @@
     components: {
       'font-awesome': FontAwesomeIcon,
       'date-picker': Datepicker,
-      'modul-modal': ModulModal
+      'modul-modal': ModulModal,
+      'modul-create': ModulCreate
     },
     data: function() {
       return {
@@ -130,7 +133,10 @@
 
         // modal data
         detailStatus: false,
-        detailKey: 0
+        detailKey: 0,
+
+        // create data
+        createStatus: false,
       }
     },
     watch: {
@@ -189,6 +195,10 @@
       detailToggle: function() {
         createModal(this.detailStatus);
         this.detailStatus = !this.detailStatus;
+      },
+      createToggle: function() {
+        createModal(this.createStatus);
+        this.createStatus = !this.createStatus;
       },
       reloadTable: function() {
         this.datatable.draw();
