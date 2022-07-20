@@ -24,9 +24,9 @@
 
     </header>
 
-    <section class="w-full overflow-auto pb-4">
+    <section class="w-full rounded-sm overflow-hidden pb-4">
 
-      <table id="table" class="table-auto rounded-sm overflow-hidden shadow-md">
+      <table id="table" class="table-auto rounded-sm shadow-md">
     
         <thead class="border-none bg-gss-dark text-white">
 
@@ -53,16 +53,6 @@
         </thead>
 
         <tbody id="tableBody" class="bg-white"></tbody>
-
-        <tfoot class="border-none bg-gss-dark text-white">
-          <tr>
-            <th class="py-4 pl-4 pr-2"></th>
-            <th class="text-center py-4 px-2">No.</th>
-            <th class="py-4 px-2">Nama Modul</th>
-            <th class="py-4 px-2">Status</th>
-            <th class="py-4 pl-2 pr-4">Waktu Pembuatan</th>
-          </tr>
-        </tfoot>
 
       </table>
 
@@ -101,8 +91,8 @@
   import Swal from 'sweetalert2';
   import Datepicker from '@vuepic/vue-datepicker';
 
-  // eslint-disable-next-line no-unused-vars
-  import DataTable from 'datatables.net-dt';
+  // import only library
+  import 'datatables.net-dt';
 
   export default {
     name: 'admin-modul',
@@ -185,8 +175,11 @@
 
       app.datatable = $('#table').DataTable({
         serverSide: true,
+        scrollY: false,
+        scrollX: true,
+        scrollCollapse: true,
         order: [[2, 'asc']],
-        pageLength: 5,
+        pageLength: 10,
         ajax: {
           url: `${process.env.VUE_APP_API_BASE_URL}sertifikasi/modul/datatable`,
           type: 'get',
@@ -198,8 +191,8 @@
 
             if (data.length > 0) {
               Array.prototype.forEach.call(data, function(item, i){
-                var color = (item.mod_status == 'aktif') ? 'text-success' : 'text-error';
-                data[i].mod_status = `<span class="${color} font-bold">${item.mod_status}</span>`; 
+                var color = (item.mod_status == 'aktif') ? 'text-success-calm bg-success-light' : 'text-error-calm bg-error-light';
+                data[i].mod_status = `<span class="${color} alert font-bold">${item.mod_status}</span>`; 
               });
             }
 
@@ -209,6 +202,13 @@
         language: {
           url: imageURL('packages/indonesia.json?v=1.3-beta')
         },
+        columns: [
+              { data: null, className: 'admin-table-control', orderable: false, defaultContent: '' },
+              { data: "no", className: 'admin-table-number text-center', orderable: false },
+              { data: "mod_nama" },
+              { data: "mod_status", className: 'admin-table-status capitalize' },
+              { data: "mod_created_at", className: 'admin-table-time'}
+        ],
         preDrawCallback: function() {
           app.tableLoaded = false;
           app.$refs.navPage.disabled = true;
@@ -222,24 +222,20 @@
           app.datatableMaxPage = app.datatable.page.info().pages;
           $('.admin-table-search').prop('disabled', false);
 
-          if (app.datatableCurrentPage == 1) {
+          if (app.datatableCurrentPage == 1 && app.datatableCurrentPage != app.datatableMaxPage) {
             app.$refs.navPrev.disabled = true;
             app.$refs.navNext.disabled = false;
-          } else if (app.datatableCurrentPage == app.datatableMaxPage) {
+          } else if (app.datatableCurrentPage == app.datatableMaxPage && app.datatableCurrentPage != 1) {
             app.$refs.navNext.disabled = true;
             app.$refs.navPrev.disabled = false;
+          } else if (app.datatableMaxPage == 1) {
+            app.$refs.navPrev.disabled = true;
+            app.$refs.navNext.disabled = true;
           } else {
             app.$refs.navPrev.disabled = false;
-            app.$refs.navPrev.disabled = false;
+            app.$refs.navNext.disabled = false;
           }
-        },
-        columns: [
-              { data: null, className: 'dt-control admin-table-control', orderable: false, defaultContent: '' },
-              { data: "no", className: 'admin-table-number text-center', orderable: false },
-              { data: "mod_nama" },
-              { data: "mod_status", className: 'admin-table-status capitalize' },
-              { data: "mod_created_at", className: 'admin-table-time'}
-        ]
+        }
       });
     },
     beforeUnmount: function() {
@@ -252,7 +248,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
 
   .table-navigator {
 
@@ -277,7 +273,6 @@
   }
 
   table.dataTable {
-
     width: 100% !important;
     min-width: 900px;
 
@@ -292,17 +287,30 @@
     .admin-table-status {
       max-width: 80px;
     }
+
+    .dt-fixed-left {
+      position: sticky;
+      left: 0;
+    }
+
+    thead {
+
+      th, td {
+        padding: 14px 12px;
+      }
+    }
+
+    tbody {
+
+      th, td {
+        padding: 14px 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+    }
   }
 
-  .pr-2 {
-    padding-right: 0.5rem;
-  }
-  .pl-4 {
-    padding-left: 1rem;
-  }
-  .py-4 {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+  .dataTables_wrapper.no-footer .dataTables_scrollBody {
+    border-bottom: none;
   }
 
 </style>

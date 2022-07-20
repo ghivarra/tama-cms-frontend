@@ -30,6 +30,7 @@ module.exports = {
         'success': {
           'light': '#DCFCE7',
           DEFAULT: '#16a34a',
+          'calm': '#22c55e',
           'dark': '#15803d'
         },
         'warning': {
@@ -39,7 +40,8 @@ module.exports = {
         },
         'error': {
           'light': '#fee2e2',
-          DEFAULT: '#ef4444',
+          DEFAULT: '#dc2626',
+          'calm': '#ef4444',
           'dark': '#dc2626'
         },
         'secondary': '#e2e8f0',

@@ -10,12 +10,12 @@
       
       <header class="bg-white items-center flex justify-between py-4 pr-4 pl-8 desktop:block">
 
-        <img v-if="logoLoaded" v-bind:src="logo" v-bind:alt="website.pgn_nama" class="logo w-full mx-auto hidden desktop:block">
+        <img v-if="logoLoaded" v-bind:src="logo" v-bind:alt="website.pgn_nama" class="logo w-full desktop:mx-auto">
         <div v-else class="logo skeleton-loader w-full mx-auto hidden desktop:block"></div>
 
-        <h1 class="font-bold block desktop:hidden">
+        <!--<h1 class="font-bold block desktop:hidden">
           MENU
-        </h1>
+        </h1>-->
 
         <button v-on:click="sidebarToggle" type="button" class="block text-red-500 desktop:hidden">
           <font-awesome icon="fa-solid fa-xmark" class="h1"></font-awesome>
@@ -417,7 +417,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 
-  @import '../../../node_modules/datatables.net-dt/css/jquery.dataTables.min.css';
   @import '../../../node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
 
   #table_length, #table_filter, #table_paginate {
@@ -486,5 +485,10 @@
     width: 100vw;
     overflow: hidden;
   }
+
+  .dt-fixed-left {
+      position: sticky;
+      left: 0;
+    }
 
 </style>
