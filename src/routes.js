@@ -110,7 +110,7 @@ export default [
 		path: `/${process.env.VUE_APP_ADMIN_PAGE}/website`, 
 		component: AdminIndex, 
 		meta: {
-			view: 'AdminWebsite',
+			view: 'website/WebsiteIndex',
 			title: 'Info Website'
 		},
 		beforeEnter: [loggedOutGuard]

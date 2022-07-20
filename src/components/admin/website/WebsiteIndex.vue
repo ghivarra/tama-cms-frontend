@@ -46,13 +46,13 @@
 <script>
 
   // load functions
-  import { usePrivateApi } from '../../helper/Api';
+  import { usePrivateApi } from '../../../helper/Api';
 
   // load library
   import Swal from 'sweetalert2';
 
   export default {
-    name: 'admin-website',
+    name: 'website-index',
     inject: ['website', 'websiteLoaded', 'updateWebsiteData', 'getLogo', 'getIcon'],
     watch: {
       website: function(web) {
