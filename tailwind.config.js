@@ -27,6 +27,12 @@ module.exports = {
           DEFAULT: '#48638e',
           'dark': '#3f567c'
         },
+        'primary': {
+          'light': '#dbeafe',
+          DEFAULT: '#3b82f6',
+          'calm': '#60a5fa',
+          'dark': '#2563eb'
+        },
         'success': {
           'light': '#DCFCE7',
           DEFAULT: '#16a34a',

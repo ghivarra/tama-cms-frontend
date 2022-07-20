@@ -78,13 +78,17 @@
       </tr>
     </div>
 
+    <div id="faSearch" class="hidden">
+      <font-awesome icon="fa-solid fa-magnifying-glass" class="mr-2"></font-awesome>
+    </div>
+
   </main>
 </template>
 
 <script>
 
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-  import { imageURL } from '../../helper/Global';
+  import { imageURL } from '../../../helper/Global';
 
   // load library
   import $ from 'jquery';
@@ -95,7 +99,7 @@
   import 'datatables.net-dt';
 
   export default {
-    name: 'admin-modul',
+    name: 'modul-index',
     components: {
       'font-awesome': FontAwesomeIcon,
       'date-picker': Datepicker
@@ -189,12 +193,21 @@
           dataSrc: function(json) {
             let data = json.data;
 
+            // get icon
+            let icon = document.getElementById('faSearch').innerHTML;
+
             if (data.length > 0) {
               Array.prototype.forEach.call(data, function(item, i){
                 var color = (item.mod_status == 'aktif') ? 'text-success-calm bg-success-light' : 'text-error-calm bg-error-light';
                 data[i].mod_status = `<span class="${color} alert font-bold">${item.mod_status}</span>`; 
+
+                // add aksi button
+                data[i].aksi = `<button type="button" class="btn py-2 px-3 control-btn text-sm bg-primary hover:bg-primary-dark text-white" data-target="${i}">${icon}Detail</button>`;
               });
             }
+
+            // put to vue instance
+            app.datatableCurrentData = data;
 
             return data;
           }
@@ -203,7 +216,7 @@
           url: imageURL('packages/indonesia.json?v=1.3-beta')
         },
         columns: [
-              { data: null, className: 'admin-table-control', orderable: false, defaultContent: '' },
+              { data: "aksi", className: 'admin-table-control text-center', orderable: false, defaultContent: '' },
               { data: "no", className: 'admin-table-number text-center', orderable: false },
               { data: "mod_nama" },
               { data: "mod_status", className: 'admin-table-status capitalize' },
@@ -282,6 +295,10 @@
 
     .admin-table-time {
       max-width: 150px;
+    }
+
+    .admin-table-control {
+      max-width: 130px;
     }
 
     .admin-table-status {
