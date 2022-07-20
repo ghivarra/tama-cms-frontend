@@ -340,11 +340,11 @@
         return imageURL(`assets/photo/admin/${this.admin.adm_foto}?v=1.0&width=${size}&height=${size}`);
       },
       modalTogglePengaturanAkun: function() {
-        createModal(this, 'showPengaturanAkun');
+        createModal(this.modals.showPengaturanAkun);
         this.modals.showPengaturanAkun = !this.modals.showPengaturanAkun;
       },
       modalTogglePengaturanPassword: function() {
-        createModal(this, 'showPengaturanPassword');
+        createModal(this.modals.showPengaturanPassword);
         this.modals.showPengaturanPassword = !this.modals.showPengaturanPassword;
       },
       getLogo: function(size) {

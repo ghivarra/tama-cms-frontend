@@ -53,21 +53,22 @@ export const adminURL = (slug) => {
   return (slug == undefined) ? `${process.env.VUE_APP_BASE_URL}/${process.env.VUE_APP_ADMIN_PAGE}` : `${process.env.VUE_APP_BASE_URL}/${process.env.VUE_APP_ADMIN_PAGE}/${slug}`;
 }
 
-export const createModal = (app, prop) => {
+export const createModal = (status) => {
   let body = document.querySelector('body');
-  if (!app.modals[prop]) {
-    let backdrop = document.createElement('div');
-    backdrop.classList.add('modal-backdrop');
-    body.appendChild(backdrop);
-    body.classList.add('modal-open');
-  } else {
+  if (status) {
     body.classList.remove('modal-open');
     let bg = document.querySelectorAll('.modal-backdrop');
     if (bg.length > 0) {
       for (var i = 0; i < bg.length; i++) {
         bg[i].remove();
       }
-    }
+    }  
+  } else {
+    let backdrop = document.createElement('div');
+    backdrop.classList.add('modal-backdrop');
+    body.appendChild(backdrop);
+    body.classList.add('modal-open');
   }
+
   return;
 }

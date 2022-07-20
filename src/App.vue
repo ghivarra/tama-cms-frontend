@@ -49,7 +49,7 @@
             document.getElementById('favicon').setAttribute('href', `/favicon.ico?v=${app.websiteInfo.pgn_versi_web}.${app.websiteInfo.pgn_versi_icon}`);
           }
         });
-      }
+      },
     },
     provide: function() {
       return {
@@ -57,7 +57,7 @@
           return this.websiteInfo;
         }),
         preloadStatus: computed(() => {
-          return this.preloadStatus
+          return this.preloadStatus;
         }),
         changePreloadStatus: this.changePreloadStatus,
         updateWebsiteData: this.updateWebsiteData,

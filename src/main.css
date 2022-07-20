@@ -25,7 +25,7 @@
 		@apply flex w-full items-start sm:py-12;
 	}
 	.modal-backdrop {
-		@apply h-full w-full absolute top-0 left-0 z-40 bg-neutral-900 opacity-40;
+		@apply h-full w-full fixed top-0 left-0 z-40 bg-neutral-900 opacity-40;
 	}
 	.modal-content {
 		max-width: 650px;

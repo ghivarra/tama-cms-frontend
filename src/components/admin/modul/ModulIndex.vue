@@ -83,12 +83,20 @@
     </div>
 
   </main>
+
+  <!-- LOAD MODALS -->
+  <modul-modal v-bind:show="detailStatus" v-bind:toggle="detailToggle"></modul-modal>
+
 </template>
 
 <script>
 
+  // load functions
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-  import { imageURL } from '../../../helper/Global';
+  import { imageURL, createModal } from '../../../helper/Global';
+
+  // load components
+  import ModulModal from './ModulModal.vue';
 
   // load library
   import $ from 'jquery';
@@ -102,7 +110,8 @@
     name: 'modul-index',
     components: {
       'font-awesome': FontAwesomeIcon,
-      'date-picker': Datepicker
+      'date-picker': Datepicker,
+      'modul-modal': ModulModal
     },
     data: function() {
       return {
@@ -115,7 +124,10 @@
         // src data
         timeout: undefined,
         dateSrc: '',
-        dateSrcField: 4
+        dateSrcField: 4,
+
+        // modal data
+        detailStatus: false
       }
     },
     watch: {
@@ -170,12 +182,22 @@
           let field = parseInt(el.getAttribute('data-field'));
           app.datatable.column(field).search(el.value).draw();
         }, 400);
+      },
+      detailToggle: function() {
+        createModal(this.detailStatus);
+        this.detailStatus = !this.detailStatus;
       }
     },
     mounted: function() {
 
       let app = this;
       let skeleton = $('#tableSkeleton').html();
+
+      // I use jquery so it will be easier LUL, for some delegation event like this jquery is KING!
+      $('#table').on('click', '.control-btn', function(e){
+        e.preventDefault();
+        app.detailToggle();
+      });
 
       app.datatable = $('#table').DataTable({
         serverSide: true,

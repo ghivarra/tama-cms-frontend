@@ -1,8 +1,8 @@
 <template>
   <Transition name="slide-fade-up">
-    <form v-if="show" v-on:submit="updateProfile" class="modal pengaturan">
+    <form ref="modal" v-if="show" v-on:submit="updateProfile" v-on:click="checkToggle" class="modal pengaturan">
       <!-- MODAL CONTENT -->
-      <div class="modal-dialog">
+      <div ref="modalDialog" class="modal-dialog">
         <div class="modal-content">
           <header class="modal-content-header flex justify-between items-center">
             <h2 class="h3 font-bold">Akun</h2>
@@ -103,6 +103,11 @@
       }
     },
     methods: {
+      checkToggle: function(e) {
+        if (e.target == this.$refs.modal || e.target == this.$refs.modalDialog) {
+          this.toggle();
+        }
+      },
       previewProfilePicture: function(e) {
         let file = e.target.files[0];
         let url = URL.createObjectURL(file);
