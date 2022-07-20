@@ -12,16 +12,8 @@
             </button>
           </header>
 
-          <div class="modal-content-body">
-
-            <!-- LOAD COMPONENT -->
-            <component v-bind:is="currentModalComponent" v-bind:editData="editData" v-bind:data="modul"></component>
-
-          </div>
-
-          <footer class="modal-content-footer flex justify-end">
-            <button v-on:click="extraToggle" type="button" class="btn text-white bg-gray-500 hover:bg-gray-600 w-full mr-2 tablet:w-auto">Tutup</button>
-          </footer>
+          <!-- LOAD COMPONENT -->
+          <component v-bind:is="currentModalComponent" v-bind:editData="editData" v-bind:data="modul" v-bind:toggle="extraToggle"></component>
 
         </div><!-- /modal-content -->
       </div><!-- /modal-dialog -->

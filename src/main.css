@@ -12,6 +12,12 @@
 	.form-modern {
 		@apply block w-full border-b-2 p-2 pl-0 transition-all outline-0 hover:border-gss focus:border-gss;
 	}
+	.form-select {
+		vertical-align: middle;
+    	background: #fff url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+    	background-size: 8px 10px;
+		@apply appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none;
+	}
 	.dropdown-item {
 		@apply w-full text-left text-gray-700 block px-4 py-2 text-sm transition-colors cursor-pointer hover:bg-gss-light hover:text-white;
 	}

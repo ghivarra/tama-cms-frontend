@@ -60,19 +60,19 @@
 
     <div id="tableSkeleton" class="hidden">
       <tr v-for="(skeleton, n) in skeletons" v-bind:key="n" class="border-b w-full">
-        <td class="py-4 pl-4 pr-2 text-center">
+        <td class="py-6 pl-6 pr-4 text-center">
           <div class="skeleton-loader rounded-full mx-auto" style="width: 16px; height: 16px;"></div>
         </td>
-        <td class="py-4 px-2 text-center">
+        <td class="py-6 px-4 text-center">
           <div class="skeleton-loader rounded-full mx-auto" style="width: 16px; height: 16px;"></div>
         </td>
-        <td class="py-4 px-2">
+        <td class="py-6 px-4">
           <div class="skeleton-loader w-full" style="height: 16px;"></div>
         </td>
-        <td class="py-4 px-2">
+        <td class="py-6 px-4">
           <div class="skeleton-loader w-full" style="height: 16px;"></div>
         </td>
-        <td class="py-4 pl-2 pr-4">
+        <td class="py-6 pl-4 px-6">
           <div class="skeleton-loader w-full" style="height: 16px;"></div>
         </td>
       </tr>
@@ -116,8 +116,8 @@
     },
     data: function() {
       return {
+        skeletons: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         tableLoaded: false,
-        skeletons: [1, 2, 3, 4, 5, 6, 7, 8],
         datatable: false,
         datatableCurrentPage: 1,
         datatableCurrentData: {},
@@ -189,6 +189,14 @@
       detailToggle: function() {
         createModal(this.detailStatus);
         this.detailStatus = !this.detailStatus;
+      },
+      reloadTable: function() {
+        this.datatable.draw();
+      }
+    },
+    provide: function() {
+      return {
+        reloadTable: this.reloadTable
       }
     },
     mounted: function() {
@@ -262,8 +270,8 @@
           $('.admin-table-search').prop('disabled', true);
         },
         drawCallback: function() {
-          app.datatableCurrentPage = parseInt(app.datatable.page.info().page) + 1;
           app.tableLoaded = true;
+          app.datatableCurrentPage = parseInt(app.datatable.page.info().page) + 1;
           app.$refs.navPage.disabled = false;
           app.datatableMaxPage = app.datatable.page.info().pages;
           $('.admin-table-search').prop('disabled', false);
