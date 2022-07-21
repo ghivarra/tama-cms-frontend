@@ -13,10 +13,6 @@
         <img v-if="logoLoaded" v-bind:src="logo" v-bind:alt="website.pgn_nama" class="logo w-full desktop:mx-auto">
         <div v-else class="logo skeleton-loader w-full mx-auto hidden desktop:block"></div>
 
-        <!--<h1 class="font-bold block desktop:hidden">
-          MENU
-        </h1>-->
-
         <button v-on:click="sidebarToggle" type="button" class="block text-red-500 desktop:hidden">
           <font-awesome icon="fa-solid fa-xmark" class="h1"></font-awesome>
         </button>
@@ -114,6 +110,7 @@
 <script>
 
   // load functions
+  import { isLoggedIn } from '../../routes-guard';
   import { setCookie, imageURL, createModal } from '../../helper/Global';
   import { usePrivateApi } from '../../helper/Api';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -151,6 +148,9 @@
         }),
         updateDataAdmin: this.updateDataAdmin,
         getProfilePicture: this.getProfilePicture,
+
+        // menu data
+        updateMenuData: this.updateMenuData,
 
         // website data
         getIcon: this.getIcon,
@@ -195,7 +195,7 @@
       $route: function(newRoutes) {
         this.updateMeta(this.website);
         this.updateDataAdmin();
-        this.updateMenuData(this.menus, newRoutes.path, this);
+        this.updateMenuData(this.menus, newRoutes.path);
         this.title = newRoutes.meta.title;
 
         this.currentComponent = markRaw(defineAsyncComponent(() => {
@@ -205,6 +205,11 @@
     },
     methods: {
       updateDataAdmin: function() {
+
+        if (!isLoggedIn()){ 
+          return false;
+        }
+
         let app = this;
         usePrivateApi('sertifikasi/admin-info', {
           app: app,
@@ -240,7 +245,7 @@
         meta.setAttribute('content', data.pgn_deskripsi);
         head.appendChild(meta);
       },
-      updateMenuData: function(data, path, app) {
+      updateMenuData: function(data, path) {
         Array.prototype.forEach.call(data, function(item, i){
 
           data[i]['status'] = (path == `/${process.env.VUE_APP_ADMIN_PAGE}/${item.men_link}`) ? 'active' : 'inactive';
@@ -263,8 +268,8 @@
 
         });
 
-        app.menus = data;
-        app.menuLoaded = true;
+        this.menus = data;
+        this.menuLoaded = true;
 
         // return
         return data;
@@ -368,6 +373,7 @@
       }
     },
     created: function() {
+
       // update
       if (this.websiteLoaded) {
         this.updateLogo(this.website);
@@ -380,31 +386,8 @@
         app: app,
         method: 'get',
         success: function(res) {
-          app.updateMenuData(res.data.data, app.$route.path, app);
-        },
-        catch: function(error) {
-          if (error.response.data != undefined) {
-
-            let data = error.response.data;
-            Swal.fire({
-              icon: data.status,
-              title: data.title,
-              html: data.message
-            });
-
-          } else {
-
-            Swal.fire({
-              icon: 'error',
-              title: 'Gagal Menarik Data Menu',
-              text: 'Server sedang sibuk silahkan coba lagi'
-            }).then(() => {
-              if (process.env.NODE_ENV != 'development') {
-                console.clear();
-              }
-            });
-          }
-        },
+          app.updateMenuData(res.data.data, app.$route.path);
+        }
       });
 
       // admin info

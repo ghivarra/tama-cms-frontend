@@ -1,5 +1,5 @@
 <template>
-  <main role="main" class="px-8 py-6">
+  <main role="main" class="px-8 py-10">
 
     <form v-on:submit.prevent="formSubmit" class="admin-content bg-white rounded-sm pt-6 shadow-sm">
       

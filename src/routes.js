@@ -98,7 +98,7 @@ export default [
 		path: `/${process.env.VUE_APP_ADMIN_PAGE}/menu`, 
 		component: AdminIndex, 
 		meta: {
-			view: 'AdminDasbor',
+			view: 'menu/MenuIndex',
 			title: 'Menu'
 		},
 		beforeEnter: [loggedOutGuard]
