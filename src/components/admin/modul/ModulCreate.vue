@@ -86,8 +86,9 @@
         
         let app = this;
         let postData = new FormData();
-        postData.append('mod_nama', app.data.mod_nama);
-        postData.append('mod_status', app.data.mod_status);
+        Object.keys(app.data).forEach((key) => {
+          postData.append(key, app.data[key]);
+        });
 
         usePrivateApi('modul/create', {
           app: app,
