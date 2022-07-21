@@ -31,7 +31,7 @@
 
               <div class="form-group flex items-center">
                 <input v-model="stay" id="stayHere" type="checkbox" class="mr-2">
-                <label for="stayHere">Tetap di Halaman</label>
+                <label for="stayHere">Tahan Jendela Pembuatan</label>
               </div>
 
             </section>
