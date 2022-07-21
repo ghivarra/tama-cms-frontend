@@ -60,19 +60,19 @@
 
     <div id="tableSkeleton" class="hidden">
       <tr v-for="(skeleton, n) in skeletons" v-bind:key="n" class="border-b w-full">
-        <td class="py-6 pl-6 pr-4 text-center">
+        <td class="py-8 pl-6 pr-4 text-center">
           <div class="skeleton-loader rounded-full mx-auto" style="width: 16px; height: 16px;"></div>
         </td>
-        <td class="py-6 px-4 text-center">
+        <td class="py-8 px-4 text-center">
           <div class="skeleton-loader rounded-full mx-auto" style="width: 16px; height: 16px;"></div>
         </td>
-        <td class="py-6 px-4">
+        <td class="py-8 px-4">
           <div class="skeleton-loader w-full" style="height: 16px;"></div>
         </td>
-        <td class="py-6 px-4">
+        <td class="py-8 px-4">
           <div class="skeleton-loader w-full" style="height: 16px;"></div>
         </td>
-        <td class="py-6 pl-4 px-6">
+        <td class="py-8 pl-4 px-6">
           <div class="skeleton-loader w-full" style="height: 16px;"></div>
         </td>
       </tr>
