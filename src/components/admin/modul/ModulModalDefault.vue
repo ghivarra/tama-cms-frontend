@@ -82,7 +82,7 @@
         let postData = new FormData();
         postData.append('mod_id', app.data.mod_id);
 
-        usePrivateApi('modul/status-update', {
+        usePrivateApi('modul/update-status', {
           app: app,
           method: 'post',
           data: postData,
