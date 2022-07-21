@@ -1,5 +1,5 @@
 <template>
-  <main role="main" class="px-8 py-6">
+  <main role="main" class="px-8 py-10">
     
     <header class="block mb-8 flex items-center justify-between">
       
@@ -85,7 +85,7 @@
   </main>
 
   <!-- LOAD MODALS -->
-  <modul-modal v-bind:show="detailStatus" v-bind:toggle="detailToggle" v-bind:data="datatableCurrentData" v-bind:instance="detailKey"></modul-modal>
+  <modul-detail v-bind:show="detailStatus" v-bind:toggle="detailToggle" v-bind:data="datatableCurrentData" v-bind:instance="detailKey"></modul-detail>
   <modul-create v-bind:show="createStatus" v-bind:toggle="createToggle"></modul-create>
 
 </template>
@@ -98,7 +98,7 @@
   import { DateTime } from 'luxon';
 
   // load components
-  import ModulModal from './ModulModal.vue';
+  import ModulDetail from './ModulDetail.vue';
   import ModulCreate from './ModulCreate.vue';
 
   // load library
@@ -114,7 +114,7 @@
     components: {
       'font-awesome': FontAwesomeIcon,
       'date-picker': Datepicker,
-      'modul-modal': ModulModal,
+      'modul-detail': ModulDetail,
       'modul-create': ModulCreate
     },
     data: function() {
@@ -311,10 +311,3 @@
   }
 
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
-
-
-
-</style>
