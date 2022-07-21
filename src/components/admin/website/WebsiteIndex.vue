@@ -96,7 +96,7 @@
         postData.append('logo', app.data.logo);
         postData.append('icon', app.data.icon);
 
-        usePrivateApi('sertifikasi/website/update', {
+        usePrivateApi('website/update', {
           app: app,
           method: 'post',
           data: postData,

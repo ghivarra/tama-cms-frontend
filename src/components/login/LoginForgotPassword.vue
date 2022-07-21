@@ -57,7 +57,7 @@ export default {
       let postData = new FormData();
       postData.append('email', app.email);
 
-      usePublicApi('autentikasi/lupa-password/post', {
+      usePublicApi(`${process.env.VUE_APP_API_AUTH_SLUG}/lupa-password/post`, {
         app: app,
         method: 'post',
         data: postData,

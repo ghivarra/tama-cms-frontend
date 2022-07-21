@@ -89,7 +89,7 @@
         postData.append('mod_nama', app.modul.mod_nama);
         postData.append('mod_status', app.modul.mod_status);
 
-        usePrivateApi('sertifikasi/modul/create', {
+        usePrivateApi('modul/create', {
           app: app,
           method: 'post',
           data: postData,

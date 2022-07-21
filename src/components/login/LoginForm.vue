@@ -98,7 +98,7 @@ export default {
 
       let app = this;
 
-      auth('autentikasi', {
+      auth({
         app: app,
         data: formData,
         success: function(response) {

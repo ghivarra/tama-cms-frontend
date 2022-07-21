@@ -68,7 +68,7 @@
     },
     created: function() {
       let app = this;
-      usePublicApi('autentikasi/cek-akses', {
+      usePublicApi(`${process.env.VUE_APP_API_AUTH_SLUG}/cek-akses`, {
         app: app,
         method: 'get',
         success: function() {

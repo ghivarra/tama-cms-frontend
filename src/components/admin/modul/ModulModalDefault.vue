@@ -57,7 +57,7 @@
         let postData = new FormData();
         postData.append('mod_id', app.data.mod_id);
 
-        usePrivateApi('sertifikasi/modul/delete', {
+        usePrivateApi('modul/delete', {
           app: app,
           method: 'post',
           data: postData,
@@ -82,7 +82,7 @@
         let postData = new FormData();
         postData.append('mod_id', app.data.mod_id);
 
-        usePrivateApi('sertifikasi/modul/status-update', {
+        usePrivateApi('modul/status-update', {
           app: app,
           method: 'post',
           data: postData,

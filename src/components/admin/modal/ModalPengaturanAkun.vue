@@ -137,7 +137,7 @@
           postData.append('foto', this.data.foto);
         }
 
-        usePrivateApi('sertifikasi/akun/update', {
+        usePrivateApi('akun/update', {
           app: app,
           method: 'post',
           data: postData,

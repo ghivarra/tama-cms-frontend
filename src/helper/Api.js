@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 const authenticatedCookie = process.env.VUE_APP_AUTH_KEY;
 const authenticatedSign = process.env.VUE_APP_AUTH_PASS;
 
-export const auth = (url, options) => {
+export const auth = (options) => {
 
 	let app  = options.app;
   let data = options.data;
@@ -15,7 +15,7 @@ export const auth = (url, options) => {
   Axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
   // post login data
-  Axios.post(url, data, {
+  Axios.post(process.env.VUE_APP_API_AUTH_SLUG, data, {
     headers: {'content-type': 'application/x-www-form-urlencoded'},
     withCredentials: true
   })
@@ -229,7 +229,7 @@ export const usePrivateApi = (url, options) => {
   setCookie(authenticatedCookie, authenticatedSign, 7200);
 
   // set configuration
-  Axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+  Axios.defaults.baseURL = `${process.env.VUE_APP_API_BASE_URL}/${process.env.VUE_APP_API_ADMIN_SLUG}`;
 
   // config
   let axiosConfig = {};

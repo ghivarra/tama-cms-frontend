@@ -230,7 +230,7 @@
         order: [[2, 'asc']],
         pageLength: 10,
         ajax: {
-          url: `${process.env.VUE_APP_API_BASE_URL}sertifikasi/modul/datatable`,
+          url: `${process.env.VUE_APP_API_BASE_URL}/${process.env.VUE_APP_API_ADMIN_SLUG}/modul/datatable`,
           type: 'get',
           xhrFields: {
             withCredentials: true

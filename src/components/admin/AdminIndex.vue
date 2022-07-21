@@ -211,7 +211,7 @@
         }
 
         let app = this;
-        usePrivateApi('sertifikasi/admin-info', {
+        usePrivateApi('admin-info', {
           app: app,
           method: 'get',
           success: function(res) {
@@ -291,7 +291,7 @@
 
             app.changePreloadStatus();
 
-            usePrivateApi('sertifikasi/logout', {
+            usePrivateApi('logout', {
               app: app,
               method: 'get',
               success: function() {
@@ -382,7 +382,7 @@
 
       let app = this;
 
-      usePrivateApi('sertifikasi/menu-list', {
+      usePrivateApi('menu-list', {
         app: app,
         method: 'get',
         success: function(res) {

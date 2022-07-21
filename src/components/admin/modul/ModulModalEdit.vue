@@ -69,7 +69,7 @@
         postData.append('mod_status', app.modul.mod_status);
         postData.append('mod_id', app.modul.mod_id);
 
-        usePrivateApi('sertifikasi/modul/update', {
+        usePrivateApi('modul/update', {
           app: app,
           method: 'post',
           data: postData,
@@ -90,7 +90,7 @@
 
       let app = this;
 
-      usePrivateApi(`sertifikasi/modul/select/${this.data.mod_id}`, {
+      usePrivateApi(`modul/select/${this.data.mod_id}`, {
         app: app,
         method: 'get',
         success: function(res) {

@@ -119,7 +119,7 @@
         postData.append('password_baru', app.password.new);
         postData.append('password_konf', app.password.conf);
 
-        usePrivateApi('sertifikasi/akun/rubah-password', {
+        usePrivateApi('akun/rubah-password', {
           app: app,
           method: 'post',
           data: postData,

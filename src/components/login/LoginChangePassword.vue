@@ -109,7 +109,7 @@ export default {
       postData.append('password', app.data.password);
       postData.append('konfirmasi', app.data.passwordConf);
 
-      usePublicApi('autentikasi/ubah-password/post', {
+      usePublicApi(`${process.env.VUE_APP_API_AUTH_SLUG}/ubah-password/post`, {
         app: app,
         method: 'post',
         data: postData,

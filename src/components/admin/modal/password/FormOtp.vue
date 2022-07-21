@@ -93,7 +93,7 @@
         let postData = new FormData();
         postData.append('otp', otp);
 
-        usePrivateApi('sertifikasi/akun/konfirmasi-otp', {
+        usePrivateApi('akun/konfirmasi-otp', {
           app: app,
           method: 'post',
           data: postData,

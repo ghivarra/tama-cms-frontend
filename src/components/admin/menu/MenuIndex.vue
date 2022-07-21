@@ -100,7 +100,7 @@
     methods: {
       getAllMenu: function() {
         let app = this;
-        usePrivateApi('sertifikasi/menu/get', {
+        usePrivateApi('menu/get', {
           app: app,
           method: 'get',
           success: function(res) {
@@ -137,7 +137,7 @@
       },
       updateMenu: function() {
         let app = this;
-        usePrivateApi('sertifikasi/menu-list', {
+        usePrivateApi('menu-list', {
           app: app,
           method: 'get',
           success: function(response) {
@@ -172,7 +172,7 @@
         postData.append('urutan', JSON.stringify(input));
 
         // send
-        usePrivateApi('sertifikasi/menu/urutan-update', {
+        usePrivateApi('menu/urutan-update', {
           app: app,
           method: 'post',
           data: postData,
