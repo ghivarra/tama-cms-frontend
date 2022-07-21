@@ -18,12 +18,12 @@
               
               <div class="form-group mb-6">
                 <label for="nama" class="font-bold">Nama Modul</label>
-                <input v-model="modul.mod_nama" id="nama" type="text" class="form-modern" required>
+                <input v-model="data.mod_nama" id="nama" type="text" class="form-modern" required>
               </div>
 
               <div class="form-group mb-6">
                 <label for="status" class="font-bold block mb-2">Status</label>
-                <select v-model="modul.mod_status" id="status" class="form-select" required>
+                <select v-model="data.mod_status" id="status" class="form-select" required>
                   <option value="aktif">Aktif</option>
                   <option value="nonaktif">Nonaktif</option>
                 </select>
@@ -68,7 +68,7 @@
     inject: ['reloadTable', 'changePreloadStatus'],
     data: function() {
       return {
-        modul: {
+        data: {
           mod_nama: '',
           mod_status: 'aktif'
         },
@@ -86,8 +86,8 @@
         
         let app = this;
         let postData = new FormData();
-        postData.append('mod_nama', app.modul.mod_nama);
-        postData.append('mod_status', app.modul.mod_status);
+        postData.append('mod_nama', app.data.mod_nama);
+        postData.append('mod_status', app.data.mod_status);
 
         usePrivateApi('modul/create', {
           app: app,
