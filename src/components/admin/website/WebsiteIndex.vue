@@ -98,9 +98,8 @@
           data: postData,
           success: function(res) {
             let data = res.data;
-            Swal.fire(data.title, data.message, data.status).then(() => {
-              app.updateWebsiteData();
-            });
+            app.updateWebsiteData();
+            Swal.fire(data.title, data.message, data.status);
           }
         });
       }

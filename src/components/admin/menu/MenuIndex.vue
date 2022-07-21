@@ -3,10 +3,10 @@
 
     <!-- COTNROL BUTTON -->
     <section class="flex items-center mb-6">
-      <button v-on:click="createParentMenuToggle" type="button" class="btn shadow-sm text-white bg-gss hover:bg-gss-dark focus:bg-gss-dark mr-3">
+      <button v-on:click.prevent="createParentMenuToggle" type="button" class="btn shadow-sm text-white bg-gss hover:bg-gss-dark focus:bg-gss-dark mr-3">
         Tambah Menu
       </button>
-      <button v-on:click="simpanUrutan" type="button" class="save-menu btn shadow-sm text-white bg-success hover:bg-success-dark focus:bg-success-dark">
+      <button v-on:click.prevent="simpanUrutan" type="button" class="save-menu btn shadow-sm text-white bg-success hover:bg-success-dark focus:bg-success-dark">
         Simpan
       </button>
     </section>
@@ -19,12 +19,12 @@
         <template v-slot:item="{ element, index }">
 
           <div class="list-menu-item mb-6">
-            <button v-on:click="element.open = !element.open" type="button" class="text-left block p-4 px-6 bg-white shadow-sm rounded-sm form-select cursor-pointer transition-colors hover:bg-gss-light hover:text-white focus:bg-gss-light focus:text-white">
+            <button v-on:click.prevent="element.open = !element.open" type="button" class="text-left block p-4 px-6 bg-white shadow-sm rounded-sm form-select cursor-pointer transition-colors hover:bg-gss-light hover:text-white focus:bg-gss-light focus:text-white">
               <span>{{ element.men_nama }}</span>
             </button>
             <div v-show="element.open" class="p-4 bg-white border border-t-0 no-drag">
               <div  class="flex items-center mb-6 no-drag">
-                <button v-bind:data-id="element.men_id" type="button" class="open-add-submenu btn text-white bg-gss hover:bg-gss-dark mr-3">Tambah Submenu</button>
+                <button v-on:click.prevent="createSubMenuToggle" v-bind:data-id="element.men_id" v-bind:data-nama="element.men_nama" type="button" class="open-add-submenu btn text-white bg-gss hover:bg-gss-dark mr-3">Tambah Submenu</button>
                 <button v-bind:data-id="element.men_id" type="button" class="open-detail btn text-white bg-primary hover:bg-primary-dark">Detail</button>
               </div>
 
@@ -65,7 +65,8 @@
   </main>
 
   <!-- MODALS-->
-  <menu-create v-bind:show="createParentStatus" v-bind:toggle="createParentMenuToggle"></menu-create>
+  <menu-create v-bind:show="createParentStatus" v-bind:toggle="createParentMenuToggle" v-bind:update="updateMenu" v-bind:update-list="getAllMenu"></menu-create>
+  <submenu-create v-bind:show="createSubStatus" v-bind:toggle="createSubMenuToggle" v-bind:update="updateMenu" v-bind:update-list="getAllMenu" v-bind:parent="subMenuParent" v-bind:key="subMenuParent.id"></submenu-create>
 
 </template>
 
@@ -73,6 +74,7 @@
 
   // load components
   import MenuCreate from './MenuCreate.vue';
+  import SubMenuCreate from './SubMenuCreate.vue';
 
 	// load functions
 	import { usePrivateApi } from '../../../helper/Api';
@@ -86,7 +88,8 @@
     name: 'menu-index',
     components: {
       'vue-draggable': VueDraggable,
-      'menu-create': MenuCreate
+      'menu-create': MenuCreate,
+      'submenu-create': SubMenuCreate
     },
     inject: ['changePreloadStatus', 'updateMenuData'],
     data: function() {
@@ -103,6 +106,13 @@
 
         // modals
         createParentStatus: false,
+        createSubStatus: false,
+
+        // modals data
+        subMenuParent: {
+          id: 0,
+          nama: ''
+        }
       }
     },
     methods: {
@@ -112,7 +122,8 @@
           app: app,
           method: 'get',
           success: function(res) {
-            app.menus = res.data.data;
+            app.menus  = res.data.data;
+            app.urutan = [];
 
             Array.prototype.forEach.call(app.menus, (item) => {
 
@@ -180,15 +191,14 @@
         postData.append('urutan', JSON.stringify(input));
 
         // send
-        usePrivateApi('menu/urutan-update', {
+        usePrivateApi('menu/update-urutan', {
           app: app,
           method: 'post',
           data: postData,
           success: function(res) {
             let data = res.data;
-            Swal.fire(data.title, data.message, data.status).then(() => {
-              app.updateMenu();
-            });
+            app.updateMenu();
+            Swal.fire(data.title, data.message, data.status);
           }
         });
       },
@@ -197,6 +207,18 @@
       createParentMenuToggle: function() {
         createModal(this.createParentStatus);
         this.createParentStatus = !this.createParentStatus;
+      },
+      createSubMenuToggle: function(e) {
+        createModal(this.createSubStatus);
+
+        // set data
+        if (!this.createSubStatus) {
+          this.subMenuParent.id = e.target.getAttribute('data-id');
+          this.subMenuParent.nama = e.target.getAttribute('data-nama');
+        }
+
+        // open modal
+        this.createSubStatus = !this.createSubStatus;
       }
     },
     created: function() {

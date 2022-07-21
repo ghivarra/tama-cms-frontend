@@ -6,7 +6,7 @@
       <div ref="modalDialog" class="modal-dialog">
         <div class="modal-content">
           <header class="modal-content-header bg-gss-dark text-white flex justify-between items-center tablet:bg-white tablet:text-dark">
-            <h2 class="h3 font-bold">Buat Menu</h2>
+            <h2 class="h3 font-bold">Buat Sub Menu</h2>
             <button v-on:click="toggle" type="button" class="text-red-500 hover:text-red-600 transition-colors">
               <font-awesome icon="fa-solid fa-xmark" class="h3"></font-awesome>
             </button>
@@ -15,6 +15,8 @@
           <form v-on:submit.prevent="submitData">
     
             <section class="modal-content-body">
+
+              <p class="h3 alert bg-primary-light text-primary rounded-md mb-6 p-4 py-2"><b>Parent:</b> {{ parent.nama }}</p>
               
               <div class="form-group mb-6">
                 <label for="nama" class="font-bold">Nama Menu</label>
@@ -24,13 +26,7 @@
               <div class="form-group mb-6">
                 <label for="url" class="font-bold">Link/URL</label>
                 <p class="text-muted mb-0">{{ `${adminPage}...` }}</p>
-                <input v-model="data.men_link" id="url" type="text" class="form-modern">
-              </div>
-
-              <div class="form-group mb-6">
-                <label for="icon" class="font-bold">Icon</label>
-                <p class="text-muted mb-0">Font Awesome 6 e.g. "fa-solid fa-bars"</p>
-                <input v-model="data.men_icon" id="icon" type="text" class="form-modern">
+                <input v-model="data.men_link" id="url" type="text" class="form-modern" required>
               </div>
 
               <div class="form-group mb-6">
@@ -76,21 +72,23 @@
     components: {
       'font-awesome': FontAwesomeIcon
     },
-    props: ['toggle', 'show', 'update', 'updateList'],
+    props: ['toggle', 'show', 'update', 'updateList', 'parent'],
     inject: ['changePreloadStatus'],
     data: function() {
       return {
         adminPage: `${process.env.VUE_APP_BASE_URL}${process.env.VUE_APP_ADMIN_PAGE}/`,
         data: {
+          men_parent: this.parent.id,
           men_nama: '',
           men_link: null,
-          men_icon: '',
+          men_icon: null,
           men_status: 'aktif'
         },
         stay: false
       }
     },
     methods: {
+
       checkToggle: function(e) {
         if (e.target == this.$refs.modal || e.target == this.$refs.modalDialog) {
           this.toggle();
@@ -105,7 +103,7 @@
           postData.append(key, app.data[key]);
         });
 
-        usePrivateApi('menu/create-parent', {
+        usePrivateApi('menu/create-child', {
           app: app,
           method: 'post',
           data: postData,
