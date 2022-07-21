@@ -88,13 +88,9 @@
       formSubmit: function() {
         let app = this;
         let postData = new FormData();
-
-        // append data
-        postData.append('nama', app.data.nama);
-        postData.append('tagline', app.data.tagline);
-        postData.append('deskripsi', app.data.deskripsi);
-        postData.append('logo', app.data.logo);
-        postData.append('icon', app.data.icon);
+        Object.keys(app.data).forEach((key) => {
+          postData.append(key, app.data[key]);
+        });
 
         usePrivateApi('website/update', {
           app: app,
