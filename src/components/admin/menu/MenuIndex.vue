@@ -65,14 +65,18 @@
   </main>
 
   <!-- MODALS-->
-  
+  <menu-create v-on:show="createParentStatus" v-on:toggle="createParentMenuToggle"></menu-create>
 
 </template>
 
 <script>
 
+  // load components
+  import MenuCreate from './MenuCreate.vue';
+
 	// load functions
 	import { usePrivateApi } from '../../../helper/Api';
+  import { createModal } from '../../../helper/Global';
 
   // load libraries
   import VueDraggable from 'vuedraggable';
@@ -81,7 +85,8 @@
   export default {
     name: 'menu-index',
     components: {
-      'vue-draggable': VueDraggable
+      'vue-draggable': VueDraggable,
+      'menu-create': MenuCreate
     },
     inject: ['changePreloadStatus', 'updateMenuData'],
     data: function() {
@@ -94,7 +99,11 @@
         drag: false,
 
         // skelly bois
-        skeletons: [1, 2, 3, 4, 5]
+        skeletons: [1, 2, 3, 4, 5],
+
+        // modals
+        createParentStatus: false,
+
       }
     },
     methods: {
@@ -183,6 +192,12 @@
             });
           }
         });
+      },
+
+      // modal
+      createParentMenuToggle: function() {
+        createModal(this.createParentStatus);
+        this.createParentStatus = !this.createParentStatus;
       }
     },
     created: function() {
