@@ -1,6 +1,6 @@
 <template>
   <Transition name="slide-fade-up">
-    <section ref="modal" v-if="show" v-on:click="checkToggle" class="modal pengaturan">
+    <section ref="modal" v-show="show" v-on:click="checkToggle" class="modal pengaturan">
 
       <!-- MODAL CONTENT -->
       <div ref="modalDialog" class="modal-dialog">
@@ -18,20 +18,24 @@
               
               <div class="form-group mb-6">
                 <label for="nama" class="font-bold">Nama Menu</label>
-                <input v-model="menu.men_nama" id="nama" type="text" class="form-modern" required>
+                <input v-model="data.men_nama" id="nama" type="text" class="form-modern" required>
               </div>
 
               <div class="form-group mb-6">
                 <label for="url" class="font-bold">Link/URL</label>
-                <div class="flex">
-                  <div class="form-text-prepend"></div>
-                  <input v-model="menu.men_link" id="url" type="text" class="form-modern" required>
-                </div>
+                <p class="text-muted mb-0">{{ `${adminPage}...` }}</p>
+                <input v-model="data.men_link" id="url" type="text" class="form-modern">
+              </div>
+
+              <div class="form-group mb-6">
+                <label for="icon" class="font-bold">Icon</label>
+                <p class="text-muted mb-0">Font Awesome 6 e.g. "fa-solid fa-bars"</p>
+                <input v-model="data.men_icon" id="icon" type="text" class="form-modern" required>
               </div>
 
               <div class="form-group mb-6">
                 <label for="status" class="font-bold block mb-2">Status</label>
-                <select v-model="menu.men_status" id="status" class="form-select" required>
+                <select v-model="data.men_status" id="status" class="form-select" required>
                   <option value="aktif">Aktif</option>
                   <option value="nonaktif">Nonaktif</option>
                 </select>
@@ -73,13 +77,14 @@
       'font-awesome': FontAwesomeIcon
     },
     props: ['toggle', 'show'],
-    inject: ['reloadTable', 'changePreloadStatus'],
+    inject: ['changePreloadStatus'],
     data: function() {
       return {
-        menu: {
+        adminPage: `${process.env.VUE_APP_BASE_URL}${process.env.VUE_APP_ADMIN_PAGE}/`,
+        data: {
           men_nama: '',
-          men_link: '',
-          men_jenis: 'parent',
+          men_link: null,
+          men_icon: '',
           men_status: 'aktif'
         },
         stay: false
@@ -96,10 +101,11 @@
         
         let app = this;
         let postData = new FormData();
-        postData.append('mod_nama', app.modul.mod_nama);
-        postData.append('mod_status', app.modul.mod_status);
+        Object.keys(app.data).forEach((key) => {
+          postData.append(key, app.data[key]);
+        });
 
-        usePrivateApi('modul/create', {
+        usePrivateApi('menu/create-parent', {
           app: app,
           method: 'post',
           data: postData,

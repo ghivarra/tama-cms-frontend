@@ -3,7 +3,7 @@
 
     <!-- COTNROL BUTTON -->
     <section class="flex items-center mb-6">
-      <button v-on:click="openCreateForm" type="button" class="btn shadow-sm text-white bg-gss hover:bg-gss-dark focus:bg-gss-dark mr-3">
+      <button v-on:click="createParentMenuToggle" type="button" class="btn shadow-sm text-white bg-gss hover:bg-gss-dark focus:bg-gss-dark mr-3">
         Tambah Menu
       </button>
       <button v-on:click="simpanUrutan" type="button" class="save-menu btn shadow-sm text-white bg-success hover:bg-success-dark focus:bg-success-dark">
@@ -65,7 +65,7 @@
   </main>
 
   <!-- MODALS-->
-  <menu-create v-on:show="createParentStatus" v-on:toggle="createParentMenuToggle"></menu-create>
+  <menu-create v-bind:show="createParentStatus" v-bind:toggle="createParentMenuToggle"></menu-create>
 
 </template>
 
@@ -103,7 +103,6 @@
 
         // modals
         createParentStatus: false,
-
       }
     },
     methods: {

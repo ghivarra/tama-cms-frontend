@@ -8,7 +8,7 @@
 
         <div >
           <router-link v-if="menu.men_link != null" v-on:click="sidebarToggle" v-bind:to=" `/${adminPage}/${menu.men_link}` " v-bind:class="`menu-item ${menu.status}`">
-            <font-awesome v-bind:icon="menu.men_icon" class="mr-3 icon"></font-awesome>
+            <font-awesome v-bind:icon="(menu.men_icon == null) ? 'fa-solid fa-chevron-right' : menu.men_icon" class="mr-3 icon"></font-awesome>
             <span>{{ menu.men_nama }}</span>
           </router-link>
 
