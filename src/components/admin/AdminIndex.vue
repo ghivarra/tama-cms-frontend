@@ -123,6 +123,8 @@
   import AdminTemplateMenu from './template/AdminMenu.vue';
   import ModalPengaturanAkun from './modal/ModalPengaturanAkun.vue';
   import ModalPengaturanPassword from './modal/ModalPengaturanPassword.vue';
+  import AdminError from './AdminError.vue';
+  import AdminLoader from './AdminLoader.vue';
 
   export default {
     name: 'admin-index',
@@ -182,8 +184,23 @@
         },
 
         // view
-        currentComponent: markRaw(defineAsyncComponent(() => {
-          return import(`./${this.$route.meta.view}.vue`);
+        currentComponent: markRaw(defineAsyncComponent({
+          loader: () => {
+            let app = this;
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                resolve(import(`./${app.$route.meta.view}.vue`));
+              }, 500);
+            });
+          },
+
+          // A component to use while the async component is loading or error
+          loadingComponent: AdminLoader,
+          errorComponent: AdminError,
+
+          // Delay before showing the loading component. and timeout
+          delay: 500,
+          timeout: 6000,         
         }))
       }
     },
@@ -198,9 +215,23 @@
         this.updateMenuData(this.menus, newRoutes.path);
         this.title = newRoutes.meta.title;
 
-        this.currentComponent = markRaw(defineAsyncComponent(() => {
-          return import(`./${newRoutes.meta.view}.vue`);
-        }));
+        this.currentComponent = markRaw(defineAsyncComponent({
+          loader: () => {
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                resolve(import(`./${newRoutes.meta.view}.vue`));
+              }, 500);
+            });
+          },
+
+          // A component to use while the async component is loading or error
+          loadingComponent: AdminLoader,
+          errorComponent: AdminError,
+
+          // Delay before showing the loading component. and timeout
+          delay: 500,
+          timeout: 6000,
+        }))
       }
     },
     methods: {

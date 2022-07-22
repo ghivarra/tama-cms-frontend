@@ -41,6 +41,10 @@ export const getCookie = (cookieName) => {
   return '';
 }
 
+export const range = (size, startAt = 0) => {
+    return [...Array(size).keys()].map(i => i + startAt);
+}
+
 export const imageURL = (slug) => {
   return (slug == undefined) ? process.env.VUE_APP_IMAGE_BASE_URL : process.env.VUE_APP_IMAGE_BASE_URL + slug;
 }
