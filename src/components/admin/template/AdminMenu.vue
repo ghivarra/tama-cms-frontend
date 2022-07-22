@@ -7,7 +7,7 @@
       <li v-for="menu in menus" v-bind:key="menu.men_id">
 
         <div >
-          <router-link v-if="menu.men_link != null" v-on:click="sidebarToggle" v-bind:to=" `/${adminPage}/${menu.men_link}` " v-bind:class="`menu-item ${menu.status}`">
+          <router-link v-if="linkOrNot(menu)" v-on:click="sidebarToggle" v-bind:to=" `/${adminPage}/${menu.men_link}` " v-bind:class="`menu-item ${menu.status}`">
             <font-awesome v-bind:icon="(menu.men_icon == null) ? 'fa-solid fa-chevron-right' : menu.men_icon" class="mr-3 icon"></font-awesome>
             <span>{{ menu.men_nama }}</span>
           </router-link>
@@ -63,6 +63,11 @@
     data: function() {
       return {
         adminPage: process.env.VUE_APP_ADMIN_PAGE
+      }
+    },
+    methods: {
+      linkOrNot: function(menu) {
+        return (menu.men_link != null && menu.men_link != 'null' && menu.men_link.length > 0) ? true : false;
       }
     }
   }
