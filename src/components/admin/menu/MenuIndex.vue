@@ -25,7 +25,7 @@
             <div v-show="element.open" class="p-4 bg-white border border-t-0 no-drag">
               <div  class="flex items-center mb-6 no-drag">
                 <button v-on:click.prevent="createSubMenuToggle" v-bind:data-id="element.men_id" v-bind:data-nama="element.men_nama" type="button" class="open-add-submenu btn text-white bg-gss hover:bg-gss-dark mr-3">Tambah Submenu</button>
-                <button v-bind:data-id="element.men_id" type="button" class="open-detail btn text-white bg-primary hover:bg-primary-dark">Detail</button>
+                <button v-on:click.prevent="detailParentMenuToggle" v-bind:data-parent="index" type="button" class="open-detail btn text-white bg-primary hover:bg-primary-dark">Detail</button>
               </div>
 
               <vue-draggable v-model="urutan[index].childs" item-key="men_id" ghost-class="ghost">
@@ -66,6 +66,8 @@
 
   <!-- MODALS-->
   <menu-create v-bind:show="createParentStatus" v-bind:toggle="createParentMenuToggle" v-bind:update="updateMenu" v-bind:update-list="getAllMenu"></menu-create>
+  <menu-detail v-bind:show="detailParentStatus" v-bind:toggle="detailParentMenuToggle" v-bind:menu="parentDetail" v-bind:update="updateMenu" v-bind:update-list="getAllMenu"></menu-detail>
+  
   <submenu-create v-bind:show="createSubStatus" v-bind:toggle="createSubMenuToggle" v-bind:update="updateMenu" v-bind:update-list="getAllMenu" v-bind:parent="subMenuParent" v-bind:key="subMenuParent.id"></submenu-create>
 
 </template>
@@ -74,6 +76,7 @@
 
   // load components
   import MenuCreate from './MenuCreate.vue';
+  import MenuDetail from './MenuDetail.vue';
   import SubMenuCreate from './SubMenuCreate.vue';
 
 	// load functions
@@ -89,6 +92,7 @@
     components: {
       'vue-draggable': VueDraggable,
       'menu-create': MenuCreate,
+      'menu-detail': MenuDetail,
       'submenu-create': SubMenuCreate
     },
     inject: ['changePreloadStatus', 'updateMenuData'],
@@ -106,13 +110,17 @@
 
         // modals
         createParentStatus: false,
+        detailParentStatus: false,
         createSubStatus: false,
 
         // modals data
         subMenuParent: {
           id: 0,
           nama: ''
-        }
+        },
+
+        // detail
+        parentDetail: []
       }
     },
     methods: {
@@ -219,6 +227,17 @@
 
         // open modal
         this.createSubStatus = !this.createSubStatus;
+      },
+      detailParentMenuToggle: function(e) {
+        createModal(this.detailParentStatus);
+
+        // set data
+        if (!this.detailParentStatus) {
+          let key = e.target.getAttribute('data-parent');
+          this.parentDetail = this.menus[key];
+        }
+
+        this.detailParentStatus = !this.detailParentStatus;
       }
     },
     created: function() {
