@@ -37,8 +37,8 @@
                       <span>{{ element.men_nama }}</span>
                     </button>
                     <div v-show="element.open" class="p-4 bg-white border border-t-0 no-drag">
-                      <div  class="flex items-center mb-6 no-drag">
-                        <button v-bind:data-id="element.men_id" type="button" class="open-detail btn text-white bg-primary hover:bg-primary-dark">Detail</button>
+                      <div class="flex items-center mb-6 no-drag">
+                        <button v-on:click.prevent="detailSubMenuToggle" v-bind:data-child="element.men_id" type="button" class="open-detail btn text-white bg-primary hover:bg-primary-dark">Detail</button>
                       </div>
                     </div>
                   </div>
@@ -69,6 +69,7 @@
   <menu-detail v-bind:show="detailParentStatus" v-bind:toggle="detailParentMenuToggle" v-bind:menu="parentDetail"></menu-detail>
 
   <submenu-create v-bind:show="createSubStatus" v-bind:toggle="createSubMenuToggle" v-bind:parent="subMenuParent" v-bind:key="subMenuParent.id"></submenu-create>
+  <submenu-detail v-bind:show="detailSubStatus" v-bind:toggle="detailSubMenuToggle" v-bind:key="subMenuParent.id" v-bind:menu="submenuDetail"></submenu-detail>
 
 </template>
 
@@ -78,10 +79,12 @@
   import MenuCreate from './MenuCreate.vue';
   import MenuDetail from './MenuDetail.vue';
   import SubMenuCreate from './SubMenuCreate.vue';
+  import SubMenuDetail from './SubMenuDetail.vue';
 
 	// load functions
 	import { usePrivateApi } from '../../../helper/Api';
   import { createModal } from '../../../helper/Global';
+  import { computed } from 'vue';
 
   // load libraries
   import VueDraggable from 'vuedraggable';
@@ -93,11 +96,15 @@
       'vue-draggable': VueDraggable,
       'menu-create': MenuCreate,
       'menu-detail': MenuDetail,
-      'submenu-create': SubMenuCreate
+      'submenu-create': SubMenuCreate,
+      'submenu-detail': SubMenuDetail
     },
     inject: ['changePreloadStatus', 'updateMenuData'],
     provide: function() {
       return {
+        menus: computed(() => {
+          return this.menus;
+        }),
         update: this.updateMenu,
         updateList: this.getAllMenu
       }
@@ -118,6 +125,7 @@
         createParentStatus: false,
         detailParentStatus: false,
         createSubStatus: false,
+        detailSubStatus: false,
 
         // modals data
         subMenuParent: {
@@ -126,7 +134,8 @@
         },
 
         // detail
-        parentDetail: []
+        parentDetail: [],
+        submenuDetail: []
       }
     },
     methods: {
@@ -244,6 +253,30 @@
         }
 
         this.detailParentStatus = !this.detailParentStatus;
+      },
+      detailSubMenuToggle: function(e) {
+        createModal(this.detailSubStatus);
+
+        // set data
+        if (!this.detailSubStatus) {
+          let id = e.target.getAttribute('data-child');
+
+          Array.prototype.forEach.call(this.menus, (item) => {
+
+            if (item.men_child.length > 0) {
+              Array.prototype.forEach.call(item.men_child, (child) => {
+                if (child.men_id == id) {
+                  this.submenuDetail = child;
+                  this.subMenuParent.id = item.men_id;
+                  this.subMenuParent.nama = item.men_nama;
+                }
+              });
+            }
+
+          });
+        }
+
+        this.detailSubStatus = !this.detailSubStatus;
       }
     },
     created: function() {
