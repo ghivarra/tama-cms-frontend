@@ -28,8 +28,8 @@
 
   export default {
     name: 'menu-detail-default',
-    props: ['menu', 'editData', 'toggle', 'update', 'updateList'],
-    inject: ['changePreloadStatus'],
+    props: ['menu', 'editData', 'toggle'],
+    inject: ['changePreloadStatus', 'update', 'updateList'],
     computed: {
       updatedTime: function() {
         let date = DateTime.fromSeconds(this.menu.date_update).setLocale("id").toLocaleString(DateTime.DATE_FULL);

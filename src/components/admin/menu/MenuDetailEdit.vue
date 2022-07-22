@@ -59,8 +59,8 @@
 
   export default {
     name: 'menu-detail-edit',
-    props: ['toggle', 'menu', 'update', 'updateList'],
-    inject: ['changePreloadStatus'],
+    props: ['toggle', 'menu'],
+    inject: ['changePreloadStatus', 'update', 'updateList'],
     data: function() {
       return {
         adminPage: `${process.env.VUE_APP_BASE_URL}${process.env.VUE_APP_ADMIN_PAGE}/`,

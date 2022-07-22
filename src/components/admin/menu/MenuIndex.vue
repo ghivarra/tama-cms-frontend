@@ -65,10 +65,10 @@
   </main>
 
   <!-- MODALS-->
-  <menu-create v-bind:show="createParentStatus" v-bind:toggle="createParentMenuToggle" v-bind:update="updateMenu" v-bind:update-list="getAllMenu"></menu-create>
-  <menu-detail v-bind:show="detailParentStatus" v-bind:toggle="detailParentMenuToggle" v-bind:menu="parentDetail" v-bind:update="updateMenu" v-bind:update-list="getAllMenu"></menu-detail>
-  
-  <submenu-create v-bind:show="createSubStatus" v-bind:toggle="createSubMenuToggle" v-bind:update="updateMenu" v-bind:update-list="getAllMenu" v-bind:parent="subMenuParent" v-bind:key="subMenuParent.id"></submenu-create>
+  <menu-create v-bind:show="createParentStatus" v-bind:toggle="createParentMenuToggle"></menu-create>
+  <menu-detail v-bind:show="detailParentStatus" v-bind:toggle="detailParentMenuToggle" v-bind:menu="parentDetail"></menu-detail>
+
+  <submenu-create v-bind:show="createSubStatus" v-bind:toggle="createSubMenuToggle" v-bind:parent="subMenuParent" v-bind:key="subMenuParent.id"></submenu-create>
 
 </template>
 
@@ -96,6 +96,12 @@
       'submenu-create': SubMenuCreate
     },
     inject: ['changePreloadStatus', 'updateMenuData'],
+    provide: function() {
+      return {
+        update: this.updateMenu,
+        updateList: this.getAllMenu
+      }
+    },
     data: function() {
       return {
         menuLoaded: false,

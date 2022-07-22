@@ -76,8 +76,8 @@
     components: {
       'font-awesome': FontAwesomeIcon
     },
-    props: ['toggle', 'show', 'update', 'updateList'],
-    inject: ['changePreloadStatus'],
+    props: ['toggle', 'show'],
+    inject: ['changePreloadStatus', 'update', 'updateList'],
     data: function() {
       return {
         adminPage: `${process.env.VUE_APP_BASE_URL}${process.env.VUE_APP_ADMIN_PAGE}/`,

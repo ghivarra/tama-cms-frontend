@@ -29,7 +29,7 @@
 
   export default {
     name: 'menu-detail',
-    props: ['show', 'toggle', 'menu', 'update', 'updateList'],
+    props: ['show', 'toggle', 'menu'],
     components: {
       'font-awesome': FontAwesomeIcon
     },
