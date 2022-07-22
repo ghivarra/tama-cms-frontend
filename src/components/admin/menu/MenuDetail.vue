@@ -13,7 +13,7 @@
           </header>
 
           <!-- LOAD COMPONENT -->
-          <component v-bind:is="currentModalComponent" v-bind:editData="editData" v-bind:menu="menu" v-bind:toggle="extraToggle" v-bind:update="update" v-bind:update-list="updateList"></component>
+          <component v-bind:is="currentModalComponent" v-bind:editData="editData" v-bind:menu="menu" v-bind:toggle="extraToggle"></component>
 
         </div><!-- /modal-content -->
       </div><!-- /modal-dialog -->
