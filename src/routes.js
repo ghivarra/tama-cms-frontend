@@ -74,7 +74,7 @@ export default [
 		path: `/${process.env.VUE_APP_ADMIN_PAGE}/role`, 
 		component: AdminIndex, 
 		meta: {
-			view: 'AdminDasbor',
+			view: 'role/RoleIndex',
 			title: 'Role'
 		},
 		beforeEnter: [loggedOutGuard]
