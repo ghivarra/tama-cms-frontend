@@ -84,14 +84,21 @@
 
   </main>
 
+  <!-- MODALS -->
+  <role-create v-bind:show="createStatus" v-bind:toggle="createToggle"></role-create>
+
 </template>
 
 <script>
 
   // load functions
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+  import { usePrivateApi } from '../../../helper/Api';
   import { imageURL, createModal, range } from '../../../helper/Global';
   import { DateTime } from 'luxon';
+
+  // load components
+  import RoleCreate from './RoleCreate.vue';
 
   // load library
   import $ from 'jquery';
@@ -105,7 +112,8 @@
     name: 'modul-index',
     components: {
       'font-awesome': FontAwesomeIcon,
-      'date-picker': Datepicker
+      'date-picker': Datepicker,
+      'role-create': RoleCreate,
     },
     data: function() {
       return {
@@ -128,6 +136,10 @@
 
         // create data
         createStatus: false,
+
+        // data for options
+        menus: [],
+        modules: []
       }
     },
     watch: {
@@ -199,6 +211,25 @@
       return {
         reloadTable: this.reloadTable
       }
+    },
+    created: function() {
+      let app = this;
+
+      usePrivateApi('menu/get', {
+        app: app,
+        method: 'get',
+        success: function(res) {
+          app.menus = res.data.data;
+        }
+      });
+
+      usePrivateApi('modul/get', {
+        app: app,
+        method: 'get',
+        success: function(res) {
+          app.modules = res.data.data;
+        }
+      });
     },
     mounted: function() {
 

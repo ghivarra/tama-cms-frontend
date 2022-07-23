@@ -282,10 +282,6 @@
     created: function() {
       // update menu
       this.getAllMenu();
-    },
-    mounted: function() {
-      // update sortable menu
-      
     }
   }
 
