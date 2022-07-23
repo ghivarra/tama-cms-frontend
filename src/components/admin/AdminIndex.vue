@@ -190,7 +190,7 @@
             return new Promise((resolve) => {
               setTimeout(() => {
                 resolve(import(`./${app.$route.meta.view}.vue`));
-              }, 500);
+              }, 800);
             });
           },
 
@@ -220,7 +220,7 @@
             return new Promise((resolve) => {
               setTimeout(() => {
                 resolve(import(`./${newRoutes.meta.view}.vue`));
-              }, 500);
+              }, 800);
             });
           },
 
