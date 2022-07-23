@@ -190,7 +190,7 @@
             return new Promise((resolve) => {
               setTimeout(() => {
                 resolve(import(`./${app.$route.meta.view}.vue`));
-              }, 800);
+              }, 500);
             });
           },
 
@@ -199,7 +199,7 @@
           errorComponent: AdminError,
 
           // Delay before showing the loading component. and timeout
-          delay: 500,
+          delay: 0,
           timeout: 6000,         
         }))
       }
@@ -220,7 +220,7 @@
             return new Promise((resolve) => {
               setTimeout(() => {
                 resolve(import(`./${newRoutes.meta.view}.vue`));
-              }, 800);
+              }, 500);
             });
           },
 
@@ -229,7 +229,7 @@
           errorComponent: AdminError,
 
           // Delay before showing the loading component. and timeout
-          delay: 500,
+          delay: 0,
           timeout: 6000,
         }))
       }
