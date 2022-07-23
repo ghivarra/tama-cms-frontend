@@ -1,6 +1,6 @@
 <template>
   <Transition name="slide-fade-up">
-    <section ref="modal" v-if="show" v-on:click="checkToggle" class="modal pengaturan">
+    <section ref="modal" v-show="show" v-on:click="checkToggle" class="modal pengaturan">
 
       <!-- MODAL CONTENT -->
       <div ref="modalDialog" class="modal-dialog">
@@ -12,7 +12,7 @@
             </button>
           </header>
 
-          <form v-on:submit.prevent="submitData">
+          <form ref="form" v-on:submit.prevent="submitData">
     
             <section class="modal-content-body">
               
@@ -22,7 +22,17 @@
               </div>
 
               <div class="form-group mb-6">
-                <label for="status" class="font-bold block mb-2">Status</label>
+                <div class="font-bold mb-2 block">Modul Aktif</div>
+                <select ref="modules" id="modules" v-model="data.rol_modul" class="tom-selected" multiple></select>
+              </div>
+
+              <div class="form-group mb-6">
+                <div class="font-bold mb-2 block">Menu Aktif</div>
+                <select ref="menus" id="menus" v-model="data.rol_menu" class="tom-selected" multiple></select>
+              </div>
+
+              <div class="form-group mb-6">
+                <div class="font-bold block mb-2">Status</div>
                 <select v-model="data.rol_status" id="status" class="form-select" required>
                   <option value="aktif">Aktif</option>
                   <option value="nonaktif">Nonaktif</option>
@@ -58,6 +68,7 @@
 
   // load library
   import Swal from 'sweetalert2';
+  import TomSelect from 'tom-select';
 
   export default {
     name: 'role-create',
@@ -65,14 +76,27 @@
       'font-awesome': FontAwesomeIcon
     },
     props: ['toggle', 'show'],
-    inject: ['reloadTable', 'changePreloadStatus'],
+    inject: ['reloadTable', 'changePreloadStatus', 'allMenu', 'allModul'],
     data: function() {
       return {
         data: {
           rol_nama: '',
-          rol_status: 'aktif'
+          rol_status: 'aktif',
+          rol_modul: [],
+          rol_menu: []
         },
-        stay: false
+        stay: false,
+        tomSelected: false,
+
+        tomSelect: {
+          modul: null,
+          menu: null
+        }
+      }
+    },
+    computed : {
+      modalClass: function() {
+        return (this.show) ? 'modal pengaturan' : 'modal pengaturan hidden';
       }
     },
     methods: {
@@ -81,16 +105,81 @@
           this.toggle();
         }
       },
+      useTomSelect: function() {
+
+        let el  = document.getElementById('modules');
+        let app = this;
+
+        if (!this.tomSelected && el != undefined) {
+
+          // make data
+          let modulesOption = [];
+          let menusOption = [];
+
+          Array.prototype.forEach.call(this.allModul, (item) => {
+            modulesOption.push({
+              value: item.mod_id,
+              text: item.mod_nama
+            });
+          });
+
+          Array.prototype.forEach.call(this.allMenu, (item) => {
+            menusOption.push({
+              value: item.men_id,
+              text: item.men_nama
+            });
+          });
+
+          this.tomSelect.modul = new TomSelect('#modules',{
+            plugins: {
+              remove_button:{
+                title:'Hapus Modul',
+              }
+            },
+            options: modulesOption,
+            items: app.data.rol_modul,
+            persist: false,
+            create: false,
+            maxOptions: null,
+            onDelete: function() {
+              return true;
+            }
+          });
+
+          this.tomSelect.menu = new TomSelect('#menus',{
+            plugins: {
+              remove_button:{
+                title:'Hapus Menu',
+              }
+            },
+            options: menusOption,
+            items: app.data.rol_menu,
+            persist: false,
+            create: false,
+            maxOptions: null,
+            onDelete: function() {
+              return true;
+            }
+          });
+
+          this.tomSelected = true;
+        }
+      },
       submitData: function() {
+
         this.changePreloadStatus();
         
         let app = this;
         let postData = new FormData();
         Object.keys(app.data).forEach((key) => {
-          postData.append(key, app.data[key]);
+          if (Array.isArray(app.data[key])) {
+            postData.append(key, JSON.stringify(app.data[key]));
+          } else {
+            postData.append(key, app.data[key]);
+          }
         });
 
-        usePrivateApi('modul/create', {
+        usePrivateApi('role/create', {
           app: app,
           method: 'post',
           data: postData,
@@ -107,11 +196,41 @@
             app.changePreloadStatus();
           }
         });
+
       }
     },
     mounted: function() {
-      
+      this.useTomSelect();
+    },
+    updated: function() {
+      this.useTomSelect();
     }
   }
 
 </script>
+
+<style lang="scss">
+
+  @import '../../../../node_modules/tom-select/dist/scss/tom-select.scss';
+
+  .tom-selected {
+
+    .ts-control {
+      font-size: 1rem;
+      padding: 10px 12px;
+    }
+  }
+
+  .ts-wrapper.multi.has-items {
+      
+    .ts-control {
+      padding: 10px 12px;
+    }
+
+    .item {
+      padding: 4px 0 4px 8px !important;
+      margin-right: 8px;
+    }
+  }
+
+</style>

@@ -96,6 +96,7 @@
   import { usePrivateApi } from '../../../helper/Api';
   import { imageURL, createModal, range } from '../../../helper/Global';
   import { DateTime } from 'luxon';
+  import { computed } from 'vue';
 
   // load components
   import RoleCreate from './RoleCreate.vue';
@@ -209,13 +210,20 @@
     },
     provide: function() {
       return {
-        reloadTable: this.reloadTable
+        reloadTable: this.reloadTable,
+
+        allMenu: computed(() => {
+          return this.menus;
+        }),
+        allModul: computed(() => {
+          return this.modules;
+        })
       }
     },
     created: function() {
       let app = this;
 
-      usePrivateApi('menu/get', {
+      usePrivateApi('menu/all', {
         app: app,
         method: 'get',
         success: function(res) {
@@ -223,7 +231,7 @@
         }
       });
 
-      usePrivateApi('modul/get', {
+      usePrivateApi('modul/all', {
         app: app,
         method: 'get',
         success: function(res) {

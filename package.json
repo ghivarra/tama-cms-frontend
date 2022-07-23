@@ -23,6 +23,7 @@
     "luxon": "^3.0.1",
     "sortablejs": "^1.15.0",
     "sweetalert2": "^11.4.20",
+    "tom-select": "^2.1.0",
     "vue": "^3.2.13",
     "vue-router": "^4.1.2",
     "vuedraggable": "^4.1.0"
