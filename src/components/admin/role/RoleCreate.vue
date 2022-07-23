@@ -94,6 +94,25 @@
         }
       }
     },
+    watch: {
+      show: function(tampil) {
+
+        if (!tampil) {
+          this.tomSelect.modul.destroy();
+          this.tomSelect.menu.destroy();
+          this.tomSelect.modul = null;
+          this.tomSelect.menu = null;
+          
+          this.data = {
+            rol_nama: '',
+            rol_status: 'aktif',
+            rol_modul: [],
+            rol_menu: []
+          };
+        }
+
+      }
+    },
     computed : {
       modalClass: function() {
         return (this.show) ? 'modal pengaturan' : 'modal pengaturan hidden';
@@ -107,10 +126,11 @@
       },
       useTomSelect: function() {
 
-        let el  = document.getElementById('modules');
+        let mod = document.getElementById('modules');
+        let men = document.getElementById('menus');
         let app = this;
 
-        if (!this.tomSelected && el != undefined) {
+        if (mod != undefined && men != undefined) {
 
           // make data
           let modulesOption = [];
@@ -200,10 +220,14 @@
       }
     },
     mounted: function() {
-      this.useTomSelect();
+      if (this.show) {
+        this.useTomSelect();
+      }
     },
     updated: function() {
-      this.useTomSelect();
+      if (this.show) {
+        this.useTomSelect();
+      }
     }
   }
 
