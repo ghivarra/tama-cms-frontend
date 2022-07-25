@@ -91,6 +91,18 @@
         stay: false
       }
     },
+    watch: {
+      show: function(tampil) {
+        if (tampil) {
+          this.data = {
+            adm_nama: '',
+            adm_email: '',
+            adm_role: '',
+            adm_status: 'aktif'
+          };
+        }
+      }
+    },
     methods: {
       checkToggle: function(e) {
         if (e.target == this.$refs.modal || e.target == this.$refs.modalDialog) {
