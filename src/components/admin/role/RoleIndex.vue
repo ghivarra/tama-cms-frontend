@@ -86,6 +86,7 @@
 
   <!-- MODALS -->
   <role-create v-bind:show="createStatus" v-bind:toggle="createToggle"></role-create>
+  <role-detail v-bind:show="detailStatus" v-bind:toggle="detailToggle" v-bind:role="roleDetail"></role-detail>
 
 </template>
 
@@ -100,6 +101,7 @@
 
   // load components
   import RoleCreate from './RoleCreate.vue';
+  import RoleDetail from './RoleDetail.vue';
 
   // load library
   import $ from 'jquery';
@@ -115,6 +117,7 @@
       'font-awesome': FontAwesomeIcon,
       'date-picker': Datepicker,
       'role-create': RoleCreate,
+      'role-detail': RoleDetail
     },
     data: function() {
       return {
@@ -140,7 +143,21 @@
 
         // data for options
         menus: [],
-        modules: []
+        modules: [],
+      }
+    },
+    computed: {
+      roleDetail: function() {
+        if (this.datatableCurrentData[this.detailKey] != undefined) {
+          return this.datatableCurrentData[this.detailKey];
+        } else {
+          return {
+            rol_nama: '',
+            status: 'nonaktif',
+            date_create: 0,
+            date_update: 0
+          }
+        }
       }
     },
     watch: {
