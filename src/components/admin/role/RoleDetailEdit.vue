@@ -60,7 +60,7 @@
   export default {
     name: 'role-detail-edit',
     props: ['toggle', 'role'],
-    inject: ['changePreloadStatus', 'reloadTable', 'allMenu', 'allModul'],
+    inject: ['changePreloadStatus', 'reloadTable', 'allMenu', 'allModul', 'updateDataAdmin', 'updateMenuData'],
     data: function() {
       return {
         adminPage: `${process.env.VUE_APP_BASE_URL}${process.env.VUE_APP_ADMIN_PAGE}/`,
@@ -78,6 +78,16 @@
       }
     },
     methods: {
+      updateMenu: function() {
+        let app = this;
+        usePrivateApi('menu-list', {
+          app: app,
+          method: 'get',
+          success: function(response) {
+            app.updateMenuData(response.data.data, app.$route.path);
+          }
+        });
+      },
       submitData: function() {
         let app = this;
 
@@ -91,15 +101,20 @@
         postData.append('rol_menu', JSON.stringify(app.form.rol_menu));
 
 
-        usePrivateApi('menu/update-parent', {
+        usePrivateApi('role/update', {
           app: app,
           method: 'post',
           data: postData,
           success: function(res) {
             let data = res.data;
+
+            // update
+            app.reloadTable();
+            app.updateDataAdmin();
+            app.updateMenu();
+
             Swal.fire(data.title, data.message, data.status).then(() => {
               app.toggle();
-              app.reloadTable();
             });
           },
           final: function() {
@@ -108,6 +123,10 @@
         });
       },
       useTomSelect: function() {
+
+        if (this.tomSelected) {
+          return false;
+        }
 
         let mod = document.getElementById('allModules');
         let men = document.getElementById('allMenus');
@@ -171,9 +190,6 @@
             }
           });
 
-          console.log(this.tomSelect.menu);
-          console.log(this.tomSelect.modul);
-
           this.tomSelected = true;
         }
       },
@@ -197,20 +213,22 @@
       });
     },
     mounted: function() {
-      if (this.formLoaded) {
+      if (this.formLoaded && !this.tomSelected) {
         this.useTomSelect();
       }
     },
     updated: function() {
-      if (this.formLoaded) {
+      if (!this.tomSelected) {
         this.useTomSelect();
       }
     },
     beforeUnmount: function() {
-      this.tomSelect.modul.destroy();
-      this.tomSelect.menu.destroy();
-      this.tomSelect.modul = null;
-      this.tomSelect.menu = null;
+      if (this.tomSelected) {
+        this.tomSelect.modul.destroy();
+        this.tomSelect.menu.destroy();
+        this.tomSelect.modul = null;
+        this.tomSelect.menu = null;
+      }
     }
   }
 
