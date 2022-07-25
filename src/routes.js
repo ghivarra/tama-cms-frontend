@@ -86,7 +86,7 @@ export default [
 		path: `/${process.env.VUE_APP_ADMIN_PAGE}/akun`, 
 		component: AdminIndex, 
 		meta: {
-			view: 'AdminDasbor',
+			view: 'akun/AkunIndex',
 			title: 'Akun'
 		},
 		beforeEnter: [loggedOutGuard]

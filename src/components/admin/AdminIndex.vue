@@ -567,7 +567,7 @@
     tbody {
 
       th, td {
-        padding: 14px 12px;
+        padding: 14px 12px !important;
         border-bottom: 1px solid #e5e7eb;
       }
     }
