@@ -253,7 +253,7 @@
 
     .item {
       padding: 4px 0 4px 8px !important;
-      margin-right: 8px;
+      margin: 0 8px 8px 0;
     }
   }
 
