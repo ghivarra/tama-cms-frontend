@@ -38,6 +38,12 @@
             <th class="py-4 px-2">
               <select disabled v-on:input="dtSearch" data-field="3" class="form-select admin-table-search">
                 <option value=""></option>
+                <option v-for="role in roles" v-bind:key="role.rol_id" v-bind:value="role.rol_id">{{ role.rol_nama }}</option>
+              </select>
+            </th>
+            <th class="py-4 px-2">
+              <select disabled v-on:input="dtSearch" data-field="4" class="form-select admin-table-search">
+                <option value=""></option>
                 <option value="aktif">Aktif</option>
                 <option value="nonaktif">Nonaktif</option>
               </select>
@@ -51,6 +57,7 @@
             <th class="text-center py-4 pl-4 pr-2"></th>
             <th class="text-center py-4 px-2">No.</th>
             <th class="py-4 px-2">Akun</th>
+            <th class="py-4 px-2">Role</th>
             <th class="py-4 px-2">Status</th>
             <th class="py-4 pl-2 pr-4">Waktu Pembuatan</th>
           </tr>
@@ -76,6 +83,9 @@
         <td class="py-8 px-4">
           <div class="skeleton-loader w-full" style="height: 16px;"></div>
         </td>
+        <td class="py-8 px-4">
+          <div class="skeleton-loader w-full" style="height: 16px;"></div>
+        </td>
         <td class="py-8 pl-4 px-6">
           <div class="skeleton-loader w-full" style="height: 16px;"></div>
         </td>
@@ -89,6 +99,7 @@
   </main>
 
   <!-- MODALS -->
+  <akun-create v-bind:show="createStatus" v-bind:toggle="createToggle"></akun-create>
 
 </template>
 
@@ -96,13 +107,13 @@
 
   // load functions
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-  // import { usePrivateApi } from '../../../helper/Api';
+  import { usePrivateApi } from '../../../helper/Api';
   import { imageURL, createModal, range } from '../../../helper/Global';
   import { DateTime } from 'luxon';
   import { computed } from 'vue';
 
   // load components
-  // import RoleCreate from './RoleCreate.vue';
+  import AkunCreate from './AkunCreate.vue';
   // import RoleDetail from './RoleDetail.vue';
 
   // load library
@@ -117,7 +128,8 @@
     name: 'akun-index',
     components: {
       'font-awesome': FontAwesomeIcon,
-      'date-picker': Datepicker
+      'date-picker': Datepicker,
+      'akun-create': AkunCreate
     },
     data: function() {
       return {
@@ -131,7 +143,7 @@
         // src data
         timeout: undefined,
         dateSrc: '',
-        dateSrcField: 4,
+        dateSrcField: 5,
         dateSrcFormat: 'dd-MM-yyyy',
 
         // modal data
@@ -140,6 +152,7 @@
 
         // create data
         createStatus: false,
+        roles: [],
       }
     },
     computed: {
@@ -225,13 +238,21 @@
       return {
         reloadTable: this.reloadTable,
 
-        allMenu: computed(() => {
-          return this.menus;
+        allRoles: computed(() => {
+          return this.roles;
         }),
-        allModul: computed(() => {
-          return this.modules;
-        })
       }
+    },
+    created: function() {
+      let app = this;
+
+      usePrivateApi('role/all', {
+        app: app,
+        method: 'get',
+        success: function(res) {
+          app.roles = res.data.data;
+        }
+      });
     },
     mounted: function() {
 
@@ -288,6 +309,10 @@
 
                 // put on admin info
                 data[i].adm_nama = `<div class="flex">${imgPic}<div class="admin-table-info">${adminInfo}</div></div>`;
+
+                // swicth roles
+                data[i].role = item.adm_role;
+                data[i].adm_role = item.rol_nama;
               });
 
             }
@@ -305,6 +330,7 @@
               { data: "aksi", className: 'admin-table-control text-center', orderable: false, defaultContent: '' },
               { data: "no", className: 'admin-table-number text-center', orderable: false },
               { data: "adm_nama" },
+              { data: "adm_role" },
               { data: "adm_status", className: 'admin-table-status capitalize' },
               { data: "adm_created_at", className: 'admin-table-time'}
         ],
