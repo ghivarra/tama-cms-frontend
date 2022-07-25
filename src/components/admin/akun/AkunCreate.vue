@@ -23,7 +23,7 @@
 
               <div class="form-group mb-6">
                 <label for="email" class="font-bold">Email</label>
-                <input v-model="data.adm_email" id="email" type="text" class="form-modern" required>
+                <input v-model="data.adm_email" id="email" type="email" class="form-modern" required>
               </div>
 
               <div class="form-group mb-6">
@@ -32,6 +32,24 @@
                   <option value="">Pilih Role</option>
                   <option v-for="role in allRoles" v-bind:key="role.rol_id" v-bind:value="role.rol_id">{{ role.rol_nama }}</option>
                 </select>
+              </div>
+
+              <div class="form-group mb-6">
+                <label for="password" class="font-bold">Password</label>
+                <div class="relative">
+                  <input v-model="data.adm_password" v-bind:type="(passwordHidden) ? 'password' : 'text'" id="password" class="form-modern" required>
+                  <font-awesome v-on:click.prevent="passwordHidden = false" v-if="passwordHidden" icon="fa-regular fa-eye" class="text-muted absolute bottom-3 seepass right-3 cursor-pointer"></font-awesome>
+                  <font-awesome v-on:click.prevent="passwordHidden = true" v-else icon="fa-regular fa-eye-slash" class="text-muted absolute bottom-3 right-3 seepass cursor-pointer"></font-awesome>
+                </div>
+              </div>
+
+              <div class="form-group mb-6">
+                <label for="konf_password" class="font-bold">Konfirmasi Password</label>
+                <div class="relative">
+                  <input v-model="konfirmasi" v-bind:type="(konfirmasiHidden) ? 'password' : 'text'" id="konf_password" class="form-modern" required>
+                  <font-awesome v-on:click.prevent="konfirmasiHidden = false" v-if="konfirmasiHidden" icon="fa-regular fa-eye" class="text-muted absolute bottom-3 seepass right-3 cursor-pointer"></font-awesome>
+                  <font-awesome v-on:click.prevent="konfirmasiHidden = true" v-else icon="fa-regular fa-eye-slash" class="text-muted absolute bottom-3 right-3 seepass cursor-pointer"></font-awesome>
+                </div>
               </div>
 
               <div class="form-group mb-6">
@@ -85,10 +103,16 @@
         data: {
           adm_nama: '',
           adm_email: '',
+          adm_password: '',
           adm_role: '',
-          adm_status: 'aktif'
+          adm_status: 'aktif',
         },
-        stay: false
+        stay: false,
+
+        // password
+        konfirmasi: '',
+        passwordHidden: true,
+        konfirmasiHidden: true
       }
     },
     watch: {
@@ -110,6 +134,12 @@
         }
       },
       submitData: function() {
+
+        if (this.data.adm_password !== this.konfirmasi) {
+          Swal.fire('Peringatan', 'Kolom password dengan konfirmasi password tidak sesuai', 'warning');
+          return false;
+        }
+
         this.changePreloadStatus();
         
         let app = this;
@@ -140,3 +170,9 @@
   }
 
 </script>
+
+<style>
+  .seepass {
+    width: 26px;
+  }
+</style>
