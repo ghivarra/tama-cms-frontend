@@ -1,14 +1,14 @@
 <template>
 
   <div class="modal-content-body">
-    <h1 class="h2 font-bold mb-6">{{ role.rol_nama }}</h1>
+    <h1 class="h2 font-bold mb-6">{{ admin.nama }}</h1>
     <div class="mb-6 smartphone:flex">
       <button v-on:click="editData" type="button" class="btn text-white bg-primary hover:bg-primary-dark">Edit</button>
       <button v-on:click="toggleStatusData" type="button" v-bind:class="`btn mx-3 text-white ${statusColor}`">{{ statusText }}</button>
       <button v-on:click="deleteData" type="button" class="btn text-white bg-error hover:bg-error-dark">Hapus</button>
     </div>
-    <p class="mb-2">{{ `Role dibuat pada ${createdTime} oleh ` }}<b>{{ role.creator }}</b></p>
-    <p>{{ `Terakhir diperbaharui pada ${updatedTime} oleh ` }}<b>{{ role.updater }}</b></p>
+    <p class="mb-2">{{ `Akun dibuat pada ${createdTime}` }}</p>
+    <p>{{ `Terakhir diperbaharui pada ${updatedTime}` }}</p>
   </div>
 
   <footer class="modal-content-footer flex justify-end">
@@ -27,25 +27,25 @@
   import Swal from 'sweetalert2';
 
   export default {
-    name: 'role-detail-default',
-    props: ['role', 'editData', 'toggle'],
+    name: 'akun-detail-default',
+    props: ['admin', 'editData', 'toggle'],
     inject: ['changePreloadStatus', 'reloadTable'],
     computed: {
       updatedTime: function() {
-        let date = DateTime.fromSeconds(this.role.date_update).setLocale("id").toLocaleString(DateTime.DATE_FULL);
-        let time = DateTime.fromSeconds(this.role.date_update).setLocale("id").toLocaleString(DateTime.TIME_24_SIMPLE);
+        let date = DateTime.fromSeconds(this.admin.date_update).setLocale("id").toLocaleString(DateTime.DATE_FULL);
+        let time = DateTime.fromSeconds(this.admin.date_update).setLocale("id").toLocaleString(DateTime.TIME_24_SIMPLE);
         return `${date} - ${time}`;
       },
       createdTime: function() {
-        let date = DateTime.fromSeconds(this.role.date_create).setLocale("id").toLocaleString(DateTime.DATE_FULL);
-        let time = DateTime.fromSeconds(this.role.date_create).setLocale("id").toLocaleString(DateTime.TIME_24_SIMPLE);
+        let date = DateTime.fromSeconds(this.admin.date_create).setLocale("id").toLocaleString(DateTime.DATE_FULL);
+        let time = DateTime.fromSeconds(this.admin.date_create).setLocale("id").toLocaleString(DateTime.TIME_24_SIMPLE);
         return `${date} - ${time}`;
       },
       statusColor: function() {
-        return (this.role.status == 'aktif') ? 'bg-warning hover:bg-warning-dark' : 'bg-success hover:bg-success-dark';
+        return (this.admin.status == 'aktif') ? 'bg-warning hover:bg-warning-dark' : 'bg-success hover:bg-success-dark';
       },
       statusText: function() {
-        return (this.role.status == 'aktif') ? 'Nonaktifkan' : 'Aktifkan';
+        return (this.admin.status == 'aktif') ? 'Nonaktifkan' : 'Aktifkan';
       }
     },
     methods: {
@@ -55,17 +55,17 @@
 
         let app = this;
         let postData = new FormData();
-        postData.append('rol_id', app.role.rol_id);
+        postData.append('adm_id', app.admin.adm_id);
 
-        usePrivateApi('role/delete', {
+        usePrivateApi('admin/delete', {
           app: app,
           method: 'post',
           data: postData,
           success: function(res) {
             let data = res.data;
+            app.reloadTable();
             Swal.fire(data.title, data.message, data.status).then(() => {
               app.toggle();
-              app.reloadTable();
             });
           },
           final: function() {
@@ -80,17 +80,17 @@
 
         let app = this;
         let postData = new FormData();
-        postData.append('rol_id', app.role.rol_id);
+        postData.append('adm_id', app.admin.adm_id);
 
-        usePrivateApi('role/update-status', {
+        usePrivateApi('admin/update-status', {
           app: app,
           method: 'post',
           data: postData,
           success: function(res) {
             let data = res.data;
+            app.reloadTable();
             Swal.fire(data.title, data.message, data.status).then(() => {
               app.toggle();
-              app.reloadTable();
             });
           },
           final: function() {

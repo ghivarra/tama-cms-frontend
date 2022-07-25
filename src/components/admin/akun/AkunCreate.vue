@@ -99,7 +99,7 @@
             adm_email: '',
             adm_role: '',
             adm_status: 'aktif'
-          };
+          }
         }
       }
     },

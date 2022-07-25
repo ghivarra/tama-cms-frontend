@@ -100,6 +100,7 @@
 
   <!-- MODALS -->
   <akun-create v-bind:show="createStatus" v-bind:toggle="createToggle"></akun-create>
+  <akun-detail v-bind:show="detailStatus" v-bind:toggle="detailToggle" v-bind:admin="adminDetail"></akun-detail>
 
 </template>
 
@@ -114,7 +115,7 @@
 
   // load components
   import AkunCreate from './AkunCreate.vue';
-  // import RoleDetail from './RoleDetail.vue';
+  import AkunDetail from './AkunDetail.vue';
 
   // load library
   import $ from 'jquery';
@@ -129,7 +130,8 @@
     components: {
       'font-awesome': FontAwesomeIcon,
       'date-picker': Datepicker,
-      'akun-create': AkunCreate
+      'akun-create': AkunCreate,
+      'akun-detail': AkunDetail
     },
     data: function() {
       return {
@@ -156,7 +158,7 @@
       }
     },
     computed: {
-      akunDetail: function() {
+      adminDetail: function() {
         if (this.datatableCurrentData[this.detailKey] != undefined) {
           return this.datatableCurrentData[this.detailKey];
         } else {
@@ -308,6 +310,7 @@
                 let adminInfo = `<div><p class="mb-1">${item.adm_nama}</p><p class="text-muted">${item.adm_email}</p></div>`;
 
                 // put on admin info
+                data[i].nama = item.adm_nama;
                 data[i].adm_nama = `<div class="flex">${imgPic}<div class="admin-table-info">${adminInfo}</div></div>`;
 
                 // swicth roles
