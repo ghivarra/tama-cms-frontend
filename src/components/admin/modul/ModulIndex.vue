@@ -36,7 +36,11 @@
               <input disabled v-on:input="dtSearch" type="search" data-field="2" class="form-control admin-table-search">
             </th>
             <th class="py-4 px-2">
-              <input disabled v-on:input="dtSearch" type="search" data-field="3" class="form-control admin-table-search">
+              <select disabled v-on:input="dtSearch" data-field="3" class="form-select admin-table-search">
+                <option value=""></option>
+                <option value="aktif">Aktif</option>
+                <option value="nonaktif">Nonaktif</option>
+              </select>
             </th>
             <th class="py-4 pl-2 pr-4">
               <date-picker v-model="dateSrc" v-bind:modelType="dateSrcFormat" v-bind:enableTimePicker="false" v-bind:autoApply="true" v-bind:closeOnScroll="true" v-bind:format="dateSrcFormat" inputClassName="text-dark font-normal" locale="id-ID" selectText="Pilih" cancelText="Batal" placeholder="Pilih Tanggal"></date-picker>
