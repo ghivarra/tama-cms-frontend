@@ -5,6 +5,8 @@ Frontend repository for Tama Simple CMS
 
 # Modules
 
+- Authentication
+- Password Recovery
 - Admin
 - Multi Level Access using Role
 - Modules Registration
