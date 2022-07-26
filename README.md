@@ -14,7 +14,8 @@ Frontend repository for Tama Simple CMS
 
 # DEPENDENCY
 
-- Vue 3
+- Vue CLI 5
+- Vue JS 3
 - Tailwind CSS
 - Axios
 - jQuery
