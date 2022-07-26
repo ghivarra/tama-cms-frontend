@@ -28,8 +28,8 @@
 
   export default {
     name: 'akun-detail-default',
-    props: ['admin', 'editData', 'toggle'],
-    inject: ['changePreloadStatus', 'reloadTable'],
+    props: ['admin', 'toggle', 'updateMenu', 'editData'],
+    inject: ['changePreloadStatus', 'reloadTable', 'updateDataAdmin'],
     computed: {
       updatedTime: function() {
         let date = DateTime.fromSeconds(this.admin.date_update).setLocale("id").toLocaleString(DateTime.DATE_FULL);
@@ -63,6 +63,8 @@
           data: postData,
           success: function(res) {
             let data = res.data;
+            app.updateDataAdmin();
+            app.updateMenu();
             app.reloadTable();
             Swal.fire(data.title, data.message, data.status).then(() => {
               app.toggle();
@@ -88,6 +90,8 @@
           data: postData,
           success: function(res) {
             let data = res.data;
+            app.updateDataAdmin();
+            app.updateMenu();
             app.reloadTable();
             Swal.fire(data.title, data.message, data.status).then(() => {
               app.toggle();

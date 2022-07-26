@@ -13,7 +13,7 @@
           </header>
 
           <!-- LOAD COMPONENT -->
-          <component v-bind:is="currentModalComponent" v-bind:editData="editData" v-bind:admin="admin" v-bind:toggle="extraToggle"></component>
+          <component v-bind:edit-data="editData" v-bind:is="currentModalComponent" v-bind:admin="admin" v-bind:toggle="extraToggle" v-bind:update-menu="updateMenu"></component>
 
         </div><!-- /modal-content -->
       </div><!-- /modal-dialog -->
@@ -26,10 +26,12 @@
   // load functions
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import { markRaw, defineAsyncComponent } from 'vue';
+  import { usePrivateApi } from '../../../helper/Api';
 
   export default {
     name: 'akun-detail',
     props: ['show', 'toggle', 'admin'],
+    inject: ['updateMenuData'],
     components: {
       'font-awesome': FontAwesomeIcon
     },
@@ -46,6 +48,16 @@
       }
     },
     methods: {
+      updateMenu: function() {
+        let app = this;
+        usePrivateApi('menu-list', {
+          app: app,
+          method: 'get',
+          success: function(response) {
+            app.updateMenuData(response.data.data, app.$route.path);
+          }
+        });
+      },
       checkToggle: function(e) {
         if (e.target == this.$refs.modal || e.target == this.$refs.modalDialog) {
           this.extraToggle();
