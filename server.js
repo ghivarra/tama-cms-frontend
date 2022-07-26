@@ -1,13 +1,23 @@
-// server.js
-var express = require('express');
-var path = require('path');
-var serveStatic = require('serve-static');
+const express = require('express');
+const path = require('path');
+const history = require('connect-history-api-fallback');
 
-app = express();
-app.use(serveStatic(__dirname + "/dist"));
-var port = process.env.PORT || 8080;
-var hostname = '127.0.0.1';
+const app = express();
 
-app.listen(port, hostname, () => {
-   console.log(`Server running at http://${hostname}:${port}/`);
+const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
+
+app.use(staticFileMiddleware);
+app.use(history({
+  disableDotRule: true,
+  verbose: true
+}));
+app.use(staticFileMiddleware);
+
+app.get('/', function (req, res) {
+  res.render(path.join(__dirname + '/dist/index.html'));
+});
+
+var server = app.listen(process.env.PORT || 8080, function () {
+  var port = server.address().port;
+  console.log(`App now running on port ${port}`);
 });
