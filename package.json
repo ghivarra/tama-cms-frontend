@@ -19,6 +19,7 @@
     "datatables.net-dt": "^1.12.1",
     "datatables.net-fixedcolumns-dt": "^4.1.0",
     "es6-promise": "^4.2.8",
+    "express": "^4.18.1",
     "jquery": "^3.6.0",
     "luxon": "^3.0.1",
     "sortablejs": "^1.15.0",
