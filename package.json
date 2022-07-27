@@ -1,11 +1,12 @@
 {
-  "name": "office.gsslit",
-  "version": "0.1.0",
+  "name": "tama.cms",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "node server.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -22,6 +23,7 @@
     "express": "^4.18.1",
     "jquery": "^3.6.0",
     "luxon": "^3.0.1",
+    "sass-loader": "^13.0.2",
     "sortablejs": "^1.15.0",
     "sweetalert2": "^11.4.20",
     "tom-select": "^2.1.0",
@@ -40,7 +42,6 @@
     "eslint-plugin-vue": "^8.0.3",
     "node-sass": "^7.0.1",
     "postcss": "^8.4.14",
-    "sass-loader": "^13.0.2",
     "tailwindcss": "^3.1.6"
   },
   "eslintConfig": {
@@ -62,5 +63,17 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ]
+  ],
+  "description": "Frontend repository for Tama Simple CMS",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghivarra/tama-cms-frontend.git"
+  },
+  "author": "Ghivarra Senandika Rushdie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ghivarra/tama-cms-frontend/issues"
+  },
+  "homepage": "https://github.com/ghivarra/tama-cms-frontend#readme"
 }
