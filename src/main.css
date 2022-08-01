@@ -25,9 +25,7 @@
 		@apply w-full rounded-md px-4 py-2 mb-2 text-lg text-white transition-colors cursor-pointer hover:bg-white hover:text-dark;
 	}
 	.modal {
-		min-height: 100vh;
-		min-height: -webkit-fill-available;
-		@apply fixed top-0 left-0 w-screen z-50 overflow-auto sm:px-6;
+		@apply h-full fixed top-0 left-0 w-screen z-50 overflow-auto sm:px-6;
 	}
 	.modal-dialog {
 		@apply flex w-full items-start sm:py-12;
@@ -37,9 +35,7 @@
 	}
 	.modal-content {
 		max-width: 650px;
-		min-height: 100vh;
-		min-height: -webkit-fill-available;
-		@apply block relative bg-white z-20 overflow-hidden w-full sm:mx-auto sm:h-auto sm:mt-10 sm:rounded-md;
+		@apply h-full block relative bg-white z-20 overflow-hidden w-full sm:mx-auto sm:h-auto sm:mt-10 sm:rounded-md;
 	}
 	.modal-content-header {
 		@apply bg-white border-b px-6 py-4;
