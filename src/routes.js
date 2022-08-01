@@ -1,4 +1,5 @@
 import HelloWorld from './components/HelloWorld.vue';
+import NotFound from './components/NotFound.vue';
 import LoginIndex from './components/login/LoginIndex.vue';
 import AdminIndex from './components/admin/AdminIndex.vue';
 import { loggedInGuard, loggedOutGuard } from './routes-guard.js';
