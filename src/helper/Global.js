@@ -59,6 +59,8 @@ export const adminURL = (slug) => {
 
 export const createModal = (status) => {
   let body = document.querySelector('body');
+  let hg = resetHeight();
+
   if (status) {
     body.classList.remove('modal-open');
     let bg = document.querySelectorAll('.modal-backdrop');
@@ -72,7 +74,27 @@ export const createModal = (status) => {
     backdrop.classList.add('modal-backdrop');
     body.appendChild(backdrop);
     body.classList.add('modal-open');
+
+    setTimeout(() => {
+      let noFooter = document.querySelector('.modal-content-body.no-footer');
+      let withFooter = document.querySelector('.modal-content-body');
+      if (noFooter == undefined) {
+        withFooter.style.height = `calc(${hg}px - 136px)`;
+      } else {
+        noFooter.style.height = `calc(${hg}px - 63px)`;
+      }
+    }, 50);
   }
 
   return;
+}
+
+export const formatNumber = (num, separator) => {
+  separator = (separator == undefined) ? '.' : separator;
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+}
+
+export const resetHeight = () => {
+  document.body.style.height = window.innerHeight + "px";
+  return window.innerHeight;
 }

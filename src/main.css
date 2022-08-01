@@ -25,7 +25,9 @@
 		@apply w-full rounded-md px-4 py-2 mb-2 text-lg text-white transition-colors cursor-pointer hover:bg-white hover:text-dark;
 	}
 	.modal {
-		@apply fixed top-0 left-0 h-screen w-screen z-50 overflow-auto sm:px-6;
+		min-height: 100vh;
+		min-height: -webkit-fill-available;
+		@apply fixed top-0 left-0 w-screen z-50 overflow-auto sm:px-6;
 	}
 	.modal-dialog {
 		@apply flex w-full items-start sm:py-12;
@@ -35,17 +37,22 @@
 	}
 	.modal-content {
 		max-width: 650px;
-		@apply h-screen relative bg-white z-20 overflow-hidden w-full sm:mx-auto sm:h-auto sm:mt-10 sm:rounded-md;
+		min-height: 100vh;
+		min-height: -webkit-fill-available;
+		@apply block relative bg-white z-20 overflow-hidden w-full sm:mx-auto sm:h-auto sm:mt-10 sm:rounded-md;
 	}
 	.modal-content-header {
 		@apply bg-white border-b px-6 py-4;
 	}
 	.modal-content-body {
-		height: calc(100vh - 136px);
+		min-height: 100vh;
+		min-height: -webkit-fill-available;
 		@apply p-6 overflow-auto sm:h-auto;
 	}
 	.modal-content-body.no-footer {
-		@apply h-full sm:h-auto;
+		min-height: 100vh;
+		min-height: -webkit-fill-available;
+		@apply overflow-auto sm:h-auto;
 	}
 	.modal-content-footer {
 		@apply sticky bg-white w-full bottom-0 left-0 px-6 py-4 border-t sm:relative;
