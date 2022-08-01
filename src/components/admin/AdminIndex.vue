@@ -577,6 +577,10 @@
     border-bottom: none;
   }
 
+  .dataTables_wrapper .dataTables_scroll {
+    margin-bottom: 1rem;
+  }
+
   #table_wrapper .dataTables_paginate .paginate_button {
     border-radius: 99999px;
     margin-right: 4px;
