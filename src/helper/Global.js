@@ -75,15 +75,17 @@ export const createModal = (status) => {
     body.appendChild(backdrop);
     body.classList.add('modal-open');
 
-    setTimeout(() => {
-      let noFooter = document.querySelector('.modal-content-body.no-footer');
-      let withFooter = document.querySelector('.modal-content-body');
-      if (noFooter == undefined) {
-        withFooter.style.height = `calc(${hg}px - 136px)`;
-      } else {
-        noFooter.style.height = `calc(${hg}px - 63px)`;
-      }
-    }, 50);
+    if (window.innerWidth < 640) {
+      setTimeout(() => {
+        let noFooter = document.querySelector('.modal-content-body.no-footer');
+        let withFooter = document.querySelector('.modal-content-body');
+        if (noFooter == undefined) {
+          withFooter.style.height = `calc(${hg}px - 136px)`;
+        } else {
+          noFooter.style.height = `calc(${hg}px - 63px)`;
+        }
+      }, 50);
+    }
   }
 
   return;
