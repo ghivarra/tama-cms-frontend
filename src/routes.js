@@ -115,4 +115,14 @@ export default [
 		},
 		beforeEnter: [loggedOutGuard]
 	},
+
+	// NOT FOUND
+	{ 
+		path: '/:pathMatch(.*)*', 
+		name: 'not.found', 
+		component: NotFound,
+		meta: {
+			title: 'Error 404 | Halaman Tidak Ditemukan'
+		}
+	},
 ];

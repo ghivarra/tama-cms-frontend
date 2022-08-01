@@ -433,7 +433,7 @@
 
   @import '../../../node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
 
-  #table_length, #table_filter, #table_paginate {
+  #table_length, #table_filter {
     display: none !important;
   }
 
@@ -534,7 +534,7 @@
 
   table.dataTable, table.table-auto {
     width: 100% !important;
-    min-width: 900px;
+    min-width: 1000px;
 
     .admin-table-number, .admin-table-search-label {
       text-align: center;
@@ -575,6 +575,15 @@
 
   .dataTables_wrapper.no-footer .dataTables_scrollBody {
     border-bottom: none;
+  }
+
+  #table_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 99999px;
+    margin-right: 4px;
+  }
+
+  #table_wrapper .dataTables_paginate .paginate_button:last-child {
+    margin-right: 0;
   }
 
 </style>
